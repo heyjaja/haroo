@@ -9,31 +9,36 @@ $(document).on('keydown', ".ap-form input", function (event) {
 });
 
 // 품의목록 추가하기
-let count = 2;
+let count = 1;
 $(document).on('click', '#ap-el-plus', function(){
-  if(count == 6) {
+  if(count == 5) {
     return;
   }
   let html = '<tr class="ap-el"><td class="el-item"><div class="input-group input-group-sm">';
-  html += '<input class="form-control" type="text" name="elItem'+count+'"/></div></td>';
+  html += '<input class="form-control" type="text" name="expense['+count+'].elItem"/></div></td>';
   html += '<td class="ap-quantity"><div class="input-group input-group-sm">';
-  html += '<input class="form-control" type="number" name="elQuantity'+count+'" placeholder="숫자만"/></div></td>';
+  html += '<input class="form-control" type="number" name="expense['+count+'].elQuantity" placeholder="숫자만"/></div></td>';
   html += '<td class="ap-price"><div class="input-group input-group-sm">';
-  html += '<input class="form-control" type="number" name="elPrice'+count+'" placeholder="숫자만"/></div></td>';
+  html += '<input class="form-control" type="number" name="expense['+count+'].elPrice" placeholder="숫자만"/></div></td>';
   html += '<td class="ap-cost"><div class="input-group input-group-sm">';
-  html += '<input class="form-control" type="text" name="elCost'+count+'" readOnly/></div></td></tr>';
+  html += '<input class="form-control" type="text" name="expense['+count+'].elCost" readOnly/></div></td></tr>';
+  let hiddenHtml = '<div class="el-hidden"><input class="total-input" type="hidden" name="expense['+count+'].elTotal"/>';
+  hiddenHtml += '<input type="hidden" name="expense['+count+'].elNo" value="'+(count+1)+'"/></div>';
+  
   
   $('#el-total').before(html);
+  $('#hidden-total').append(hiddenHtml);
   count++;
   
 })
 
 // 품의목록 삭제
 $(document).on('click', '#ap-el-minus', function(){
-  if(count==2) {
+  if(count==1) {
     return;
   }
   $('#el-total').prev().remove();
+  $('#hidden-total .el-hidden').last().remove();
   count--;
 })
 
@@ -56,7 +61,7 @@ $(document).on('change', '.ap-el input', function(){
     total += cost;
     $(this).find('.ap-cost input').val(cost.toLocaleString()+' 원')
   })
-  $('.ap-total input').val(total.toLocaleString()+' 원');
+  $('.ap-total .total-input').val(total.toLocaleString()+' 원');
 });
 
 
@@ -64,7 +69,7 @@ $(document).on('change', '.ap-el input', function(){
 $(document).on('click', '.ap-al-select', function(event){
   event.preventDefault();
   $('#ap-list-selected').empty();
-  window.open("/haroo/ap/form/line", "결재선 선택", "width=600, height=500, left=50, top=50");
+  window.open("/approval/line", "결재선 선택", "width=600, height=500, left=50, top=50");
 });
 
 //결재선 선택
@@ -86,10 +91,11 @@ $(document).on('click', '.ap-selected-name', function(event){
 
 //선택한 결재선 저장
 let insertAlList = '<table class="table mb-0 table-bordered"><tbody>';
-$(document).on('click', '#ap-alist-selected-sticky .ap-form-btn', function(event){
+$(document).on('click', '#ap-alist-selected-sticky .ap-form-btn', function(){
   $('.ap-selected-name').each(function(index){
     insertAlList += '<tr><td>'+'<span class="badge rounded-pill bg-light text-dark">'+(index+1)+'</span>'+$(this).text();
-    insertAlList += '<input type="hidden" name="alNo'+(index+1)+'" value="'+$(this).find('.ap-hidden-emNo').val()+'"/>'
+    insertAlList += '<input type="hidden" name="line['+(index)+'].alNo" value="'+$(this).find('.ap-hidden-emNo').val()+'"/>'
+    insertAlList += '<input type="hidden" name="line['+(index)+'].alOrder" value="'+(index+1)+'"/>'
     insertAlList += '</td></tr>'
   })
   insertAlList += '</tbody></table>'
@@ -103,46 +109,3 @@ $(document).on('click', '.ap-form-reset', function(){
   $('#summernote').summernote('reset');
 });
 
-// 메뉴선택 ajax로 불러오기
-let url='';
-$(document).on('click', 'a.ap-link', function(event){ // 링크를 클릭했을 때
-  event.preventDefault();
-  url = $(this).attr('href');
-  // console.log(url); url 확인
-  apChangeView(url);
-});
-
-// 뒤로가기 했을 때 url에 따라 contents 변경
-window.addEventListener('popstate', (e) => { // 뒤로가기 이벤트 발생
-  const apPathname = window.location.pathname
-  //console.log('[popstate]', window.location.pathname);
-  
-  if(apPathname == "/haroo/ap/main") {
-    location.href = apPathname;
-  } else {
-    apChangeView(apPathname);
-  }
-  
-});
-
-// 새로고침시 현재 url 세션에 저장하여 main으로 이동하기
-window.addEventListener('beforeunload', function(event){
-  event.preventDefault();
-  const apRefreshPath = window.location.pathname
-  
-  if(apRefreshPath != '/haroo/ap/main'){
-    sessionStorage.setItem('apRefreshPath', apRefreshPath);
-  }
-});
-
-// url로 이동하고 url 반영
-function apChangeView(url) {
-  $.ajax({
-    url: url,
-    dataType: 'html',
-    success: function(data){
-      $('#ap-contents').html(data);
-      window.history.pushState({}, null, url);
-    }
-  })
-}

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="com.haroo.approval.mapper.ApprovalMapper">
+	<cache />
+ 	<resultMap type="com.haroo.approval.domain.ApprovalVO" id="ApprovalMap">
+    <result property="apNo" column="ap_no"/>
+    <result property="foNo" column="fo_no"/>
+    <result property="emNo" column="em_no"/>
+    <result property="apTitle" column="ap_title"/>
+    <result property="apContent" column="ap_content"/>
+    <result property="apDate" column="ap_date"/>
+    <result property="apPublic" column="ap_public"/>
+    <result property="apStatus" column="ap_status"/>
+    <result property="foKind" column="fo_kind"/>
+    <result property="emName" column="em_name"/>
+    <result property="alStatus" column="al_status"/>
+  </resultMap>
+  
+  <select id="selectTest" resultType="String">
+    select sysdate from dual
+  </select>
+
+	<!-- 결재문서 상신(저장) -->
+	<insert id="insert">
+	  <selectKey keyProperty="apNo" resultType="int" order="BEFORE">
+	    SELECT ap_seq.nextval FROM dual
+	  </selectKey>
+	  INSERT INTO approval (ap_no, fo_no, em_no, ap_title, ap_content, ap_date, ap_public, ap_status)
+	    VALUES(#{apNo}, #{foNo}, #{emNo}, #{apTitle}, #{apContent}, SYSDATE, #{apPublic}, 0)
+	</insert>
+	
+	<!-- 상신 문서 리스트 불러오기  진행:0, 완료: 9, 취소: -1 / 승인: 1, 반려: 2 -->
+	<select id="getReportList" resultType="com.haroo.approval.domain.ApprovalVO" resultMap="ApprovalMap">
+	  SELECT ap_no, ap_title, ap_date, ap_public, ap_status, fo_kind, em_name
+      FROM approval ap JOIN approval_form af
+      ON ap.fo_no = af.fo_no
+      JOIN employee e
+      ON ap.em_no = e.em_no
+      WHERE ap.em_no=#{emNo}
+      <choose>
+        <when test="status == 0">
+          AND ap_status = 0
+        </when>
+        <when test="status == 1">
+          AND ap_status = 1
+        </when>
+        <when test="status == 2">
+          AND ap_status = 2
+        </when>
+        <when test="status == -1">
+          AND ap_status <![CDATA[<]]> 0
+        </when>
+        <otherwise>
+          AND ap_status <![CDATA[>]]> 0
+        </otherwise>
+      </choose>
+      ORDER BY ap_no DESC
+	</select>
+	
+	<!-- 1 문서 내용 불러오기 -->
+	<select id="read" resultType="com.haroo.approval.domain.ApprovalVO" resultMap="ApprovalMap">
+	  SELECT ap_no, ap.fo_no, ap_title, ap_content, ap_date, ap_public, ap_status, fo_kind, em_name
+      FROM approval ap JOIN approval_form af
+      ON ap.fo_no = af.fo_no
+      JOIN employee e
+      ON ap.em_no = e.em_no
+      WHERE ap_no = #{apNo}
+	</select>
+	
+	<!-- 수신문서 불러오기 -->
+	<select id="getReceiveList" resultType="com.haroo.approval.domain.ApprovalVO" resultMap="ApprovalMap">
+	  SELECT ap.ap_no, ap_title, ap_date, ap_public, ap_status, fo_kind, em_name, al_status
+      FROM approval ap JOIN approval_form af
+      ON ap.fo_no = af.fo_no
+      JOIN employee e
+      ON ap.em_no = e.em_no
+      JOIN approval_line al
+      ON ap.ap_no = al.ap_no 
+      WHERE al_no=#{emNo} AND ap.ap_no != -1
+      <choose>
+        <when test="status == 0">
+          AND al_status = 0
+          AND (ap.ap_no IN (SELECT a.ap_no
+                    FROM (SELECT al_order, ap_no FROM approval_line WHERE al_no = #{emNo}) a 
+                    JOIN approval_line b
+                    ON a.ap_no = b.ap_no
+                    WHERE b.al_order <![CDATA[=]]> a.al_order-1 AND b.al_status = 1)
+          OR al_order = 1)
+        </when>
+        <when test="status gt 0">
+          AND al_status <![CDATA[>]]> 0
+        </when>
+      </choose>
+      ORDER BY ap_date DESC
+	</select>
+  
+  <!--상신취소
+  <update id="takebackApproval" parameterType="int">
+    UPDATE approval SET ap_status = -1, ap_public = 1 WHERE ap_no = #{apNo}
+  </update> 
+	
+	 결재 상태 변경
+  <update id="updateApprovalStatus" parameterType="ApprovalLineVO">
+    UPDATE approval SET ap_status = ${alStatus}
+    WHERE ap_no = #{apNo} 
+    <if test="alStatus == 1">
+      AND 1 = ALL(SELECT al_status FROM approval_line WHERE ap_no = #{apNo})
+    </if>
+  </update>
+  -->
+  
+  <!-- 전체문서함 -->
+  <select id="getAllList" resultType="com.haroo.approval.domain.ApprovalVO" resultMap="ApprovalMap">
+    SELECT ap_no, ap_title, ap_date, ap_public, ap_status, fo_kind, em_name
+      FROM approval ap JOIN approval_form af
+      ON ap.fo_no = af.fo_no
+      JOIN employee e
+      ON ap.em_no = e.em_no
+      WHERE ap_status = 1 AND ap_public = 1
+      ORDER BY ap_date DESC
+  </select>
+	
+   
+</mapper>
