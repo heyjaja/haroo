@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.haroo.task.mapper.TaskMapper">
+    <resultMap type="com.haroo.task.domain.TaskVO" id="TaskMap">
+        <result property="id" column="CD_ID"/>
+        <result property="groupId" column="CD_GROUPID"/>
+        <result property="title" column="CD_TITLE"/>
+        <result property="writer" column="CD_WRITER"/>
+        <result property="content" column="CD_CONTENT"/>
+        <result property="start" column="CD_START"/>
+        <result property="end" column="CD_END"/>
+        <result property="allDay" column="CD_ALLDAY"/>
+        <result property="textColor" column="CD_TEXTCOLOR"/>
+        <result property="backgroundColor" column="CD_BACKGROUNDCOLOR"/>
+        <result property="emNo" column="em_no"/>
+    </resultMap>
+
+    <select id="getTaskList" resultMap="TaskMap">
+        SELECT *
+        FROM CALENDAR
+        WHERE em_no = #{emNo}
+    </select>
+
+    <insert id="insertTask">
+        INSERT INTO CALENDAR
+        VALUES(
+                  calendar_seq.nextval,
+                  #{groupId},
+                  #{title},
+                  #{writer},
+                  #{content},
+                  TO_DATE(#{start}, 'YYYY-MM-DD HH24:MI:SS'),
+                  TO_DATE(#{end}, 'YYYY-MM-DD HH24:MI:SS'),
+                  #{allDay},
+                  #{textColor},
+                  #{backgroundColor},
+                  #{emNo}
+              )
+    </insert>
+</mapper>
