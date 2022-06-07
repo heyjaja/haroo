@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.haroo.approval.domain.ApprovalLineVO;
 import com.haroo.approval.domain.ApprovalVO;
 import com.haroo.approval.domain.EmpVO;
 import com.haroo.approval.service.ApprovalService;
@@ -177,6 +178,26 @@ public class ApprovalController {
     model.addAttribute("list", service.getAllList());
     
     return "/approval/approval-list";
+  }
+  
+  @PostMapping("/process/{apNo}")
+  public String postProcess(int apNo, int foNo) {
+    
+    logger.info("takeback: " +apNo);
+    
+    service.takeback(apNo, foNo);
+    
+    return "redirect:/approval/process";
+  }
+  
+  @PostMapping("/wait/{apNo}")
+  public String postWait(ApprovalLineVO apLine, int foNo) {
+    
+    logger.info("sign: " +apLine.getApNo());
+    
+    service.sign(apLine, foNo);
+    
+    return "redirect:/approval/wait";
   }
   
   

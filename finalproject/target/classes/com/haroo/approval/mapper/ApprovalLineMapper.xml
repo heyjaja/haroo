@@ -50,13 +50,12 @@
         order by al_order
 	</select>
 	
-	<!-- 결재하기
-	<update id="approvalReport" parameterType="ApprovalLineVO">
+	 <!-- 결재하기 -->
+	<update id="sign">
 	  UPDATE approval_line 
 	    SET al_status = #{alStatus}, al_date = sysdate, al_comment = #{alComment}
 	    WHERE ap_no = #{apNo} AND al_no = #{alNo}
 	</update>
-	-->
   
 	<!-- 결재선 사원 선택 리스트 불러오기 -->
 	<select id="getEmpList" resultType="com.haroo.approval.domain.EmpVO" resultMap="empMap">

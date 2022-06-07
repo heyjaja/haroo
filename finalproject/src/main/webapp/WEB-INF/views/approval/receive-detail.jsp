@@ -127,6 +127,7 @@
                         <form action="/approval/wait/${ap.apNo }" method="post">
                           <input type="hidden" name="apNo" value="${ap.apNo }" />
                           <input type="hidden" name="alNo" value="${employeeVO.emNo }" />
+                          <input type="hidden" name="foNo" value="${ap.foNo }" />
                           <div class="input-group input-group-sm">
                             <input type="radio" class="btn-check" id="al-option1" name="alStatus" value="1" autocomplete="off" checked>
                             <label class="btn btn-outline-success btn-sm" for="al-option1">승인</label>

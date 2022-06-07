@@ -205,6 +205,14 @@ public class ApprovalServiceTests {
   }
   
   @Test
+  public void testTakeback() {
+    
+    service.takeback(177, 3);
+    service.takeback(176, 1);
+  }
+  
+  
+  @Test
   public void testGetEmpList() {
     List<EmpVO> list = new ArrayList<EmpVO>();
     list = service.getEmpList();

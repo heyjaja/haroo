@@ -2,6 +2,7 @@ package com.haroo.approval.service;
 
 import java.util.List;
 
+import com.haroo.approval.domain.ApprovalLineVO;
 import com.haroo.approval.domain.ApprovalVO;
 import com.haroo.approval.domain.EmpVO;
 
@@ -12,6 +13,8 @@ public interface ApprovalService {
   public List<ApprovalVO> getReceiveList(int emNo, int status);
   public List<ApprovalVO> getAllList();
   public ApprovalVO readApproval(int apNo);
+  public void sign(ApprovalLineVO apLine, int foNo);
+  public void takeback(int apNo, int foNo);
   public List<EmpVO> getEmpList();
   
 }

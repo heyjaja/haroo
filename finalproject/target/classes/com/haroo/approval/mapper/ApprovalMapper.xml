@@ -98,20 +98,19 @@
       ORDER BY ap_date DESC
 	</select>
   
-  <!--상신취소
-  <update id="takebackApproval" parameterType="int">
-    UPDATE approval SET ap_status = -1, ap_public = 1 WHERE ap_no = #{apNo}
+  <!-- 상신취소 -->
+  <update id="takeback" parameterType="int">
+    UPDATE approval SET ap_status = -1 WHERE ap_no = #{apNo}
   </update> 
 	
-	 결재 상태 변경
-  <update id="updateApprovalStatus" parameterType="ApprovalLineVO">
+	 <!-- 결재 상태 변경 -->
+  <update id="updateStatus">
     UPDATE approval SET ap_status = ${alStatus}
     WHERE ap_no = #{apNo} 
     <if test="alStatus == 1">
       AND 1 = ALL(SELECT al_status FROM approval_line WHERE ap_no = #{apNo})
     </if>
   </update>
-  -->
   
   <!-- 전체문서함 -->
   <select id="getAllList" resultType="com.haroo.approval.domain.ApprovalVO" resultMap="ApprovalMap">

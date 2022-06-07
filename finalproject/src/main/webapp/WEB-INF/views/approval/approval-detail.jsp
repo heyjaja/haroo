@@ -106,10 +106,11 @@
         <c:if test="${ap.apStatus == 0 }">
           <form action="/approval/process/${ap.apNo }" method="post">
             <input type="hidden" name="apNo" value="${ap.apNo }" />
+            <input type="hidden" name="foNo" value="${ap.foNo }" />
             <button class="btn btn-outline-secondary btn-sm">상신취소</button>
           </form>
         </c:if>
-        <c:if test="${ap.apStatus == -1 }">
+        <c:if test="${ap.apStatus == -1 || ap.apStatus == 2 }">
           <form action="/approval/re/${ap.apNo }" method="post">
             <input type="hidden" name="approval" value="${ap }" />
             <button class="btn btn-outline-secondary btn-sm">재상신</button>

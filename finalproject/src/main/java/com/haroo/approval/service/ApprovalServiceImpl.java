@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.haroo.approval.domain.ApprovalLineVO;
 import com.haroo.approval.domain.ApprovalVO;
 import com.haroo.approval.domain.EmpVO;
 import com.haroo.approval.domain.LeaveVO;
@@ -73,7 +74,7 @@ public class ApprovalServiceImpl implements ApprovalService {
   }
   
   @Override
-  public List<ApprovalVO> getReportList(int emNo, int status) {
+  public List<ApprovalVO> getReportList(int emNo, int status) { // 상신문서
     
     logger.info("get report list...............status: " + status);
     
@@ -81,7 +82,7 @@ public class ApprovalServiceImpl implements ApprovalService {
   }
 
   @Override
-  public List<ApprovalVO> getReceiveList(int emNo, int status) {
+  public List<ApprovalVO> getReceiveList(int emNo, int status) { // 수신문서
     
     logger.info("get receive list...............status: " + status);
     
@@ -89,7 +90,7 @@ public class ApprovalServiceImpl implements ApprovalService {
   }
   
   @Override
-  public List<ApprovalVO> getAllList() {
+  public List<ApprovalVO> getAllList() { // 전체문서
     
     logger.info("get All list...............");
     
@@ -97,7 +98,7 @@ public class ApprovalServiceImpl implements ApprovalService {
   }
   
   @Override
-  public ApprovalVO readApproval(int apNo) {
+  public ApprovalVO readApproval(int apNo) { // 읽기
     
     logger.info("read approval...............");
     
@@ -119,11 +120,47 @@ public class ApprovalServiceImpl implements ApprovalService {
 
 
   @Override
-  public List<EmpVO> getEmpList() {
+  public List<EmpVO> getEmpList() { // 사원목록
     
     logger.info("get employee list...............");
     
     return lineMapper.getEmpList();
+  }
+
+  @Transactional
+  @Override
+  public void sign(ApprovalLineVO apLine, int foNo) { // 결재하기
+    
+    logger.info("sign...............");
+    
+    lineMapper.sign(apLine);
+    mapper.updateStatus(apLine);
+    
+    int apNo = apLine.getApNo();
+    
+    ApprovalVO approval = mapper.read(apNo);
+    
+    int status = approval.getApStatus();
+    
+    if(foNo == 3) {
+      leaveMapper.updateStatus(apNo, status);
+    }
+    
+    
+  }
+
+  @Transactional
+  @Override
+  public void takeback(int apNo, int foNo) { // 상신취소
+    
+    logger.info("takeback..............." + apNo);
+    
+    mapper.takeback(apNo);
+    
+    if(foNo == 3) {
+      leaveMapper.takeback(apNo);
+    }
+    
   }
 
 
