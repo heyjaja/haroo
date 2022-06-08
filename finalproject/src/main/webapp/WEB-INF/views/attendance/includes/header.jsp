@@ -17,6 +17,12 @@
             rel="stylesheet"
             integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
             crossorigin="anonymous">
+            
+   	<!-- jquery CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- 근태관리 js -->
+  <script type="text/javascript" src="/resources/js/attendance.js"></script>
 
 </head>
 
