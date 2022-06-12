@@ -20,6 +20,7 @@ public class ApprovalVO implements Serializable {
   private LeaveVO leave;
   private List<ExpenseListVO> expense;
   private List<ApprovalLineVO> line;
+  private List<ApprovalAttachVO> attachList;
   
   private String emName;
   private String foKind;

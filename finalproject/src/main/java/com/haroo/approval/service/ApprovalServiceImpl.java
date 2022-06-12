@@ -8,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.haroo.approval.domain.ApprovalAttachVO;
 import com.haroo.approval.domain.ApprovalLineVO;
 import com.haroo.approval.domain.ApprovalVO;
 import com.haroo.approval.domain.EmpVO;
 import com.haroo.approval.domain.LeaveVO;
+import com.haroo.approval.mapper.ApprovalAttachMapper;
 import com.haroo.approval.mapper.ApprovalLineMapper;
 import com.haroo.approval.mapper.ApprovalMapper;
 import com.haroo.approval.mapper.ExpenseListMapper;
@@ -34,6 +36,9 @@ public class ApprovalServiceImpl implements ApprovalService {
   
   @Autowired
   private ExpenseListMapper expenseMapper;
+  
+  @Autowired
+  private ApprovalAttachMapper attachMapper;
 
   @Transactional
   @Override
@@ -70,6 +75,16 @@ public class ApprovalServiceImpl implements ApprovalService {
       leaveMapper.insert(leave);
     }
     
+    List<ApprovalAttachVO> attachs = approval.getAttachList();
+    
+    if(attachs == null || attachs.size() <= 0) {
+      return;
+    }
+    
+    attachs.forEach(attach -> {
+      attach.setApNo(apNo);
+      attachMapper.insert(attach);
+    });
     
   }
   
@@ -113,6 +128,8 @@ public class ApprovalServiceImpl implements ApprovalService {
       approval.setLeave(leaveMapper.read(apNo));
     }
     
+    approval.setAttachList(attachMapper.findByApNo(apNo));
+    
     
     return approval;
   }
@@ -129,7 +146,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 
   @Transactional
   @Override
-  public void sign(ApprovalLineVO apLine, int foNo) { // 결재하기
+  public boolean sign(ApprovalLineVO apLine, int foNo) { // 결재하기
     
     logger.info("sign...............");
     
@@ -146,21 +163,35 @@ public class ApprovalServiceImpl implements ApprovalService {
       leaveMapper.updateStatus(apNo, status);
     }
     
+    if(status == 2) {
+      return attachMapper.deleteAll(apNo) > 0;
+    }
     
+    return false;
   }
 
   @Transactional
   @Override
-  public void takeback(int apNo, int foNo) { // 상신취소
+  public boolean takeback(int apNo, int foNo) { // 상신취소
     
     logger.info("takeback..............." + apNo);
     
-    mapper.takeback(apNo);
+    attachMapper.deleteAll(apNo);
     
     if(foNo == 3) {
       leaveMapper.takeback(apNo);
     }
     
+    return mapper.takeback(apNo) == 1;
+    
+  }
+
+  @Override
+  public List<ApprovalAttachVO> getAttachList(int apNo) {
+    
+    logger.info("get attach List by apNo......"+apNo);
+    
+    return attachMapper.findByApNo(apNo);
   }
 
 

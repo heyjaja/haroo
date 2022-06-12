@@ -99,8 +99,29 @@
             </c:when>
           </c:choose>
         </tr>
+        <c:if test="${ap.attachList.size() > 0 }">
+        <tr>
+          <th class="align-middle" scope="row">첨부파일</th>
+          <td>
+            <div id="ap-upload-file">
+              <ul class="list-group">
+                <c:forEach var="attach" items="${ap.attachList }">
+                  <li class="list-group-item ap-file" data-path="${attach.path }" data-uuid="${attach.aaNo }" 
+                    data-fname="${attach.fname }">${attach.fname }
+                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+                      <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                      <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                    </svg>
+                    </li>
+                </c:forEach>
+              </ul>
+           </div>
+          </td>
+        </tr>
+        </c:if>
       </tbody>
     </table>
+
 
       <div class="text-end">
         <c:if test="${ap.apStatus == 0 }">
@@ -110,11 +131,10 @@
             <button class="btn btn-outline-secondary btn-sm">상신취소</button>
           </form>
         </c:if>
-        <c:if test="${ap.apStatus == -1 || ap.apStatus == 2 }">
-          <form action="/approval/re/${ap.apNo }" method="post">
-            <input type="hidden" name="approval" value="${ap }" />
+        <c:if test="${(ap.foNo != 2 && ap.foNo != 3) && (ap.apStatus == -1 || ap.apStatus == 2) }">
+          <a href="/approval/re/${ap.apNo }">
             <button class="btn btn-outline-secondary btn-sm">재상신</button>
-          </form>
+          </a>
         </c:if>
        </div>
 

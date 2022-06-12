@@ -83,7 +83,7 @@
       </table> 
       <div class="text-end">
         <div class="btn-group-sm" role="group">
-          <button class="btn btn-outline-secondary" type="submit">상신하기</button>
+          <button class="btn btn-outline-secondary ap-form-submit" type="submit">상신하기</button>
           <button class="btn btn-outline-secondary ap-form-reset" type="reset">다시작성</button>
         </div>
       </div>

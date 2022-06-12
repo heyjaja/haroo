@@ -109,3 +109,140 @@ $(document).on('click', '.ap-form-reset', function(){
   $('#summernote').summernote('reset');
 });
 
+// 첨부파일 처리
+$(document).ready(function(e) {
+  
+  
+  
+  let formObj = $(".ap-form");
+  
+  $('.ap-form-submit').on("click", function(e) {
+    
+    e.preventDefault();
+    
+    console.log("submit clicked");
+    console.log(formObj);
+    
+    let str = "";
+    
+    $('#ap-upload-file ul li').each(function(i, obj) {
+      
+      const jobj = $(obj);
+      console.dir(jobj);
+      
+      str += "<input type='hidden' name='attachList["+i+"].fname' value='"+jobj.data("fname")+"'/>";
+      str += "<input type='hidden' name='attachList["+i+"].aaNo' value='"+jobj.data("uuid")+"'/>";
+      str += "<input type='hidden' name='attachList["+i+"].path' value='"+jobj.data("path")+"'/>";
+    });//end each
+    
+    formObj.append(str).submit();
+  });//end submit click event
+  
+  const regex = new RegExp("(.*?)\.(exe|sh|zip|alz)$");
+  const maxSize = 5242880; // 5MB
+  
+  function checkExtension(fileName, fileSize) {
+    if(fileSize >= maxSize) {
+      alert("파일 사이즈 초과");
+      return false;
+    }
+    
+    if(regex.test(fileName)) {
+      alert("해당 종류의 파일은 업로드할 수 없습니다.");
+      return false;
+    }
+    
+    return true;
+  }// end checkExtension
+  
+  $(".ap-file").change(function(e) {
+    
+    const formData = new FormData();
+    
+    const inputFile = $(this);
+    
+    const files = inputFile[0].files;
+    
+    for(let i=0; i<files.length; i++) {
+      
+      if(!checkExtension(files[i].name, files[i].size)) {
+        return false;
+      }
+      
+      formData.append("uploadFile", files[i]);
+    }
+    
+    console.log(files);
+    
+    $.ajax({
+      url: '/approval/file',
+      processData: false,
+      contentType: false,
+      data: formData,
+      type: 'POST',
+      dataType: 'json',
+      success: function(result) {
+        console.log(result);
+        
+        showUploadedFile(result);
+        
+      }
+      
+    });// end ajax
+  });// end file change event
+  
+  // 파일 목록/다운로드
+  const uploadResult = $('#ap-upload-file ul');
+  
+  function showUploadedFile(uploadResultArr) {
+    let str = "";
+    
+    $(uploadResultArr).each(function(i, obj) {
+      
+      const fileCallPath = encodeURIComponent(obj.path + "/" + obj.aaNo + "_" + obj.fname);
+      
+      str += '<li class="list-group-item" data-path="'+obj.path+'" data-uuid="'+obj.aaNo+'"'
+        + 'data-fname="'+obj.fname
+        + '"><div><a class="ap-list-title" href="/approval/file?fname='
+        + fileCallPath + '">' 
+        + obj.fname + "</a>" 
+        + "<span class='badge rounded-pill bg-light text-dark' data-file=\'"
+        +fileCallPath+"\' data-type='file'>X</span>"+"</div></li>";
+    });
+    
+    uploadResult.append(str);
+  }
+  
+  // 파일 삭제
+  $("#ap-upload-file").on("click", "span.badge", function(e){
+    
+    const targetFile = $(this).data("file");
+    console.log(targetFile);
+    
+    const targetLi = $(this).closest("li");
+    
+    $.ajax({
+      url: '/approval/file/delete',
+      data: {fname: targetFile},
+      dataType: 'text',
+      type: 'POST',
+      success: function(result) {
+        alert(result);
+        targetLi.remove();
+      }
+    });//end ajax
+  });//end x click
+  
+  // 읽기: 파일 다운로드
+  $("li.ap-file").on("click", function(){
+    
+    const fileCallPath = encodeURIComponent($(this).data("path") 
+    + "/" + $(this).data("uuid") + "_" + $(this).data("fname"));
+    
+    location.href="/approval/file?fname="+fileCallPath;
+    
+  });
+  
+  
+  
+});
