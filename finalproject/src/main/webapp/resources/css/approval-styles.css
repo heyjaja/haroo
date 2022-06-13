@@ -137,3 +137,14 @@ li.ap-file {
 #ap-upload-file li {
   font-size: 0.9em;
 }
+
+.ap-pagination .page-link {
+  color: gray;
+}
+
+.ap-pagination .page-item.active .page-link {
+    z-index: 3;
+    color: #fff;
+    background-color: gray !important;
+    border-color: white;
+}

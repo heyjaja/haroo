@@ -112,8 +112,6 @@ $(document).on('click', '.ap-form-reset', function(){
 // 첨부파일 처리
 $(document).ready(function(e) {
   
-  
-  
   let formObj = $(".ap-form");
   
   $('.ap-form-submit').on("click", function(e) {
@@ -242,7 +240,30 @@ $(document).ready(function(e) {
     location.href="/approval/file?fname="+fileCallPath;
     
   });
-  
-  
+
   
 });
+
+// paging
+$(document).ready(function() {
+  
+  const apActionForm = $("#ap-action-form");
+  $(".pagination .page-link").on("click", function(e) {
+    e.preventDefault();
+    console.log("click");
+    
+    apActionForm.find("input[name='page']").val($(this).attr("href"));
+    apActionForm.submit();
+    
+  });
+  
+  $(".ap-status input[name='status']").on("click", function(e){
+    
+    console.log("change status");
+    apActionForm.find("input[name='status']").val($(this).val());
+    apActionForm.find("input[name='page']").val("1");
+    $(this).attr('checked', true);
+    apActionForm.submit();
+  })
+})
+

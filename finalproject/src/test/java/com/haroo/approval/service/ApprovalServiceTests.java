@@ -11,6 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.haroo.approval.domain.ApprovalLineVO;
 import com.haroo.approval.domain.ApprovalVO;
+import com.haroo.approval.domain.Criteria;
 import com.haroo.approval.domain.ExpenseListVO;
 import com.haroo.approval.domain.LeaveVO;
 import com.haroo.approval.domain.EmpVO;
@@ -218,6 +219,18 @@ public class ApprovalServiceTests {
     list = service.getEmpList();
     
     list.forEach(emp -> log.info(emp));
+  }
+  
+  @Test
+  public void testGetPagingList() {
+    
+    log.info("get list with paging");
+    
+    Criteria cri = new Criteria(3, 10);
+    
+    List<ApprovalVO> list = service.getReportList(cri, 45424411, 0);
+    
+    list.forEach(ap -> log.info(ap));
   }
  
   

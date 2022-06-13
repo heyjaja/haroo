@@ -35,7 +35,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.haroo.approval.domain.ApprovalAttachVO;
 import com.haroo.approval.domain.ApprovalLineVO;
 import com.haroo.approval.domain.ApprovalVO;
+import com.haroo.approval.domain.Criteria;
 import com.haroo.approval.domain.EmpVO;
+import com.haroo.approval.domain.PageDTO;
 import com.haroo.approval.service.ApprovalService;
 import com.haroo.controller.HomeController;
 
@@ -98,40 +100,56 @@ public class ApprovalController {
   }
   
   @GetMapping("/process")
-  public String processList(Model model) { // 상신-진행
+  public String processList(Criteria cri, Model model) { // 상신-진행
     
     logger.info("get Process List");
     
     int emNo = 45424411;
     int status = 0;
     
-    model.addAttribute("list", service.getReportList(emNo, status));
+    model.addAttribute("list", service.getReportList(cri, emNo, status));
+    
+    int total = service.getReportTotal(cri, emNo, status);
+    
+    model.addAttribute("pageMaker", new PageDTO(cri, total));
     
     return "/approval/approval-list";
   }
   
   @GetMapping("/done")
-  public String doneList(Model model) { // 상신-완료
+  public String doneList(Criteria cri, Integer status, Model model) { // 상신-완료
     
     logger.info("get done List");
     
     int emNo = 45424411;
-    int status = 9;
     
-    model.addAttribute("list", service.getReportList(emNo, status));
+    if(status == null) {
+      status = 9;
+    }
+    
+    model.addAttribute("list", service.getReportList(cri, emNo, status));
+    
+    int total = service.getReportTotal(cri, emNo, status);
+    
+    model.addAttribute("pageMaker", new PageDTO(cri, total));
+    model.addAttribute("status", status);
     
     return "/approval/approval-list";
   }
   
   @GetMapping("/takeback")
-  public String takebacksList(Model model) { // 상신-취소
+  public String takebacksList(Criteria cri, Model model) { // 상신-취소
     
     logger.info("get takeback List");
     
     int emNo = 45424411;
     int status = -1;
     
-    model.addAttribute("list", service.getReportList(emNo, status));
+    model.addAttribute("list", service.getReportList(cri, emNo, status));
+    
+    int total = service.getReportTotal(cri, emNo, status);
+    
+    model.addAttribute("pageMaker", new PageDTO(cri, total));
     
     return "/approval/approval-list";
   }
@@ -151,28 +169,36 @@ public class ApprovalController {
   }
   
   @GetMapping("/wait")
-  public String waitList(Model model) { // 수신-대기
+  public String waitList(Criteria cri, Model model) { // 수신-대기
     
     logger.info("get wait list");
     
     int emNo = 45424411;
     int status = 0;
     
-    model.addAttribute("list", service.getReceiveList(emNo, status));
+    model.addAttribute("list", service.getReceiveList(cri, emNo, status));
+    
+    int total = service.getReceiveTotal(cri, emNo, status);
+    
+    model.addAttribute("pageMaker", new PageDTO(cri, total));
     
     return "/approval/receive-list";
     
   }
   
   @GetMapping("/sign")
-  public String signList(Model model) { // 수신-완료
+  public String signList(Criteria cri, Model model) { // 수신-완료
     
     logger.info("get wait list");
     
     int emNo = 45424411;
     int status = 1;
     
-    model.addAttribute("list", service.getReceiveList(emNo, status));
+    model.addAttribute("list", service.getReceiveList(cri, emNo, status));
+    
+    int total = service.getReceiveTotal(cri, emNo, status);
+    
+    model.addAttribute("pageMaker", new PageDTO(cri, total)); 
     
     return "/approval/receive-list";
     
@@ -192,11 +218,15 @@ public class ApprovalController {
   
   
   @GetMapping("/all")
-  public String allList(Model model) { // 전체 문서
+  public String allList(Criteria cri, Model model) { // 전체 문서
     
     logger.info("get all list");
     
-    model.addAttribute("list", service.getAllList());
+    model.addAttribute("list", service.getAllList(cri));
+    
+    int total = service.getAllTotal(cri);
+    
+    model.addAttribute("pageMaker", new PageDTO(cri, total)); 
     
     return "/approval/approval-list";
   }

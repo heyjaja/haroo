@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.haroo.approval.domain.ApprovalAttachVO;
 import com.haroo.approval.domain.ApprovalLineVO;
 import com.haroo.approval.domain.ApprovalVO;
+import com.haroo.approval.domain.Criteria;
 import com.haroo.approval.domain.EmpVO;
 import com.haroo.approval.domain.LeaveVO;
 import com.haroo.approval.mapper.ApprovalAttachMapper;
@@ -192,6 +193,55 @@ public class ApprovalServiceImpl implements ApprovalService {
     logger.info("get attach List by apNo......"+apNo);
     
     return attachMapper.findByApNo(apNo);
+  }
+
+  @Override
+  public List<ApprovalVO> getReportList(Criteria cri, int emNo, int status) {
+    
+    logger.info("get Report List with Paging......" + cri);
+    
+    return mapper.getReportListWithPaging(cri, emNo, status);
+  }
+
+  @Override
+  public int getReportTotal(Criteria cri, int emNo, int status) {
+    
+    logger.info("get Report Count......");
+    
+    return mapper.getReportCount(cri, emNo, status);
+        
+  }
+
+  @Override
+  public int getReceiveTotal(Criteria cri, int emNo, int status) {
+    
+    logger.info("get Receive Count......");
+    
+    return mapper.getReceiveCount(cri, emNo, status);
+  }
+
+  @Override
+  public int getAllTotal(Criteria cri) {
+    
+    logger.info("get All Count......");
+    
+    return mapper.getAllCount(cri);
+  }
+
+  @Override
+  public List<ApprovalVO> getReceiveList(Criteria cri, int emNo, int status) {
+    
+    logger.info("get Receive List with Paging......" + cri);
+    
+    return mapper.getReceiveListWithPaging(cri, emNo, status);
+  }
+
+  @Override
+  public List<ApprovalVO> getAllList(Criteria cri) {
+    
+    logger.info("get All List with Paging......" + cri);
+    
+    return mapper.getAllListWithPaging(cri);
   }
 
 
