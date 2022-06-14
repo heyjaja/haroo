@@ -128,6 +128,7 @@
       <input type="text" class="form-control form-control-sm" name="keyword"/>
       <input type='hidden' name='page' value='${pageMaker.cri.page }' />
       <input type='hidden' name='amount' value='${pageMaker.cri.amount }' />
+      <input type='hidden' name='status' value='${status }' />
     </div>
     <div class="col-auto">
       <button class="btn btn-outline-secondary btn-sm">검색</button>

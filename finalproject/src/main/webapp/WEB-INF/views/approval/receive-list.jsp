@@ -11,17 +11,9 @@
   <c:choose>
     <c:when test="${fn:contains(url, 'wait')  }">
       <h3>미결재 문서</h3>
-      <form id='ap-action-form' action="/approval/wait" method='get'>
-        <input type='hidden' name='page' value = '${pageMaker.cri.page}'/>
-        <input type='hidden' name='amount' value='${pageMaker.cri.amount }' />
-      </form>
     </c:when>
     <c:when test="${fn:contains(url, 'sign') }">
       <h3>결재 문서</h3>
-      <form id='ap-action-form' action="/approval/sign" method='get'>
-        <input type='hidden' name='page' value = '${pageMaker.cri.page}'/>
-        <input type='hidden' name='amount' value='${pageMaker.cri.amount }' />
-      </form>
     </c:when>
   </c:choose>
   
@@ -96,22 +88,32 @@
   </nav>
   <!-- end pagination -->
   
-  <form class="row g-3">
+  <form class="row g-3" id="ap-search-form" action="" method='get'>
     <div class="col-auto">
-      <select class="form-select form-select-sm" aria-label="search">
-        <option selected>제목</option>
-        <option value="1">내용</option>
-        <option value="2">제목+내용</option>
-        <option value="3">기안자</option>
-        <option value="4">양식</option>
+      <select class="form-select form-select-sm" aria-label="search" name="type">
+        <option value="T" selected>제목</option>
+        <option value="C">내용</option>
+        <option value="TC">제목+내용</option>
+        <option value="W">기안자</option>
+        <option value="F">양식</option>
       </select>
     </div>
     <div class="col-auto">
       <input type="text" class="form-control form-control-sm" name="keyword"/>
+      <input type='hidden' name='page' value='${pageMaker.cri.page }' />
+      <input type='hidden' name='amount' value='${pageMaker.cri.amount }' />
     </div>
     <div class="col-auto">
-      <button class="btn btn-outline-secondary btn-sm" type="button">검색</button>
+      <button class="btn btn-outline-secondary btn-sm">검색</button>
     </div>
+  </form>
+  
+  <form id='ap-action-form' action="" method='get'>
+    <input type='hidden' name='page' value = '${pageMaker.cri.page}'/>
+    <input type='hidden' name='amount' value='${pageMaker.cri.amount }' />
+    <input type='hidden' name='type' value='${pageMaker.cri.type }' />
+    <input type='hidden' name='keyword' value='${pageMaker.cri.keyword }' />
+    
   </form>
   
 </div>

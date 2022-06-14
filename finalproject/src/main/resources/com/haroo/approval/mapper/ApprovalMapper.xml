@@ -214,6 +214,7 @@
           AND al_status <![CDATA[>]]> 0
         </when>
       </choose>
+      <include refid="criteria"></include>
         AND rownum <![CDATA[<=]]> #{cri.page} * #{cri.amount}
       )
       WHERE rn <![CDATA[>]]> (#{cri.page} -1) * #{cri.amount}
@@ -243,6 +244,7 @@
           AND al_status <![CDATA[>]]> 0
         </when>
       </choose>
+      <include refid="criteria"></include>
   </select>
   
   <!-- 상신취소 -->
@@ -281,9 +283,10 @@
       JOIN employee e
       ON ap.em_no = e.em_no
       WHERE ap_status = 1 AND ap_public = 1
-        AND rownum <![CDATA[<=]]> #{page} * #{amount}
+        <include refid="criteria"></include>
+        AND rownum <![CDATA[<=]]> #{cri.page} * #{cri.amount}
       )
-      WHERE rn <![CDATA[>]]> (#{page} -1) * #{amount}
+      WHERE rn <![CDATA[>]]> (#{cri.page} -1) * #{cri.amount}
   </select>
   
   <!-- 전체문서함 -->
@@ -294,6 +297,7 @@
       JOIN employee e
       ON ap.em_no = e.em_no
       WHERE ap_status = 1 AND ap_public = 1
+      <include refid="criteria"></include>
   </select>
 	
 

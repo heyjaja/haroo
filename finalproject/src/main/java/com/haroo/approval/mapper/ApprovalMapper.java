@@ -27,7 +27,7 @@ public interface ApprovalMapper {
   
   public List<ApprovalVO> getAllList(); // 전체문서 목록
   
-  public List<ApprovalVO> getAllListWithPaging(Criteria cri); // 전체문서 페이징
+  public List<ApprovalVO> getAllListWithPaging(@Param("cri") Criteria cri); // 전체문서 페이징
   
   public ApprovalVO read(int apNo); // 읽기
   
@@ -41,6 +41,6 @@ public interface ApprovalMapper {
   public int getReceiveCount(@Param("cri") Criteria cri, 
       @Param("emNo") int emNo, @Param("status") int status); // 수신문서 글개수
   
-  public int getAllCount(Criteria cri); // 전체문서 글개수
+  public int getAllCount(@Param("cri") Criteria cri); // 전체문서 글개수
   
 }
