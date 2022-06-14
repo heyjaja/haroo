@@ -1,11 +1,11 @@
-<%@ page import="java.util.List" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset='utf-8'/>
     <!-- 화면 해상도에 따라 글자 크기 대응(모바일 대응) -->
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     <!-- jquery CDN -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- fullcalendar CDN -->
@@ -22,6 +22,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
+
+    <!--kakao map -->
+    <script type="text/javascript"
+            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c2c6dbb9e3f49d3aced5b89be4b4eabb&libraries=services"></script>
+    <link rel="stylesheet" href="/resources/css/kakao-map.css"/>
+
     <style>
         /* body 스타일 */
         html, body {
@@ -29,17 +35,8 @@
             font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
             font-size: 14px;
         }
-
-        /* 캘린더 위의 해더 스타일(날짜가 있는 부분) */
-        .fc-header-toolbar {
-            padding-top: 1em;
-            padding-left: 1em;
-            padding-right: 1em;
-        }
-
-        .fc-time {
-            display: none;
-        }
+        .fc-sat { color:blue; }
+        .fc-sun { color:red;  }
     </style>
 </head>
 <body style="padding:30px;">
@@ -156,11 +153,9 @@
     </ul>
 </nav>
 
-
-
 <!--일정 추가 Modal -->
 <div id="bookingModal" class="modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" style="width:80%;height:100%;border-radius:0;" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">일정</h5>
@@ -169,8 +164,26 @@
                 </button>
             </div>
             <div class="modal-body">
-                일정 명 : <input type="text" class="form-control" id="title"><br>
-                일정 내용 : <input type="text" class="form-control" id="content"><br>
+                일정 명 : <input type="text" class="form-control" id="title" value=""><br>
+                일정 내용 : <input type="text" class="form-control" id="content" value=""><br>
+                <input type="button" id="markBtn" onclick="showMarker()" value="저장 위치 표시"><br>
+                일정 장소 :
+                <div class="map_wrap">
+                    <div id="map" style="width:100%;height:100%;position:center;overflow:hidden;"></div>
+                    <div id="menu_wrap" class="bg_white">
+                        <div class="option">
+                            <div>
+                                <form onsubmit="searchPlaces(); return false;">
+                                    키워드 : <input type="text" value="구일역" id="keyword" size="15">
+                                    <button type="submit">검색하기</button>
+                                </form>
+                            </div>
+                        </div>
+                        <hr>
+                        <ul id="placesList"></ul>
+                        <div id="pagination"></div>
+                    </div>
+                </div>
                 <div class="modal-footer">
                     <button type="button" id="addBtn" class="btn btn-primary">추가하기</button>
                     <!--없는 일정 클릭시 수정하기 안 보이기-->
@@ -184,16 +197,37 @@
     </div>
 </div>
 
+<!-- 확인창 Modal -->
+<div id="checkModal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Check Status</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>완료되었습니다 :)</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="closeCheckModal" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <!-- calendar 태그 -->
 <div id='calendar-container'>
     <div id='calendar'></div>
 </div>
 <script>
+    var myLat = 33.450701;
+    var myLng = 126.570667;
+
     document.addEventListener('DOMContentLoaded', function () {
         let calendarEl = document.getElementById('calendar'); // new FullCalendar.Calendar(대상 DOM객체, {속성:속성값, 속성2:속성값2..})
         let calendar = new FullCalendar.Calendar(calendarEl, {
-            height: '700px', // calendar 높이 설정
-            width : '700px',
+            contentHeight: 600,
             expandRows: true, // 화면에 맞게 높이 재설정
             locale: 'ko',
             headerToolbar: {
@@ -205,15 +239,32 @@
             selectable: true,
             selectMirror: true, // 이벤트명 : function(){} : 각 날짜에 대한 이벤트를 통해 처리할 내용..
 
+            //없는 일정 부를 때
             select: function (arg) {
+                //모달 띄우기
                 $('#bookingModal').modal('toggle');
 
+                //내용 비우기
+                $('input[id=title]').attr("value", "");
+                $('input[id=content]').attr("value", "");
+
+                //버튼 할당 방식
                 $('#addBtn').show();
                 $('#modBtn').hide();
                 $('#delBtn').hide();
+                $('#markBtn').hide();
 
+                myLat = 33.450701;
+                myLng = 126.570667;
+
+                console.log("위도 : " + myLat + " 경도 : " + myLng);
+
+                map.relayout();
+
+                //추가하기 버튼을 눌렀을 시
                 $('#addBtn').off().on('click', function () {
                     let title = $('#title').val();
+                    let content = $('#content').val();
 
                     if (title) {
                         //달력 출력
@@ -222,8 +273,8 @@
                             start: arg.start,
                             end: arg.end,
                             allDay: arg.allDay,
-                            backgroundColor: "navy",
-                            textColor: "yellow"
+                            backgroundColor: "#B464EB",
+                            textColor: "#000000"
                         })
                         //일정 추가[DB에 저장]
                         //하루면 YYYY/MM/DD hh:mm
@@ -237,18 +288,34 @@
                             end = moment(arg.end).format('YYYY/MM/DD hh:mm');
                         }
 
+                        let data = {
+                            "title": title,
+                            "start": start,
+                            "end": end,
+                            "allDay": arg.allDay,
+                            "content": content,
+                            "backgroundColor": "#B464EB",
+                            "textColor": "#000000",
+                            "writer": '${employee.em_name}',
+                            "emNo": '${employee.em_no}',
+                            "location": $('#keyword').val(),
+                            "latitude": (latlng.getLat()).toString(),
+                            "longitude": (latlng.getLng()).toString()
+                        };
+
                         $.ajax({
                             url: '/haroo/task/new',
                             method: 'POST',
-                            dataType: 'json',
-                            data: {
-                                "title": title,
-                                "start": start,
-                                "end": end,
-                                "allDay": arg.allDay,
-                                "backgroundColor": "navy",
-                                "textColor": "yellow",
-                                "em_no": '${employee.em_no}',
+                            contentType: 'application/json; charset=utf-8',
+                            dataType: 'text',
+                            data: JSON.stringify(data),
+                            success: function (result) {
+                                if (result === "success") {
+                                    $('#checkModal').modal('show');
+                                }
+                            },
+                            error: function (error) {
+                                console.log(error);
                             }
                         })
 
@@ -258,19 +325,41 @@
                     }
                     $('#bookingModal').modal('hide');
                 })
-                calendar.unselect()
+                calendar.unselect();
             },
 
-
-            eventClick: function (arg) { // 있는 일정 클릭시, 수정, 삭제
+            // 있는 일정 클릭시, 수정, 삭제
+            eventClick: function (arg) {
                 $('#bookingModal').modal('toggle');
 
+                $('input[id=title]').attr("value", arg.event.title);
+                $('input[id=content]').attr("value", arg.event.extendedProps.content);
+
+                //화면 버튼 활성화
                 $('#addBtn').hide();
                 $('#modBtn').show();
                 $('#delBtn').show();
+                $('#markBtn').show();
 
-                $('#saveBtn').off().on('click', function () {
+                //검색어 넣기
+                $('input[id=keyword]').attr('value',arg.event.extendedProps.location);
+
+                //위도, 경도 재설정
+                myLat = parseFloat(arg.event.extendedProps.latitude);
+                myLng = parseFloat(arg.event.extendedProps.longitude);
+
+                console.log("위도 : " + myLat + " 경도 : " + myLng);
+
+                map.relayout();
+
+                //일정 id 가져오기
+                let id = arg.event.id;
+
+                //수정 버튼 클릭시
+                $('#modBtn').off().on('click', function () {
                     let title = $('#title').val();
+                    let content = $('#content').val();
+
                     if (title) {
                         //달력 출력
                         calendar.addEvent({
@@ -278,50 +367,371 @@
                             start: arg.start,
                             end: arg.end,
                             allDay: arg.allDay,
-                            backgroundColor: "navy",
-                            textColor: "yellow"
+                            backgroundColor: "#B464EB",
+                            textColor: "#000000"
                         })
                         //일정 추가[DB에 저장]
                         //하루면 YYYY/MM/DD hh:mm
                         //이틀 이상이면 YYYY/MM/DD
-                        let start, end;
-                        if (arg.allDay) { // 이틀 이상
-                            start = moment(arg.start).format('YYYY/MM/DD');
-                            end = moment(arg.end).format('YYYY/MM/DD');
-                        } else {
-                            start = moment(arg.start).format('YYYY/MM/DD hh:mm');
-                            end = moment(arg.end).format('YYYY/MM/DD hh:mm');
-                        }
+
+                        let data = {
+                            "id": id,
+                            "title": title,
+                            "content": content,
+                            "location": $('#keyword').val(),
+                            "latitude": (latlng.getLat()).toString(),
+                            "longitude": (latlng.getLng()).toString()
+                        };
 
                         $.ajax({
-                            url: '/haroo/task/new',
-                            method: 'POST',
-                            dataType: 'json',
-                            data: {
-                                "title": title,
-                                "start": start,
-                                "end": end,
-                                "allDay": arg.allDay,
-                                "backgroundColor": "navy",
-                                "textColor": "yellow",
-                                "em_no": '${employee.em_no}',
+                            url: '/haroo/task',
+                            method: 'PATCH',
+                            contentType: 'application/json; charset=utf-8',
+                            dataType: 'text',
+                            data: JSON.stringify(data),
+                            success: function (result) {
+                                if (result === "success") {
+                                    $('#checkModal').modal('show');
+                                    setTimeout(function () {
+                                        location.reload();
+                                    }, 500);
+                                }
+                            },
+                            error: function (error) {
+                                console.log(error);
                             }
                         })
                     }
                     $('#bookingModal').modal('hide');
-                })
-                calendar.unselect()
+                });
+
+                //삭제 버튼 클릭시
+                $('#delBtn').off().on('click', function () {
+                    if (id) {
+                        //달력 출력
+                        calendar.addEvent({
+                            title: title,
+                            start: arg.start,
+                            end: arg.end,
+                            allDay: arg.allDay,
+                            backgroundColor: "#B464EB",
+                            textColor: "#000000"
+                        })
+
+                        let data = {
+                            "id": id
+                        };
+
+                        $.ajax({
+                            url: '/haroo/task/' + id,
+                            method: 'DELETE',
+                            contentType: 'application/json; charset=utf-8',
+                            dataType: 'text',
+                            data: JSON.stringify(data),
+                            success: function (result) {
+                                if (result === "success") {
+                                    $('#checkModal').modal('show');
+                                    setTimeout(function () {
+                                        location.reload();
+                                    }, 500);
+                                }
+                            },
+                            error: function (error) {
+                                console.log(error);
+                            }
+                        })
+                    }
+                    $('#bookingModal').modal('hide');
+                });
+                calendar.unselect();
             },
+
             editable: true,
             dayMaxEvents: true, // allow "more" link when too many events
 
-            //일정 JSON으로 받아서 보여준다.
+            //일정들을 json으로 받는다.
             events: ${json}
         });
 
-
         calendar.render();
     });
+</script>
+
+<!--kakao map js-->
+<script>
+    // 마커를 담을 배열입니다
+    var markers = [];
+
+    //위도 경도 표현
+    var latlng;
+
+    var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+        mapOption = {
+            center: new kakao.maps.LatLng(37.539922, 127.070609), // 지도의 중심좌표
+            level: 3 // 지도의 확대 레벨
+        };
+
+    // 지도를 생성합니다
+    var map = new kakao.maps.Map(mapContainer, mapOption);
+
+    var myPosition = new kakao.maps.LatLng(myLat, myLng);
+
+    var marker = new kakao.maps.Marker({
+        // 지도 중심좌표에 마커를 생성합니다
+        position: myPosition
+    });
+
+    // 지도에 마커를 표시합니다
+    marker.setMap(map);
+
+    function showMarker() {
+        marker.setMap(null);
+        map.setLevel(3);
+
+        myPosition = new kakao.maps.LatLng(myLat, myLng);
+
+        marker = new kakao.maps.Marker({
+            // 지도 중심좌표에 마커를 생성합니다
+            position: myPosition
+        });
+
+        // 지도에 마커를 표시합니다
+        marker.setMap(map);
+        panTo(myPosition);
+    }
+
+    function panTo(myPosition) {
+        // 이동할 위도 경도 위치를 생성합니다
+        // var moveLatLon = new kakao.maps.LatLng(myLat, myLng);
+
+        // 지도 중심을 부드럽게 이동시킵니다
+        // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
+        map.panTo(myPosition);
+    }
+
+
+    // 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
+    kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
+
+        // 클릭한 위도, 경도 정보를 가져옵니다
+        latlng = mouseEvent.latLng;
+
+        // 마커 위치를 클릭한 위치로 옮깁니다
+        marker.setPosition(latlng);
+
+        var message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
+        message += '경도는 ' + latlng.getLng() + ' 입니다';
+
+        console.log(message);
+    });
+
+
+
+    // 장소 검색 객체를 생성합니다
+    var ps = new kakao.maps.services.Places();
+
+    // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
+    var infowindow = new kakao.maps.InfoWindow({zIndex: 1});
+
+
+    // 키워드로 장소를 검색합니다
+    searchPlaces();
+
+    // 키워드 검색을 요청하는 함수입니다
+    function searchPlaces() {
+
+        var keyword = document.getElementById('keyword').value;
+
+        if (!keyword.replace(/^\s+|\s+$/g, '')) {
+            alert('키워드를 입력해주세요!');
+            return false;
+        }
+
+        // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
+        ps.keywordSearch(keyword, placesSearchCB);
+    }
+
+    // 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
+    function placesSearchCB(data, status, pagination) {
+        if (status === kakao.maps.services.Status.OK) {
+
+            // 정상적으로 검색이 완료됐으면
+            // 검색 목록과 마커를 표출합니다
+            displayPlaces(data);
+
+            // 페이지 번호를 표출합니다
+            displayPagination(pagination);
+
+        } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+
+            alert('검색 결과가 존재하지 않습니다.');
+            return;
+
+        } else if (status === kakao.maps.services.Status.ERROR) {
+
+            alert('검색 결과 중 오류가 발생했습니다.');
+            return;
+
+        }
+    }
+
+    // 검색 결과 목록과 마커를 표출하는 함수입니다
+    function displayPlaces(places) {
+
+        var listEl = document.getElementById('placesList'),
+            menuEl = document.getElementById('menu_wrap'),
+            fragment = document.createDocumentFragment(),
+            bounds = new kakao.maps.LatLngBounds(),
+            listStr = '';
+
+        // 검색 결과 목록에 추가된 항목들을 제거합니다
+        removeAllChildNods(listEl);
+
+        // 지도에 표시되고 있는 마커를 제거합니다
+        removeMarker();
+
+        for (var i = 0; i < places.length; i++) {
+
+            // 마커를 생성하고 지도에 표시합니다
+            var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
+                marker = addMarker(placePosition, i),
+                itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
+
+            // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+            // LatLngBounds 객체에 좌표를 추가합니다
+            bounds.extend(placePosition);
+
+            // 마커와 검색결과 항목에 mouseover 했을때
+            // 해당 장소에 인포윈도우에 장소명을 표시합니다
+            // mouseout 했을 때는 인포윈도우를 닫습니다
+            (function (marker, title) {
+                kakao.maps.event.addListener(marker, 'mouseover', function () {
+                    displayInfowindow(marker, title);
+                });
+
+                kakao.maps.event.addListener(marker, 'mouseout', function () {
+                    infowindow.close();
+                });
+
+                itemEl.onmouseover = function () {
+                    displayInfowindow(marker, title);
+                };
+
+                itemEl.onmouseout = function () {
+                    infowindow.close();
+                };
+            })(marker, places[i].place_name);
+
+            fragment.appendChild(itemEl);
+        }
+
+        // 검색결과 항목들을 검색결과 목록 Element에 추가합니다
+        listEl.appendChild(fragment);
+        menuEl.scrollTop = 0;
+
+        // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+        map.setBounds(bounds);
+    }
+
+    // 검색결과 항목을 Element로 반환하는 함수입니다
+    function getListItem(index, places) {
+
+        var el = document.createElement('li'),
+            itemStr = '<span class="markerbg marker_' + (index + 1) + '"></span>' +
+                '<div class="info">' +
+                '   <h5>' + places.place_name + '</h5>';
+
+        if (places.road_address_name) {
+            itemStr += '    <span>' + places.road_address_name + '</span>' +
+                '   <span class="jibun gray">' + places.address_name + '</span>';
+        } else {
+            itemStr += '    <span>' + places.address_name + '</span>';
+        }
+
+        itemStr += '  <span class="tel">' + places.phone + '</span>' +
+            '</div>';
+
+        el.innerHTML = itemStr;
+        el.className = 'item';
+
+        return el;
+    }
+
+    // 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
+    function addMarker(position, idx, title) {
+        var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
+            imageSize = new kakao.maps.Size(36, 37),  // 마커 이미지의 크기
+            imgOptions = {
+                spriteSize: new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
+                spriteOrigin: new kakao.maps.Point(0, (idx * 46) + 10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
+                offset: new kakao.maps.Point(13, 37) // 마커 좌표에 일치시킬 이미지 내에서의 좌표
+            },
+            markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
+            marker = new kakao.maps.Marker({
+                position: position, // 마커의 위치
+                image: markerImage
+            });
+
+        marker.setMap(map); // 지도 위에 마커를 표출합니다
+        markers.push(marker);  // 배열에 생성된 마커를 추가합니다
+
+        return marker;
+    }
+
+    // 지도 위에 표시되고 있는 마커를 모두 제거합니다
+    function removeMarker() {
+        for (var i = 0; i < markers.length; i++) {
+            markers[i].setMap(null);
+        }
+        markers = [];
+    }
+
+    // 검색결과 목록 하단에 페이지번호를 표시는 함수입니다
+    function displayPagination(pagination) {
+        var paginationEl = document.getElementById('pagination'),
+            fragment = document.createDocumentFragment(),
+            i;
+
+        // 기존에 추가된 페이지번호를 삭제합니다
+        while (paginationEl.hasChildNodes()) {
+            paginationEl.removeChild(paginationEl.lastChild);
+        }
+
+        for (i = 1; i <= pagination.last; i++) {
+            var el = document.createElement('a');
+            el.href = "#";
+            el.innerHTML = i;
+
+            if (i === pagination.current) {
+                el.className = 'on';
+            } else {
+                el.onclick = (function (i) {
+                    return function () {
+                        pagination.gotoPage(i);
+                    }
+                })(i);
+            }
+
+            fragment.appendChild(el);
+        }
+        paginationEl.appendChild(fragment);
+    }
+
+    // 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
+    // 인포윈도우에 장소명을 표시합니다
+    function displayInfowindow(marker, title) {
+        var content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
+
+        infowindow.setContent(content);
+        infowindow.open(map, marker);
+    }
+
+    // 검색결과 목록의 자식 Element를 제거하는 함수입니다
+    function removeAllChildNods(el) {
+        while (el.hasChildNodes()) {
+            el.removeChild(el.lastChild);
+        }
+    }
 </script>
 </body>
 </html>
