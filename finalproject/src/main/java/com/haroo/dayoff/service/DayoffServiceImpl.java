@@ -39,16 +39,22 @@ public class DayoffServiceImpl implements DayoffService {
 		return dayoff;
 	}
 
-	@Override
-	public List<DayoffUsageVO> printUsageList(int emNo) {
-		log.info("print usage list.............." + emNo);
-		return mapper.printUsageList(emNo);
-	}
+//	@Override
+//	public List<DayoffUsageVO> printUsageList(int emNo) {
+//		log.info("print usage list.............." + emNo);
+//		return mapper.printUsageList(emNo);
+//	}
 
 	@Override
 	public String printToday() {
 		log.info("날짜 출력..............");
 		return mapper.printToday();
+	}
+
+	@Override
+	public List<DayoffUsageVO> printUsageList(DayoffUsageVO vo) {
+		log.info("print usage list.............." + vo);
+		return mapper.printUsageList(vo);
 	}
 
 	

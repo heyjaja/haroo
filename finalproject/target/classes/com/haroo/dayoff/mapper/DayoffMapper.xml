@@ -68,7 +68,7 @@
 	</update> 
 	
 	<!-- 사용내역 출력 -->
-	<select id="printUsageList" parameterType="int" 
+	<!-- <select id="printUsageList" parameterType="int" 
 				resultType="com.haroo.dayoff.domain.DayoffUsageVO" resultMap="dayoffUsageResult">
 		select le_title, ap_content, le_kind, le_start, le_end, (le_end - le_start + 1) AS le_days
 		from leave
@@ -76,14 +76,20 @@
 		on leave.ap_no = approval.ap_no
 		where le_status = 1 and leave.em_no = #{emNo} 
 		order by le_start
-		
-		<!-- select le_title, ap_content, le_kind, le_start, le_end, (le_end - le_start + 1) AS le_days
+	</select> -->
+	
+	<!-- 사용내역 출력 -->
+	<select id="printUsageList" parameterType="com.haroo.dayoff.domain.DayoffUsageVO" 
+				resultType="com.haroo.dayoff.domain.DayoffUsageVO" resultMap="dayoffUsageResult">
+		select le_title, ap_content, le_kind, le_start, le_end, (le_end - le_start + 1) AS le_days
 		from leave
 		join approval
 		on leave.ap_no = approval.ap_no
-		where le_status = 1 and leave.em_no = #{emNo} and substr(TO_char(le_start, 'YYYY-MM-DD HH24:MI:SS'), 1, 4) = #{searchYear}
-		order by le_start  -->
-	</select>
+		where le_status = 1 and leave.em_no = #{emNo} and substr(TO_char(le_start, 'YYYY-MM-DD HH24:MI:SS'), 1, 4) = #{leStart}
+		order by le_start
+	</select>	
+		
+	
 	
 	<!-- 오늘 날짜 출력 -->
 	<select id="printToday" resultType="String">

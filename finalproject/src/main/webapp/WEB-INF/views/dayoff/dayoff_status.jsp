@@ -100,10 +100,32 @@ form {
 		
 		<br><br>
 		<hr>
+		<div class="row">
+			<div class="col text-start">
+			<form id="searchForm" class="row row-cols-lg-auto"  action="/dayoff/status" method="get">
+				<div class="input-group mb-3">
+						<div class="col-2">
+							<label for="search">년도 입력 <p>(yyyy 형식) ex) 2022</p></label>
+						</div>
+						<div class="col-3">
+							<input type="text" class="form-control" id="search" 
+								name="leStart" value="${sYear }">		
+						</div>
+						<div class="col">
+							<button class="btn btn-outline-success" value="조회">조회</button>
+						</div>
+					</div>		   
+			</form>
+			<!-- end form -->
+			
+			</div>
+			<!-- end div col -->
+		</div>
+		<!-- end div row -->	
 			
 		<!-- 휴가 사용내역 테이블 -->
 		<table class="table table-hover caption-top">
-			<caption>휴가 사용내역 (${today } 기준)</caption>
+			<caption>휴가 사용내역</caption>
 			<thead>
 				<tr>
 					<th scope="col">#</th>

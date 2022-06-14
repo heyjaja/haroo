@@ -24,10 +24,10 @@ public class DayoffController {
 	private DayoffService service;
 	
 	@GetMapping("/status")
-	public String status(DayoffVO vo, Model model) { //@RequestParam("emNo") int emNo, 
+	public String status(DayoffVO vo, DayoffUsageVO usage, Model model) { //@RequestParam("emNo") int emNo, 
 		
-		vo.setEmNo(19362300);
-		//vo.setEmNo(45424411);
+		//vo.setEmNo(19362300);
+		vo.setEmNo(45424411);
 		
 		log.warn("오늘 날짜 : " + model.addAttribute("today", service.printToday()));
 		
@@ -36,7 +36,16 @@ public class DayoffController {
 		model.addAttribute("dayoff", service.statusDayoff(vo.getEmNo()));
 	
 		//검색한 사용 기록
-		model.addAttribute("usageList", service.printUsageList(vo.getEmNo()));
+		usage.setEmNo(45424411);
+		
+		if (usage.getLeStart() == null || usage.getLeStart().equals("")) {
+			usage.setLeStart(service.printToday().substring(0, 4));
+		} else {
+			usage.setLeStart(usage.getLeStart());
+		}
+		log.warn("검색연도 : " + model.addAttribute("sYear", usage.getLeStart()));
+		
+		model.addAttribute("usageList", service.printUsageList(usage));
 		
 		return "/dayoff/dayoff_status";
 	}
