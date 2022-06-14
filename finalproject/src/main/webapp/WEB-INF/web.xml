@@ -27,17 +27,27 @@
 			</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
+		<!-- 자은 -->
+		<!-- 추가, 제 경로는 공통으로 쓰기가 어려워서 공통파일은 다른 경로로 하셔도 될 거 같습니다. -->
+		<!-- 파일 업로드 때문에 상단 xml 버전 수정 -->
+		<multipart-config>
+			<location>/Users/macbook/Documents/236/project/upload/temp</location>
+			<max-file-size>20971520</max-file-size> <!--1MB * 20 -->
+			<max-request-size>41943040</max-request-size><!-- 40MB -->
+			<file-size-threshold>20971520</file-size-threshold> <!-- 20MB -->
+		</multipart-config>
+		<!-- 자은 -->
 	</servlet>
 
 	<servlet-mapping>
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
+
 	<!-- 홍기 추가 시작 -->
 	<filter>
 		<filter-name>encodingFilter</filter-name>
-		<filter-class>org.springframework.web.filter.CharacterEncodingFilter
-		</filter-class>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
 		<init-param>
 			<param-name>encoding</param-name>
 			<param-value>UTF-8</param-value>
@@ -58,4 +68,5 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 	<!-- 홍기 추가 끝 -->
+	
 </web-app>

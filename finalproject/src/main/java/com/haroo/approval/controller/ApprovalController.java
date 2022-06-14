@@ -52,25 +52,25 @@ public class ApprovalController {
   ApprovalService service;
   
   @GetMapping("/main")
-  public void main(HttpServletRequest request) { // ë©”ì¸
+  public void main(HttpServletRequest request) { // ¸ŞÀÎ
     logger.info("approval main..........");
     
     HttpSession session = request.getSession();
     
     EmpVO employeeVO = new EmpVO();
     employeeVO.setEmNo(45424411);
-    employeeVO.setEmName("ë°±ë¯¼ì£¼");
+    employeeVO.setEmName("¹é¹ÎÁÖ");
     
     session.setAttribute("employeeVO", employeeVO);
   }
   
   @GetMapping("/forms")
-  public void forms() { // ì–‘ì‹ ëª©ë¡
+  public void forms() { // ¾ç½Ä ¸ñ·Ï
     logger.info("form list.............");
   }
   
   @GetMapping("/form/{foNo}")
-  public String getFormList(@PathVariable("foNo") int foNo) { // ì–‘ì‹ ì„ íƒ
+  public String getFormList(@PathVariable("foNo") int foNo) { // ¾ç½Ä ¼±ÅÃ
     
     logger.info("form..................");
     String formName="draft-form";
@@ -85,7 +85,7 @@ public class ApprovalController {
   }
   
   @PostMapping("/form/{foNo}")
-  public String postForm(ApprovalVO approval, @PathVariable("foNo") int foNo) { // ìƒì‹ í•˜ê¸°
+  public String postForm(ApprovalVO approval, @PathVariable("foNo") int foNo) { // »ó½ÅÇÏ±â
     
     approval.setFoNo(foNo);
     
@@ -100,7 +100,7 @@ public class ApprovalController {
   }
   
   @GetMapping("/process")
-  public String processList(Criteria cri, Model model) { // ìƒì‹ -ì§„í–‰
+  public String processList(Criteria cri, Model model) { // »ó½Å-ÁøÇà
     
     logger.info("get Process List");
     
@@ -117,7 +117,7 @@ public class ApprovalController {
   }
   
   @GetMapping("/done")
-  public String doneList(Criteria cri, Integer status, Model model) { // ìƒì‹ -ì™„ë£Œ
+  public String doneList(Criteria cri, Integer status, Model model) { // »ó½Å-¿Ï·á
     
     logger.info("get done List");
     
@@ -138,7 +138,7 @@ public class ApprovalController {
   }
   
   @GetMapping("/takeback")
-  public String takebacksList(Criteria cri, Model model) { // ìƒì‹ -ì·¨ì†Œ
+  public String takebacksList(Criteria cri, Model model) { // »ó½Å-Ãë¼Ò
     
     logger.info("get takeback List");
     
@@ -169,7 +169,7 @@ public class ApprovalController {
   }
   
   @GetMapping("/wait")
-  public String waitList(Criteria cri, Model model) { // ìˆ˜ì‹ -ëŒ€ê¸°
+  public String waitList(Criteria cri, Model model) { // ¼ö½Å-´ë±â
     
     logger.info("get wait list");
     
@@ -187,7 +187,7 @@ public class ApprovalController {
   }
   
   @GetMapping("/sign")
-  public String signList(Criteria cri, Model model) { // ìˆ˜ì‹ -ì™„ë£Œ
+  public String signList(Criteria cri, Model model) { // ¼ö½Å-¿Ï·á
     
     logger.info("get wait list");
     
@@ -218,7 +218,7 @@ public class ApprovalController {
   
   
   @GetMapping("/all")
-  public String allList(Criteria cri, Model model) { // ì „ì²´ ë¬¸ì„œ
+  public String allList(Criteria cri, Model model) { // ÀüÃ¼ ¹®¼­
     
     logger.info("get all list");
     
@@ -273,14 +273,14 @@ public class ApprovalController {
   
   
   @GetMapping("/line")
-  public void getEmployeeList(Model model) { // ê²°ì¬ì ëª©ë¡ ì°½
+  public void getEmployeeList(Model model) { // °áÀçÀÚ ¸ñ·Ï Ã¢
     List<EmpVO> list = service.getEmpList();
     
     model.addAttribute("list", list);
   }
   
   
-  // ì²¨ë¶€íŒŒì¼ ì²˜ë¦¬
+  // Ã·ºÎÆÄÀÏ Ã³¸®
   // upload
   @PostMapping(value = "/file", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @ResponseBody
@@ -292,12 +292,12 @@ public class ApprovalController {
     
     String uploadFolderPath = getFolder();
     
-    // í´ë” ìƒì„±
+    // Æú´õ »ı¼º
     File uploadPath = new File(uploadFolder, uploadFolderPath);
     logger.info("upload path: " + uploadPath);
     
-    if(uploadPath.exists() == false) { // ë…„/ì›”/ì¼ í´ë” ê²½ë¡œê°€ ì¡´ì¬í•˜ì§€ ì•Šì„ ë•Œ
-      uploadPath.mkdirs(); // yyyy/MM/dd í´ë” ìƒì„±
+    if(uploadPath.exists() == false) { // ³â/¿ù/ÀÏ Æú´õ °æ·Î°¡ Á¸ÀçÇÏÁö ¾ÊÀ» ¶§
+      uploadPath.mkdirs(); // yyyy/MM/dd Æú´õ »ı¼º
     }
     
     for(MultipartFile multipartFile : uploadFile) {
@@ -312,7 +312,7 @@ public class ApprovalController {
       
       attach.setFname(uploadFileName);
       
-      UUID uuid = UUID.randomUUID(); // uuid ìƒì„±
+      UUID uuid = UUID.randomUUID(); // uuid »ı¼º
       
       uploadFileName = uuid.toString() + "_" + uploadFileName; // uuid_fileName
       
@@ -394,7 +394,7 @@ public class ApprovalController {
     return new ResponseEntity<String>("deleted", HttpStatus.OK);
   }
   
-  private String getFolder() { // ë…„/ì›”/ì¼ í´ë” ê²½ë¡œ ë¬¸ìì—´ ë§Œë“¤ê¸°
+  private String getFolder() { // ³â/¿ù/ÀÏ Æú´õ °æ·Î ¹®ÀÚ¿­ ¸¸µé±â
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     
     Date date = new Date();
