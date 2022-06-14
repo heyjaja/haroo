@@ -53,4 +53,14 @@
     <!--aop 관련 auto-proxy 설정-->
 
     <aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+    <!-- 홍기 추가 시작-->
+    <mybatis-spring:scan base-package="com.haroo.login.mapper"/>
+    <mybatis-spring:scan base-package="com.haroo.mypage.mapper"/>
+    <mybatis-spring:scan base-package="com.haroo.task.mapper"/>
+
+	<context:component-scan base-package="com.haroo.login.service"/>
+    <context:component-scan base-package="com.haroo.mypage.service"/>
+    <context:component-scan base-package="com.haroo.task.service"/>
+    
+    <!-- 홍기 추가 끝-->
 </beans>
