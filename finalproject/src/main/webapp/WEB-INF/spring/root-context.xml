@@ -46,11 +46,12 @@
 <!--    &lt;!&ndash;Spring Core와 관련된 부분만 Scan&ndash;&gt;-->
 <!--    <context:component-scan base-package="org.hongki.service"/>-->
 <!--    <context:component-scan base-package="org.hongki.aop"/>-->
-
+	<context:component-scan base-package="com.haroo.chat.service"/>
     <!-- 경로 설정 다시해주세요 -->
     <!--    &lt;!&ndash;mybatis 관련 세팅 [interface에 @방식으로 쿼리를 읽는다]&ndash;&gt;-->
     <!--    <mybatis-spring:scan base-package="org.hongki.mapper"/>-->
     <!--aop 관련 auto-proxy 설정-->
+    <mybatis-spring:scan base-package="com.haroo.chat.mapper"/>
 
     <aop:aspectj-autoproxy></aop:aspectj-autoproxy>
 </beans>
