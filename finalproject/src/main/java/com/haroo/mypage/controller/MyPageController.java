@@ -33,14 +33,9 @@ public class MyPageController {
         return modelAndView;
     }
 
-    @PatchMapping(value = "/update-information",
-            consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE},
-            produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @PatchMapping("/update-information")
     public ResponseEntity<MyPageUserDTO> updateMyInfo(@RequestBody MyPageUserDTO myPageUserDTO,
                                                       HttpSession httpSession) {
-
-        //console test
-        System.out.println(myPageUserDTO);
 
         try{
             myPageService.updateEmployeeService(myPageUserDTO);
