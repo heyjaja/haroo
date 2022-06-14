@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="com.haroo.approval.mapper.ExpenseListMapper">
+	<cache />
+  
+  <resultMap type="com.haroo.approval.domain.ExpenseListVO" id="ExpenseMap">
+    <result property="elNo" column="el_no"/>
+    <result property="apNo" column="ap_no"/>
+    <result property="elItem" column="el_item"/>
+    <result property="elQuantity" column="el_quantity"/>
+    <result property="elPrice" column="el_price"/>
+    <result property="elCost" column="el_cost"/>
+    <result property="elTotal" column="el_total"/>
+  </resultMap>
+  
+	<select id="selectTest" resultType="string">
+    select sysdate from dual
+  </select>
+	
+  <!-- 품의목록 저장 -->
+  <insert id="insert">
+    INSERT INTO expense_list
+      VALUES(#{elNo}, #{apNo}, #{elItem}, #{elQuantity}, #{elPrice}, #{elCost}, #{elTotal})
+  </insert>
+	
+	<!-- 4 해당 문서 품의목록 불러오기 -->
+	<select id="read" resultType="com.haroo.approval.domain.ExpenseListVO" resultMap="ExpenseMap">
+	  SELECT * FROM expense_list WHERE ap_no = #{apNp} ORDER BY el_no
+	</select> 
+	
+</mapper>

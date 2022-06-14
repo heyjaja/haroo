@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="com.haroo.approval.mapper.LeaveMapper">
+	<cache />
+  
+  <resultMap type="com.haroo.approval.domain.LeaveVO" id="LeaveMap">
+    <result property="apNo" column="ap_no"/>
+    <result property="foNo" column="fo_no"/>
+    <result property="emNo" column="em_no"/>
+    <result property="leTitle" column="le_title"/>
+    <result property="leKind" column="le_kind"/>
+    <result property="leStart" column="le_start"/>
+    <result property="leEnd" column="le_end"/>
+    <result property="leDate" column="le_date"/>
+    <result property="leStatus" column="le_status"/>
+    <result property="leDays" column="le_days"/>
+  </resultMap>
+
+	<select id="selectTest" resultType="string">
+    select sysdate from dual
+  </select>
+	
+	 <!-- 휴가신청서 저장 -->
+  <insert id="insert">
+    INSERT INTO leave
+      VALUES(#{apNo}, #{foNo}, #{emNo}, #{leTitle}, #{leKind}, TO_DATE(#{leStart}, 'YYYY-MM-DD'), 
+      TO_DATE(#{leEnd}, 'YYYY-MM-DD'), SYSDATE, 0)
+  </insert>
+  
+	<!-- 3 해당 문서 휴가내역 불러오기 -->
+ 	<select id="read" resultType="com.haroo.approval.domain.LeaveVO" resultMap="LeaveMap">
+	  SELECT ap_no, fo_no, em_no, le_title, le_kind, TO_CHAR(le_start, 'YYYY/MM/DD') AS le_start, 
+	    TO_CHAR(le_end, 'YYYY/MM/DD') AS le_end,
+	    (TO_DATE(le_end,'YYYY-MM-DD') - TO_DATE(le_start,'YYYY-MM-DD')+1) AS le_days
+	    FROM leave WHERE ap_no = #{apNo}
+	</select>
+	
+	 <!-- 결재 상태 변경 -->
+  <update id="updateStatus">
+    UPDATE leave SET le_status = ${status}
+    WHERE ap_no = #{apNo} 
+  </update>
+  
+    <!-- 상신취소 -->
+  <update id="takeback" parameterType="int">
+    UPDATE leave SET le_status = -1 WHERE ap_no = #{apNo}
+  </update> 
+  
+</mapper>
