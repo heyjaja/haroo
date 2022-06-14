@@ -64,8 +64,13 @@
     
     <!-- 홍기 추가 끝-->
     <!-- 자은 -->
-     <context:component-scan base-package="com.haroo.approval.service"/>
+    <context:component-scan base-package="com.haroo.approval.service"/>
     <mybatis-spring:scan base-package="com.haroo.approval.mapper"/>
     
     <!-- 자은 -->
+    
+    <!-- 주영 -->
+    <context:component-scan base-package="com.haroo.attendance, com.haroo.dayoff"/>
+	<mybatis-spring:scan base-package="com.haroo.attendance.mapper, com.haroo.dayoff.mapper"/>
+    <!-- 주영 -->
 </beans>
