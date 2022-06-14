@@ -1,13 +1,9 @@
 package com.haroo.task.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
-import java.io.Serializable;
-
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
@@ -24,5 +20,8 @@ public class TaskVO {
     private String textColor;
     private String backgroundColor;
     private int emNo;
+    private String location;
+    private String latitude;
+    private String longitude;
 
 }
