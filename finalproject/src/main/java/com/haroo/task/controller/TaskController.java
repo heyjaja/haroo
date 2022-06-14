@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.haroo.login.domain.EmployeeVO;
 import com.haroo.task.domain.TaskVO;
 import com.haroo.task.service.TaskService;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/haroo/task")
+@Log4j
 public class TaskController {
 
     private final TaskService taskService;
@@ -25,6 +27,7 @@ public class TaskController {
         this.taskService = taskService;
     }
 
+    //캘린더 로드
     @GetMapping
     public ModelAndView getTaskPage(HttpSession httpSession) {
 
@@ -37,7 +40,6 @@ public class TaskController {
             List<TaskVO> taskVOList = taskService.getTaskListService(emNo);
             String json = new Gson().toJson(taskVOList);
 
-            //console test
             System.out.println(json);
 
             modelAndView.setViewName("/task/task_form");
@@ -50,15 +52,35 @@ public class TaskController {
         return modelAndView;
     }
 
-
-    @PostMapping(value = "/new",
-            consumes = "application/json; charset=utf-8")
+    //새로운 일정 생성
+    @PostMapping("/new")
     public ResponseEntity<String> insertTask(@RequestBody TaskVO taskVO) {
 
         int insertResult = taskService.insertTaskService(taskVO);
 
-        //success를 보내면 ajax에서 controller 다시 부를 거
         return insertResult == 1
+                ? new ResponseEntity<>("success", HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    //일정 업데이트
+    @PatchMapping("")
+    public ResponseEntity<String> updateTask(@RequestBody TaskVO taskVO) {
+
+        int updateResult = taskService.updateTaskService(taskVO);
+
+        return updateResult == 1
+                ? new ResponseEntity<>("success", HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    //일정 업데이트
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteTask(@PathVariable("id") Integer id) {
+
+        int deleteResult = taskService.deleteTaskService(id);
+
+        return deleteResult == 1
                 ? new ResponseEntity<>("success", HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
