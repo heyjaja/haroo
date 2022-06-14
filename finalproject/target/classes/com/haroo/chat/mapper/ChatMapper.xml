@@ -5,16 +5,21 @@
 
 <mapper namespace="com.haroo.chat.mapper.ChatMapper">
 	<cache />
-	
-	<select id="insertChat" parameterType="ChatVO">
+
+<!-- 	<select id="insertChat" parameterType="ChatVO"> insert into chat( chatNo, 
+		chatName, chatTime, chatFrom, chatTo )values( co_seq.nextval, #{chatName}, 
+		#{chatTime}, #{chatFrom}, #{chatTo} ) </select>
+
+	<insert id="insertChat">
 		insert into chat(
-		chatNo, chatName, chatTime, chatFrom, chatTo
+		ch_no, ch_time, ch_from, ch_to
 		)values(
-		co_seq.nextval, #{chatName}, #{chatTime}, #{chatFrom}, #{chatTo}
+		co_seq.nextval, #{ch_no}, #{ch_from}, #{ch_to}
 		)
 
-	</select>
-	
+
+	</insert>
+
 	<insert id="uploadFile" parameterType="FileVO">
 		insert into contents(
 		co_no, co_name)
@@ -24,7 +29,7 @@
 	
 	<select id="listFile"  resultType="FileVO">
 		select * from contents
-		<!-- <if test="area != null">
+		<if test="area != null">
 			<where>
 				where (title LIKE %JSP% OR writer LIKE %JSP)
 				<foreach collection="area" item="item" separator="OR"
@@ -32,7 +37,8 @@
 					${item} LIKE #{searchKey}
 				</foreach>
 			</where>
-		</if> -->
+		</if>
 		order by co_no desc
 	</select>
+	 -->
 </mapper>

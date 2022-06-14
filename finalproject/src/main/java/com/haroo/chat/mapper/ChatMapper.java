@@ -7,9 +7,9 @@ import com.haroo.chat.domain.FileVO;
 
 public interface ChatMapper {
 	
-	int uploadFile(FileVO fileVO);
+//	int uploadFile(FileVO fileVO);
+//	
+//	List<FileVO> listFile();
 	
-	List<FileVO> listFile();
-	
-	int insertChat(ChatVO chatVO);
+	public void insertChat(ChatVO chatVO);
 }
