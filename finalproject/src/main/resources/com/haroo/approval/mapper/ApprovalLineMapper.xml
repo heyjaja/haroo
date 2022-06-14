@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="com.haroo.approval.mapper.ApprovalLineMapper">
+	<cache />
+  
+  <resultMap type="com.haroo.approval.domain.ApprovalLineVO" id="LineMap">
+    <result property="apNo" column="ap_no"/>
+    <result property="alNo" column="al_no"/>
+    <result property="alOrder" column="al_order"/>
+    <result property="alStatus" column="al_status"/>
+    <result property="alDate" column="al_date"/>
+    <result property="alComment" column="al_comment"/>
+    <result property="emName" column="em_name"/>
+    <result property="poName" column="po_name"/>
+    <result property="deName" column="de_name"/>
+  </resultMap>
+  
+  
+  <resultMap type="com.haroo.approval.domain.EmpVO" id="empMap">
+    <result property="emNo" column="em_no"/>
+    <result property="emName" column="em_name"/>
+    <result property="poName" column="po_name"/>
+    <result property="deName" column="de_name"/>
+  </resultMap>
+  
+
+	<select id="selectTest" resultType="string">
+    select sysdate from dual
+  </select>
+	
+	<!-- 결재선 저장 -->
+	<insert id="insert">
+	  INSERT INTO approval_line
+	    VALUES(#{apNo}, #{alNo}, #{alOrder}, 0, null, null)
+	</insert>
+
+	<!-- 2 해당 문서 결재선 불러오기 -->
+ 	<select id="read" resultType="com.haroo.approval.domain.ApprovalLineVO" resultMap="LineMap">
+	  SELECT ap_no, em_no AS al_no, al_order, al_status, al_date, al_comment, em_name, po_name, de_name 
+	    FROM approval_line al JOIN employee e
+	      ON al.al_no = e.em_no
+	      JOIN position p
+        ON e.po_no = p.po_no JOIN department d 
+        ON e.de_no = d.de_no
+        WHERE ap_no = #{apNo}
+        order by al_order
+	</select>
+	
+	 <!-- 결재하기 -->
+	<update id="sign">
+	  UPDATE approval_line 
+	    SET al_status = #{alStatus}, al_date = sysdate, al_comment = #{alComment}
+	    WHERE ap_no = #{apNo} AND al_no = #{alNo}
+	</update>
+  
+	<!-- 결재선 사원 선택 리스트 불러오기 -->
+	<select id="getEmpList" resultType="com.haroo.approval.domain.EmpVO" resultMap="empMap">
+	  SELECT em_no, em_name, po_name, de_name, e.po_no 
+    FROM employee e JOIN position p
+	  ON e.po_no = p.po_no JOIN department d 
+	  ON e.de_no = d.de_no
+	  order by de_name, po_no
+	</select>
+
+</mapper>
