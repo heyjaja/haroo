@@ -81,12 +81,17 @@
 	<!-- 사용내역 출력 -->
 	<select id="printUsageList" parameterType="com.haroo.dayoff.domain.DayoffUsageVO" 
 				resultType="com.haroo.dayoff.domain.DayoffUsageVO" resultMap="dayoffUsageResult">
+		<![CDATA[
 		select le_title, ap_content, le_kind, le_start, le_end, (le_end - le_start + 1) AS le_days
 		from leave
 		join approval
 		on leave.ap_no = approval.ap_no
-		where le_status = 1 and leave.em_no = #{emNo} and substr(TO_char(le_start, 'YYYY-MM-DD HH24:MI:SS'), 1, 4) = #{leStart}
+		where le_status = 1 
+		and leave.em_no = #{emNo} 
+		and substr(TO_char(le_start, 'YYYY-MM-DD HH24:MI:SS'), 1, 4) = #{leStart}
+		and le_start <= sysdate
 		order by le_start
+		]]>
 	</select>	
 		
 	
