@@ -15,6 +15,8 @@ public interface TaskMapper {
     int insertTask(TaskVO taskVO);
 
     //일정 업데이트
-    int updateTask(TaskVO taskVO,
-                   @Param("id") int id);
+    int updateTask(TaskVO taskVO);
+
+    //일정 삭제
+    int deleteTask(@Param("id") Integer id);
 }

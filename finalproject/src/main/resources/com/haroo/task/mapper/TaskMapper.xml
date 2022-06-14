@@ -4,7 +4,7 @@
 
 <mapper namespace="com.haroo.task.mapper.TaskMapper">
     <resultMap type="com.haroo.task.domain.TaskVO" id="TaskMap">
-        <result property="id" column="CD_ID"/>
+        <id property="id" column="CD_ID"/>
         <result property="groupId" column="CD_GROUPID"/>
         <result property="title" column="CD_TITLE"/>
         <result property="writer" column="CD_WRITER"/>
@@ -14,6 +14,9 @@
         <result property="allDay" column="CD_ALLDAY"/>
         <result property="textColor" column="CD_TEXTCOLOR"/>
         <result property="backgroundColor" column="CD_BACKGROUNDCOLOR"/>
+        <result property="location" column="CD_LOCATION"/>
+        <result property="latitude" column="CD_LATITUDE"/>
+        <result property="longitude" column="CD_LONGITUDE"/>
         <result property="emNo" column="em_no"/>
     </resultMap>
 
@@ -23,7 +26,7 @@
         WHERE em_no = #{emNo}
     </select>
 
-    <insert id="insertTask">
+    <insert id="insertTask" parameterType="com.haroo.task.domain.TaskVO">
         INSERT INTO CALENDAR
         VALUES(
                   calendar_seq.nextval,
@@ -36,7 +39,26 @@
                   #{allDay},
                   #{textColor},
                   #{backgroundColor},
+                  #{location},
+                  #{latitude},
+                  #{longitude},
                   #{emNo}
               )
     </insert>
+
+    <update id="updateTask">
+        UPDATE CALENDAR
+        SET
+            CD_TITLE = #{title},
+            CD_CONTENT = #{content},
+            CD_LOCATION = #{location},
+            CD_LATITUDE = #{latitude},
+            CD_LONGITUDE = #{longitude}
+        where CD_ID = #{id}
+    </update>
+
+    <delete id="deleteTask">
+        DELETE FROM CALENDAR
+        WHERE CD_ID = #{id}
+    </delete>
 </mapper>
