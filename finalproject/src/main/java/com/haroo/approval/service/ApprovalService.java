@@ -1,6 +1,7 @@
 package com.haroo.approval.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.haroo.approval.domain.ApprovalAttachVO;
 import com.haroo.approval.domain.ApprovalLineVO;
@@ -38,6 +39,6 @@ public interface ApprovalService {
   
   public List<ApprovalAttachVO> getAttachList(int apNo); // 첨부파일목록
   
-  public List<EmpVO> getEmpList(); // 결재선 목록
+  public Map<String, List<EmpVO>> getEmpList(); // 결재선 목록
   
 }

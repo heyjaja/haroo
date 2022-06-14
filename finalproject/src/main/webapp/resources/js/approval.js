@@ -73,13 +73,19 @@ $(document).on('click', '.ap-al-select', function(event){
 });
 
 //결재선 선택
-$('a.ap-alist-name').click(function(event){
+$('li.ap-alist-name').click(function(event){
   event.preventDefault();
-  let listName = $(this).html();
-  if($('.ap-selected-name').length <3) {
-    $('#ap-alist-selected').append('<p><a class="ap-selected-name" href="#">'+listName+'</a></p>');
+  let listName = $(this).find("input[name='emName']").val();
+  let listPoName = $(this).find("input[name='poName']").val();
+  let listDeName = $(this).find("input[name='deName']").val();
+  if($('.ap-selected-name').length < 3) {
+    let html = '<li class="ap-selected-name list-group-item">';
+    html += listName+' '+listPoName+'('+listDeName+')'
+    html += '<button type="button" class="btn btn-sm ms-1 mb-1">삭제</button>'
+    html += '</li></p>'
+    $('#ap-alist-selected').append(html);
   } else {
-    alert("3명까지 선택 가능")
+    alert("3명까지 선택 가능");
   }
 })
 
