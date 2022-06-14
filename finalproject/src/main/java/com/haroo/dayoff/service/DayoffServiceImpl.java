@@ -1,10 +1,13 @@
 package com.haroo.dayoff.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.haroo.attendance.mapper.AttendanceMapper;
 import com.haroo.attendance.service.AttendanceServiceImpl;
+import com.haroo.dayoff.domain.DayoffUsageVO;
 import com.haroo.dayoff.domain.DayoffVO;
 import com.haroo.dayoff.mapper.DayoffMapper;
 
@@ -20,11 +23,15 @@ public class DayoffServiceImpl implements DayoffService {
 	private DayoffMapper mapper;
 
 	@Override
-	public DayoffVO statusDayoff(int emNo) { //휴가일수
+	public DayoffVO statusDayoff(int emNo) { //휴가현황(일수)
 		DayoffVO dayoff = new DayoffVO();
 		
-		dayoff.setDaCnt(mapper.updateUse(emNo));
-		dayoff.setDaRemainder(mapper.updateRemainder(emNo));
+		//사용일수가 총 휴가일수를 넘지 않으면 값 넣기
+		if(dayoff.getDaCnt() <= dayoff.getDaTotal()) {
+			dayoff.setDaCnt(mapper.updateUse(emNo));
+		}
+		
+		dayoff.setDaRemainder(dayoff.getDaTotal() - dayoff.getDaCnt());
 		dayoff = mapper.statusDayoff(emNo);
 		
 		log.info("status dayoff.............." + dayoff);
@@ -32,16 +39,17 @@ public class DayoffServiceImpl implements DayoffService {
 		return dayoff;
 	}
 
-//	@Override
-//	public boolean updateUse(int emNo) { //사용일수
-//		log.info("update use dayoff......." + emNo);
-//		return mapper.updateUse(emNo) == 1;
-//	}
-//
-//	@Override
-//	public boolean updateRemainder(int emNo) { //잔여일수
-//		log.info("update remainder dayoff......." + emNo);
-//		return mapper.updateRemainder(emNo) == 1;
-//	}
+	@Override
+	public List<DayoffUsageVO> printUsageList(int emNo) {
+		log.info("print usage list.............." + emNo);
+		return mapper.printUsageList(emNo);
+	}
+
+	@Override
+	public String printToday() {
+		log.info("날짜 출력..............");
+		return mapper.printToday();
+	}
+
 	
 }

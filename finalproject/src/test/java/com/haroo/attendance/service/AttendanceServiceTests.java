@@ -66,5 +66,58 @@ public class AttendanceServiceTests {
 //	public void testPrinToday() {
 //		service.printToday();
 //	}
+	
+//	@Test
+//	public void testListDay() {
+//		AttendanceVO vo = new AttendanceVO();
+//		vo.setEmNo(19362300);
+//		vo.setAtDate("2022-06-03");
+//
+//		service.listDay(vo).forEach(v -> log.info(v));
+//	}
+	
+//	@Test
+//	public void testListMonth() {
+//		AttendanceVO vo = new AttendanceVO();
+//		vo.setEmNo(19362300);
+//		vo.setAtDate("2022-06");
+//
+//		service.listMonth(vo).forEach(v -> log.info(v));
+//	}
+	
+//	@Test
+//	public void testPrintSearchDate() {
+//		log.info("print Search date..............");
+//		service.printSearchDate("2022-06-05");
+//	}
+	
+//	@Test
+//	public void testCountOnTime() {
+//		AttendanceVO vo = new AttendanceVO();
+//		vo.setEmNo(19362300);
+//		vo.setAtDate("2022-05");
+//		log.info("정상출근 일자 카운트: " + service.countOnTime(vo));
+//	}
+	
+//	@Test
+//	public void testCountLate() {
+//		AttendanceVO vo = new AttendanceVO();
+//		vo.setEmNo(19362300);
+//		vo.setAtDate("2022-06");
+//		log.info("지각 일자 카운트 : " + service.countLate(vo));
+//	}
+	
+//	@Test
+//	public void testGetMonthLastDay() {
+//		log.info("월 막날 구하기 : " + service.getMonthLastDay("2022-06"));
+//	}
+	
+//	@Test
+//	public void testCountDayoffDay() {
+//		AttendanceVO vo = new AttendanceVO();
+//		vo.setEmNo(45424411);
+//		vo.setAtDate("2022-06");
+//		log.info("월 사용 휴가 일수 카운트 : " + service.countDayoffDay(vo));
+//	}
 
 }

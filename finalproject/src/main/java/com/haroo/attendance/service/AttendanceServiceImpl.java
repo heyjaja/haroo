@@ -37,12 +37,6 @@ public class AttendanceServiceImpl implements AttendanceService {
 		return mapper.insertOutside(emNo);
 	}
 
-//	@Override
-//	public boolean updateState(int emNo) { //근무상태 수정
-//		log.info("update work state............. " + emNo);
-//		return mapper.updateState(emNo) == 1;
-//	}
-
 	@Override
 	public int insertDayoff() { //휴가 입력
 		log.info("insert dayoff..............");
@@ -68,6 +62,48 @@ public class AttendanceServiceImpl implements AttendanceService {
 	public String printToday() { //오늘 날짜 출력
 		log.info("print Today date..............");
 		return mapper.printToday();
+	}
+
+	@Override
+	public List<AttendanceVO> listDay(AttendanceVO attendance) { //일별 부서 근태 목록 조회;
+		log.info("Attendance List.............." + attendance);
+		return mapper.listDay(attendance);
+	}
+
+	@Override
+	public List<AttendanceVO> listMonth(AttendanceVO attendance) { //월별 개인 근태 목록 조회
+		log.info("Attendance Month List .............." + attendance);
+		return mapper.listMonth(attendance);
+	}
+
+	@Override
+	public String printSearchDate(String date) { //검색 날짜
+		log.info("print Search date..............");
+		return mapper.printSearchDate(date);
+	}
+
+	@Override
+	public int countOnTime(AttendanceVO attendance) { //정상출근 일수 카운트
+		log.info("Count On Time days..............");
+		return mapper.countOnTime(attendance);
+	}
+
+	@Override
+	public int countLate(AttendanceVO attendance) { //지각 일수 카운트
+		log.info("Count Late days..............");
+		return mapper.countLate(attendance);
+	}
+
+	@Override
+	public int getMonthLastDay(String date) { //월 말일 구하기
+		log.info("get Month Last Day..............");
+		return mapper.getMonthLastDay(date);
+	}
+
+	@Override
+	public int countDayoffDay(AttendanceVO attendance) { //월 사용휴가 일수 카운트
+		log.info("count dayoff Days..............");
+		return mapper.countDayoffDay(attendance);
 	}
 
 }

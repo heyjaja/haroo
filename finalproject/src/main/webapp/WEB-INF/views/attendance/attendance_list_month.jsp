@@ -22,6 +22,12 @@ label, h4 {
 	font-weight: bold;
 }
 
+caption {
+	font-weight: bold;
+	color: #3fd2c7;
+}
+
+
 
 </style>
 
@@ -70,35 +76,56 @@ label, h4 {
 	<!-- 조회 영역 -->
 	<div class="p-3 container-sm">
 		<div class="row">
-			<h4 class="text-start">일별 부서 근태 기록 조회</h4>
+			<h4 class="text-start">월별 개인 근태 기록 조회</h4>
 			<hr>
 			<div class="col text-start">
-
-				<form id="searchForm" class="row row-cols-lg-auto" action="/attendance/list/day" method="get">
-					<div class="input-group mb-3">
+			<form id="searchForm" class="row row-cols-lg-auto"  action="/attendance/list/month" method="get">
+				<div class="input-group mb-3">
 						<div class="col-1">
-							<label for="search-list">조회일 선택</label>
+							<label for="search-list-month">년/월 선택</label>
 						</div>
 						<div class="col-3">
-							<input type="date" class="form-control" id="search-list" name="atDate" value="${searchDate}" max="${today }">		
+							<input type="month" class="form-control" id="search-list-month" name="atDate" max="${currentMonth }" value="${search }">		
 						</div>
 						<div class="col">
 							<button class="btn btn-outline-success" value="조회">조회</button>
 						</div>
 					</div>		   
-				</form>
-				<!-- end form -->
-
+			</form>
+			<!-- end form -->
+			
 			</div>
 			<!-- end div col -->
 		</div>
 		<!-- end div row -->
 
 		<br>
+		 <!-- 출근 count 테이블 -->
+		<table id="countTable" class="table table-sm table-bordered caption-top">
+			<c:forEach var="list" items="${list }" begin="0" end="0">
+				<c:set var="date" value="${list.atDate }"/>			
+				<caption>${fn:substring(date, 0, 7) } 누계</caption>
+			</c:forEach>
+
+			<tr>
+				<th scope="col">정상출근</th>
+				<td>${onTime }</td>
+				<th scope="col">지각</th>
+				<td>${late }</td>
+				<th scope="col">결근</th>
+				<td>${absent }</td>
+				<th scope="col">휴가</th>
+				<td>${dayoff }</td>
+			</tr>
+		</table>
+		<!-- end 조회 목록 테이블 -->
+
+		<br>	
 		<!-- 조회 목록 테이블 -->
 		<table class="table table-hover">
 			<thead>
 				<tr>
+					<th scope="col">#</th>
 					<th scope="col">일자</th>
 					<th scope="col">사번</th>
 					<th scope="col">사원</th>
@@ -111,69 +138,64 @@ label, h4 {
 			</thead>
 			<tbody>
 
-				<c:forEach var="dept" items="${depts }" varStatus="status">
-					<tr>				 
-						<th scope="row">${searchDate }</th>
-						<td>${dept.emNo}</td>
-						<td>${dept.emName}</td>
-						<td>${dept.deName}</td>
+				<c:forEach var="list" items="${list }" varStatus="status">
+					<tr>
+						<th scope="row">${status.count}</th>
+					
+						<c:set var="date" value="${list.atDate }"/> 
+						<td>${fn:substring(date, 0, 10) }</td>
+						<td>${list.emNo}</td>
+						<td>${list.emName}</td>
+						<td>${list.deName}</td>
 
-						<c:forEach var="list" items="${list }">
-							<c:choose>
-								<c:when test="${dept.emNo eq list.emNo}">
+						<!-- 시간 뒤에 .0 소수점 붙는 것 포맷 변경 -->
+						<fmt:parseDate value="${list.atStart}" var="atStart" 	pattern="yyyy-MM-dd HH:mm:ss.S" />
+						<td><fmt:formatDate value="${atStart}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
 
-									<!-- 시간 뒤에 .0 소수점 붙는 것 포맷 변경 -->
-									<fmt:parseDate value="${list.atStart}" var="atStart" pattern="yyyy-MM-dd HH:mm:ss.S" />
-									<td><fmt:formatDate value="${atStart}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+						<fmt:parseDate value="${list.atEnd}" var="atEnd" 	pattern="yyyy-MM-dd HH:mm:ss.S" />
+						<td><fmt:formatDate value="${atEnd}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
 
-									<fmt:parseDate value="${list.atEnd}" var="atEnd" 	pattern="yyyy-MM-dd HH:mm:ss.S" />
-									<td><fmt:formatDate value="${atEnd}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+						<!-- 근무상태 번호에 따라 출력 -->
+						<c:set var="state" value="${list.atState}" />
+						<c:choose>
+							<c:when test="${state eq 1 }">
+								<td>출근</td>
+							</c:when>
+							<c:when test="${state eq 2 }">
+								<td>지각</td>
+							</c:when>
+							<c:when test="${state eq 3 }">
+								<td>외근</td>
+							</c:when>
+							<c:when test="${state eq 4 }">
+								<td>휴가</td>
+							</c:when>
+						</c:choose>
+						<!-- end choose 근무상태 출력 -->
 
-									<!-- 근무상태 번호에 따라 출력 -->
-									<c:set var="state" value="${list.atState}" />
-									<c:choose>
-										<c:when test="${state eq 1 }">
-											<td>출근</td>
-										</c:when>
-										<c:when test="${state eq 2 }">
-											<td>지각</td>
-										</c:when>
-										<c:when test="${state eq 3 }">
-											<td>외근</td>
-										</c:when>
-										<c:when test="${state eq 4 }">
-											<td>휴가</td>
-										</c:when>
-									</c:choose>
-									<!-- end choose 근무상태 출력 -->
-
-									<!-- 비고 휴가 종류에 따른 출력 -->
-									<c:set var="note" value="${list.atNote}" />
-									<c:choose>
-										<c:when test="${note eq 0 }">
-											<td>-</td>
-										</c:when>
-										<c:when test="${note eq 1 }">
-											<td>연차</td>
-										</c:when>
-										<c:when test="${note eq 2 }">
-											<td>반차</td>
-										</c:when>
-										<c:when test="${note eq 3 }">
-											<td>병가</td>
-										</c:when>
-										<c:when test="${note eq 4 }">
-											<td>경조사</td>
-										</c:when>
-										<c:when test="${note eq 9 }">
-											<td>기타</td>
-										</c:when>
-									</c:choose>
-									<!-- end choose 비고 출력 -->
-
-								</c:when>
-							</c:choose>
-						</c:forEach>
+						<!-- 비고 휴가 종류에 따른 출력 -->
+						<c:set var="note" value="${list.atNote}" />
+						<c:choose>
+							<c:when test="${note eq 0 }">
+								<td>-</td>
+							</c:when>
+							<c:when test="${note eq 1 }">
+								<td>연차</td>
+							</c:when>
+							<c:when test="${note eq 2 }">
+								<td>반차</td>
+							</c:when>
+							<c:when test="${note eq 3 }">
+								<td>병가</td>
+							</c:when>
+							<c:when test="${note eq 4 }">
+								<td>경조사</td>
+							</c:when>
+							<c:when test="${note eq 9 }">
+								<td>기타</td>
+							</c:when>
+						</c:choose>
+						<!-- end choose 비고 출력 -->
 
 					</tr>
 				</c:forEach>
@@ -182,6 +204,9 @@ label, h4 {
 			</tbody>
 		</table>
 		<!-- end 조회 목록 테이블 -->
+		
+
+		
 
 	</div>
 	<!-- end 조회 영역 -->

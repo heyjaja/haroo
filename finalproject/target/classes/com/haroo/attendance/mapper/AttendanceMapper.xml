@@ -81,20 +81,6 @@
         		from leave 
         		where le_status = 1 
         		and TO_char(sysdate, 'YYYY-MM-DD') BETWEEN le_start AND le_end)
-
- 	 	
- 	 	<!-- insert into attendance
-			select
-				to_char(sysdate, 'yyyy-mm-dd'), ${emNo}, NULL, NULL, 4, NULL
-           	from dual
-           	where not exists (
-                select 1 
-                from attendance a, leave l 
-                where l.em_no = a.em_no
-                and l.le_status = 1
-                and at_date BETWEEN TO_DATE(l.le_start, 'YYYY-MM-DD HH24:MI:SS') AND TO_DATE(l.le_end, 'YYYY-MM-DD HH24:MI:SS')
-                and at_date = TO_char(sysdate, 'YYYY-MM-DD')
-            ) -->  
           
 	</insert>
 	
@@ -124,6 +110,58 @@
 		select TO_char(sysdate, 'YYYY-MM-DD') from dual
 	</select>
 	
+	<!-- 일별 부서 근태목록 조회 -->
+	<select id="listDay" parameterType="com.haroo.attendance.domain.AttendanceVO" resultType="com.haroo.attendance.domain.AttendanceVO" resultMap="attendanceResult">
+		select a.at_date, a.em_no, a.at_start, a.at_end, a.at_state, a.at_note, e.em_name, d.de_name 
+    		from attendance a 
+    			JOIN employee e
+    				ON a.em_no = e.em_no
+				JOIN department d
+					ON e.de_no = d.de_no
+    		where a.at_date = #{atDate}
+    		and d.de_no = (select de_no from employee where em_no = #{emNo})
+    		order by a.em_no
+	</select>
 	
+	<!-- 월별 개인 근태목록 조회 -->
+	<select id="listMonth" parameterType="com.haroo.attendance.domain.AttendanceVO" resultType="com.haroo.attendance.domain.AttendanceVO" resultMap="attendanceResult">
+		select a.at_date, a.em_no, a.at_start, a.at_end, a.at_state, a.at_note, e.em_name, d.de_name 
+    		from attendance a 
+    			JOIN employee e
+    				ON a.em_no = e.em_no
+				JOIN department d
+					ON e.de_no = d.de_no
+    		where a.em_no = #{emNo} and substr(TO_char(a.at_date, 'YYYY-MM-DD HH24:MI:SS'), 1, 7) = #{atDate}
+	</select>
+	
+	<!-- 검색 날짜 -->
+	<select id="printSearchDate" parameterType="String" resultType="String">
+		select #{atDate} AS atDate from dual
+	</select>
+	
+	<!-- 정상출근 일수 -->
+	<select id="countOnTime" parameterType="com.haroo.attendance.domain.AttendanceVO" resultType="int">
+		<![CDATA[select count(em_no) AS atDate from attendance
+    where at_start <= TO_date(concat(substr(TO_char(at_date, 'YYYY-MM-DD HH24:MI:SS'), 1, 10), ' 09:00:00'), 'YYYY-MM-DD HH24:MI:SS') 
+        and substr(TO_char(at_date, 'YYYY-MM-DD HH24:MI:SS'), 1, 7) = #{atDate} and em_no = #{emNo}]]>
+	</select>
+	
+	<!-- 지각 일수 -->
+	<select id="countLate" parameterType="com.haroo.attendance.domain.AttendanceVO" resultType="int">
+		<![CDATA[select count(em_no) AS atDate from attendance
+    where at_start > TO_date(concat(substr(TO_char(at_date, 'YYYY-MM-DD HH24:MI:SS'), 1, 10), ' 09:00:00'), 'YYYY-MM-DD HH24:MI:SS') 
+        and substr(TO_char(at_date, 'YYYY-MM-DD HH24:MI:SS'), 1, 7) = #{atDate} and em_no = #{emNo}]]>
+	</select>
+	
+	<!-- 월의 막일 구하기 -->
+	<select id="getMonthLastDay" parameterType="String" resultType="int">
+		<!-- select substr(LAST_DAY(TO_date(concat(#{atDate}, '-01'), 'YYYY-MM-DD')), 9, 2) AS atDate FROM dual -->
+		select substr(TO_char(LAST_DAY(TO_date(concat(#{atDate}, '-01'), 'YYYY-MM-DD')), 'YYYY-MM-DD HH24:MI:SS'), 9, 2) AS atDate FROM dual
+	</select>
+	
+	<!-- 월 휴가간 일수 -->
+	<select id="countDayoffDay" parameterType="com.haroo.attendance.domain.AttendanceVO" resultType="int">
+		select count(em_no) AS atDate  FROM attendance where at_state = 4 and em_no = #{emNo} and substr(TO_char(at_date, 'YYYY-MM-DD HH24:MI:SS'), 1, 7) = #{atDate}
+	</select>
 	
 </mapper>

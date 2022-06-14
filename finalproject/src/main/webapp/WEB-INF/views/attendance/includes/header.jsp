@@ -19,10 +19,10 @@
             crossorigin="anonymous">
             
    	<!-- jquery CDN -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     
     <!-- 근태관리 js -->
-  <script type="text/javascript" src="/resources/js/attendance.js"></script>
+    <script type="text/javascript" src="/resources/js/attendance.js"></script>
 
 </head>
 

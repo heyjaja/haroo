@@ -34,13 +34,12 @@ public class AttendanceControllerTests {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(ctx).build();
 	}
 	
-	@Test
-	public void testStatus() throws Exception{ //로그인한 사원의 부서 출근 목록 출력
-		log.info(mockMvc.perform(MockMvcRequestBuilders
-				.get("/attendance/status")
-				.param("emNo", "19362306"))
-				.andReturn().getModelAndView().getModelMap());
-	}
+//	@Test
+//	public void testStatus() throws Exception{ //로그인한 사원의 부서 당일 출근 목록 출력
+//		log.info(mockMvc.perform(MockMvcRequestBuilders
+//				.get("/attendance/status"))
+//				.andReturn().getModelAndView().getModelMap());
+//	}
 	
 //	@Test
 //	public void testStart() throws Exception{ //출근 입력 + 휴가자 입력
@@ -70,6 +69,20 @@ public class AttendanceControllerTests {
 //				.andReturn().getModelAndView().getViewName();
 //		
 //		log.info("result");
+//	}
+	
+//	@Test
+//	public void testListDay() throws Exception { //일별 부서 근태 목록 조회
+//		log.info(mockMvc.perform(MockMvcRequestBuilders
+//				.get("/attendance/list/day"))
+//				.andReturn().getModelAndView().getModelMap());
+//	}
+	
+//	@Test
+//	public void testListMonth() throws Exception { //월별 개인 근태 목록 조회 
+//		log.info(mockMvc.perform(MockMvcRequestBuilders
+//				.get("/attendance/list/month"))
+//				.andReturn().getModelAndView().getModelMap());
 //	}
 
 }

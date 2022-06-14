@@ -4,12 +4,9 @@ import lombok.Data;
 
 @Data
 public class DayoffVO {
-	private int daNo;
-	private String daName;
-	private int daTotal;
-	private int daCnt;
-	private int daRemainder;
-	private String daHdate;
-	private int daApproval;
-	private int emNo;
+	private int emNo; // 사번
+	private String emName; // 사원 이름
+	private int daTotal; //총 휴가일수
+	private int daCnt; //사용일수
+	private int daRemainder; //잔여일수
 }

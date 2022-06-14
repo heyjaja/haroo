@@ -58,7 +58,10 @@ h4 {
 						<li><a href="status" class="link-dark rounded">근태입력</a></li>
 					</ul>
 					<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-						<li><a href="list" class="link-dark rounded">근태기록조회</a></li>
+						<li><a href="list/day" class="link-dark rounded">일별 부서 근태기록조회</a></li>
+					</ul>
+					<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+						<li><a href="list/month" class="link-dark rounded">월별 개인 근태기록조회</a></li>
 					</ul>
 				</div>
 			</li>

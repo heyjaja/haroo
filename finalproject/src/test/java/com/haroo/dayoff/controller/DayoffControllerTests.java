@@ -38,8 +38,7 @@ public class DayoffControllerTests {
 	@Test
 	public void testStatus() throws Exception {
 		log.info(mockMvc.perform(MockMvcRequestBuilders
-				.get("/dayoff/status")
-				.param("emNo", "19362300"))
+				.get("/dayoff/status"))
 				.andReturn().getModelAndView().getModelMap());
 	}
 

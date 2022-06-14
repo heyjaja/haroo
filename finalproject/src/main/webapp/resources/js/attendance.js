@@ -100,9 +100,44 @@ function addZeroTime(time){
     }
 }
 
-window.onload = function(){
+//시계 실행
+$(function(){
     setClock();
     setInterval(setClock, 1000); //1초마다 setClock 함수 실행
-}
+
+});
+
+//window.onload = function(){
+//    setClock();
+//    setInterval(setClock, 1000); //1초마다 setClock 함수 실행
+//}
 
 
+
+
+//검색 버튼 이벤트 처리
+$(function(){
+    var searchForm = $("#searchForm");
+
+	$("#searchForm button").on("click", function(e) {
+	
+		//기본이벤트 막기
+		e.preventDefault();
+		
+		if(!searchForm.find("input[name='atDate']").val()) {
+			alert("조회일 또는 조회 년/월을 선택하세요.");
+			return false;
+		}
+
+		searchForm.submit();
+	});
+	
+
+});
+
+
+          
+            
+            
+            
+            
