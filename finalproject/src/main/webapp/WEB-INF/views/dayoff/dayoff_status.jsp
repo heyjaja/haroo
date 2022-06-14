@@ -125,7 +125,7 @@ form {
 			
 		<!-- 휴가 사용내역 테이블 -->
 		<table class="table table-hover caption-top">
-			<caption>휴가 사용내역</caption>
+			<caption>휴가 사용내역 (${today } 기준)</caption>
 			<thead>
 				<tr>
 					<th scope="col">#</th>
