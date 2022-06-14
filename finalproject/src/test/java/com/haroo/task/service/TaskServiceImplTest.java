@@ -1,6 +1,5 @@
 package com.haroo.task.service;
 
-import com.google.gson.Gson;
 import com.haroo.task.domain.TaskVO;
 import com.haroo.task.mapper.TaskMapper;
 import lombok.Setter;
@@ -10,10 +9,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.List;
-
-import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring/*.xml")
@@ -46,5 +41,43 @@ public class TaskServiceImplTest {
 
         //then
         log.info("My Task = {}", taskVO);
+    }
+
+    //일정 업데이트 Test OK
+    @Test
+    public void updateTaskService() {
+        //given
+        TaskVO taskVO = new TaskVO();
+
+        taskVO.setId(27);
+        taskVO.setEmNo(19362300);
+        taskVO.setGroupId(0);
+
+        //when
+        taskVO.setTitle("바이");
+        taskVO.setWriter("김서윤");
+        taskVO.setContent("업데이트용");
+        taskVO.setStart("2022-06-05");
+        taskVO.setEnd("2022-06-06");
+        taskVO.setAllDay(true);
+        taskVO.setTextColor("Purple");
+        taskVO.setBackgroundColor("White");
+
+        taskMapper.updateTask(taskVO);
+
+        //then
+        System.out.println("My Task = " + taskVO);
+
+    }
+
+    @Test
+    public void deleteTaskService() {
+        //given
+        TaskVO taskVO = new TaskVO();
+
+        //when
+        taskMapper.deleteTask(33);
+
+        //then db checking
     }
 }
