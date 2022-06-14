@@ -26,7 +26,7 @@
 
     <!--kakao map -->
     <script type="text/javascript"
-            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c2c6dbb9e3f49d3aced5b89be4b4eabb&libraries=services"></script>
+            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b89e623fa5a7450da9e317c87329cb31&libraries=services"></script>
     <link rel="stylesheet" href="/resources/css/kakao-map.css"/>
 
     <style>
