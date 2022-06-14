@@ -26,32 +26,15 @@
           id="btnradio3" value="2" autocomplete="off" ${status == 2 ? "checked" : "" }>
         <label class="btn btn-outline-secondary" for="btnradio3">반려</label>
       </div>
-      <form id='ap-action-form' action="/approval/done" method='get'>
-        <input type='hidden' name='page' value = '${pageMaker.cri.page}'/>
-        <input type='hidden' name='amount' value='${pageMaker.cri.amount }' />
-        <input type='hidden' name='status' value='${status }' />
-      </form>
     </c:when>
     <c:when test="${fn:contains(url, 'process') }">
       <h3>진행 문서</h3>
-      <form id='ap-action-form' action="/approval/process" method='get'>
-        <input type='hidden' name='page' value = '${pageMaker.cri.page}'/>
-        <input type='hidden' name='amount' value='${pageMaker.cri.amount }' />
-      </form>
     </c:when>
     <c:when test="${fn:contains(url, 'takeback') }">
       <h3>취소 문서</h3>
-      <form id='ap-action-form' action="/approval/takeback" method='get'>
-        <input type='hidden' name='page' value = '${pageMaker.cri.page}'/>
-        <input type='hidden' name='amount' value='${pageMaker.cri.amount }' />
-      </form>
     </c:when>
     <c:when test="${fn:contains(url, 'all') }">
       <h3>전체 문서</h3>
-      <form id='ap-action-form' action="/approval/all" method='get'>
-        <input type='hidden' name='page' value = '${pageMaker.cri.page}'/>
-        <input type='hidden' name='amount' value='${pageMaker.cri.amount }' />
-      </form>
     </c:when>
   </c:choose>
   <table class="table table-hover mt-3">
@@ -131,23 +114,36 @@
   </nav>
   <!-- end pagination -->
   
-  <form class="row g-3">
+  <form class="row g-3" id="ap-search-form" action="" method='get'>
     <div class="col-auto">
-      <select class="form-select form-select-sm" aria-label="search">
-        <option selected>제목</option>
-        <option value="1">내용</option>
-        <option value="2">제목+내용</option>
-        <option value="3">기안자</option>
-        <option value="4">양식</option>
+      <select class="form-select form-select-sm" aria-label="search" name="type">
+        <option value="T" selected>제목</option>
+        <option value="C">내용</option>
+        <option value="TC">제목+내용</option>
+        <option value="W">기안자</option>
+        <option value="F">양식</option>
       </select>
     </div>
     <div class="col-auto">
       <input type="text" class="form-control form-control-sm" name="keyword"/>
+      <input type='hidden' name='page' value='${pageMaker.cri.page }' />
+      <input type='hidden' name='amount' value='${pageMaker.cri.amount }' />
     </div>
     <div class="col-auto">
-      <button class="btn btn-outline-secondary btn-sm" type="button">검색</button>
+      <button class="btn btn-outline-secondary btn-sm">검색</button>
     </div>
   </form>
+  
+  <form id='ap-action-form' action="" method='get'>
+    <input type='hidden' name='page' value = '${pageMaker.cri.page}'/>
+    <input type='hidden' name='amount' value='${pageMaker.cri.amount }' />
+    <input type='hidden' name='status' value='${status }' />
+    <input type='hidden' name='type' value='${pageMaker.cri.type }' />
+    <input type='hidden' name='keyword' value='${pageMaker.cri.keyword }' />
+    
+  </form>
 </div>
+
+
 
 <%@include file="./includes/footer.jsp"%>

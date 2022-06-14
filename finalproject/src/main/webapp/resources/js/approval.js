@@ -247,6 +247,8 @@ $(document).ready(function(e) {
 // paging
 $(document).ready(function() {
   
+  history.replaceState({}, null, location.pathname);
+  
   const apActionForm = $("#ap-action-form");
   $(".pagination .page-link").on("click", function(e) {
     e.preventDefault();
@@ -264,6 +266,24 @@ $(document).ready(function() {
     apActionForm.find("input[name='page']").val("1");
     $(this).attr('checked', true);
     apActionForm.submit();
-  })
-})
+  });
+  
+  // search
+  const searchForm = $("#ap-search-form");
+  
+  $("#ap-search-form button").on("click", function(e){
+    
+    e. preventDefault();
+    
+    if(!searchForm.find("input[name='keyword']").val()) {
+      alert("검색어를 입력하세요.");
+      return false;
+    }
+    
+    searchForm.find("input[name='page']").val(1);
+    
+    searchForm.submit();
+  });
+});
+
 

@@ -20,6 +20,29 @@
     <result property="alStatus" column="al_status"/>
   </resultMap>
   
+  <sql id="criteria">
+    <trim prefix="AND (" suffix=") " prefixOverrides="OR">
+      <foreach item="type" collection="cri.typeArr">
+        <trim prefix="OR">
+          <choose>
+            <when test="type == 'T'.toString()">
+              ap_title like '%'||#{cri.keyword}||'%'
+            </when>
+            <when test="type == 'C'.toString()">
+              ap_content like '%'||#{cri.keyword}||'%'
+            </when>
+            <when test="type == 'W'.toString()">
+              em_name like '%'||#{cri.keyword}||'%'
+            </when>
+            <when test="type == 'F'.toString()">
+              fo_kind like '%'||#{cri.keyword}||'%'
+            </when>
+          </choose>
+        </trim>
+      </foreach>
+    </trim>
+  </sql>
+  
   <select id="selectTest" resultType="String">
     select sysdate from dual
   </select>
@@ -89,6 +112,9 @@
           AND ap_status <![CDATA[>]]> 0
         </otherwise>
       </choose>
+      
+        <include refid="criteria"></include>
+        
         AND rownum <![CDATA[<=]]> #{cri.page} * #{cri.amount}
       )
       WHERE rn <![CDATA[>]]> (#{cri.page} -1) * #{cri.amount}
@@ -119,6 +145,9 @@
           AND ap_status <![CDATA[>]]> 0
         </otherwise>
       </choose>
+      
+      <include refid="criteria"></include>
+        
   </select>
 	
 	<!-- 1 문서 내용 불러오기 -->
