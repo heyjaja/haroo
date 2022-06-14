@@ -18,12 +18,22 @@ public class TaskServiceImpl implements TaskService{
     }
 
     @Override
-    public List<TaskVO> getTaskListService(int em_no) {
-        return taskMapper.getTaskList(em_no);
+    public List<TaskVO> getTaskListService(int emNo) {
+        return taskMapper.getTaskList(emNo);
     }
 
     @Override
     public int insertTaskService(TaskVO taskVO) {
         return taskMapper.insertTask(taskVO);
+    }
+
+    @Override
+    public int updateTaskService(TaskVO taskVO) {
+        return taskMapper.updateTask(taskVO);
+    }
+
+    @Override
+    public int deleteTaskService(Integer id) {
+        return taskMapper.deleteTask(id);
     }
 }
