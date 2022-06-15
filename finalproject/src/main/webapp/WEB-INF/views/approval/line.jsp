@@ -31,14 +31,15 @@
       <ul class="ap-alist accordion-item list-group">
         <c:forEach var="item" items="${map}" varStatus="vs">
           <li class="accordion-header">
-          <button class="accordion-button collapsed" data-bs-toggle="collapse" href="#col${vs.index }" aria-expanded="true">
+          <button class="accordion-button collapsed" data-bs-toggle="collapse" href="#col${vs.index }" aria-expanded="false">
             ${item.key }
           </button></li>
           <div class="collapse" id="col${vs.index }">
             <ul class="m-2">
               <c:forEach var="emp" items="${item.value }">
                 <li class="ap-alist-name">
-                    ${emp.emName } ${emp.poName } <button type="button" class="btn btn-sm ms-1 mb-1">추가</button>
+                    ${emp.emName } ${emp.poName }
+                    <button type="button" class="btn btn-sm ms-1 mb-1">추가</button>
                     <input type="hidden" class="ap-hidden-emNo" name="emNo" value="${emp.emNo }" /> 
                     <input type="hidden" class="ap-hidden-emName" name="emName" value="${emp.emName }" /> 
                     <input type="hidden" name="poName" value="${emp.poName }" />
@@ -65,5 +66,40 @@
 
   <!-- 전자결재 script -->
   <script type="text/javascript" src="/resources/js/approval.js"></script>
+  <script type="text/javascript">
+  
+  //결재선 검색
+  const lineSearch = document.getElementById("ap-alist-search");
+
+  lineSearch.addEventListener("keyup", filter);
+
+  function filter() {
+    let keyword, name, item, i;
+    
+    keyword = document.getElementById("ap-alist-search").value;
+    item = document.getElementsByClassName("ap-alist-name");
+    
+    for(i = 0; i<item.length; i++) {
+      name = item[i].textContent;
+      
+      
+      
+      if(name.indexOf(keyword) > -1) {
+        
+        item[i].style.display = "block";
+        
+        if(keyword != "") {
+          item[i].parentNode.parentNode.className = "collapse show";
+        } else {
+          item[i].parentNode.parentNode.className = "collapse";
+        }
+        
+      } else {
+        item[i].style.display = "none";
+      }
+      
+    }
+  }
+  </script>
 </body>
 </html>

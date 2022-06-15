@@ -8,6 +8,7 @@ import com.haroo.approval.domain.ApprovalLineVO;
 import com.haroo.approval.domain.ApprovalVO;
 import com.haroo.approval.domain.Criteria;
 import com.haroo.approval.domain.EmpVO;
+import com.haroo.approval.domain.FormVO;
 
 public interface ApprovalService {
 
@@ -40,5 +41,13 @@ public interface ApprovalService {
   public List<ApprovalAttachVO> getAttachList(int apNo); // 첨부파일목록
   
   public Map<String, List<EmpVO>> getEmpList(); // 결재선 목록
+  
+  public int insertForm(FormVO form); // 문서양식 등록
+  
+  public FormVO readForm(int foNo); // 문서양식 읽기
+  
+  public List<FormVO> getFormList(); // 문서목록
+  
+  public int modifyForm(FormVO form);
   
 }

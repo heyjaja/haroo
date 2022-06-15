@@ -125,14 +125,14 @@
 
       <div class="text-end">
         <c:if test="${ap.apStatus == 0 }">
-          <form action="/approval/process/${ap.apNo }" method="post">
+          <form action="/haroo/approval/process/${ap.apNo }" method="post">
             <input type="hidden" name="apNo" value="${ap.apNo }" />
             <input type="hidden" name="foNo" value="${ap.foNo }" />
             <button class="btn btn-outline-secondary btn-sm">상신취소</button>
           </form>
         </c:if>
         <c:if test="${(ap.foNo != 2 && ap.foNo != 3) && (ap.apStatus == -1 || ap.apStatus == 2) }">
-          <a href="/approval/re/${ap.apNo }">
+          <a href="/haroo/approval/re/${ap.apNo }">
             <button class="btn btn-outline-secondary btn-sm">재상신</button>
           </a>
         </c:if>

@@ -69,19 +69,22 @@ $(document).on('change', '.ap-el input', function(){
 $(document).on('click', '.ap-al-select', function(event){
   event.preventDefault();
   $('#ap-list-selected').empty();
-  window.open("/approval/line", "결재선 선택", "width=600, height=500, left=50, top=50");
+  window.open("/haroo/approval/line", "결재선 선택", "width=600, height=500, left=50, top=50");
 });
 
 //결재선 선택
 $('li.ap-alist-name').click(function(event){
   event.preventDefault();
-  let listName = $(this).find("input[name='emName']").val();
-  let listPoName = $(this).find("input[name='poName']").val();
-  let listDeName = $(this).find("input[name='deName']").val();
+  const listName = $(this).find("input[name='emName']").val();
+  const listPoName = $(this).find("input[name='poName']").val();
+  const listDeName = $(this).find("input[name='deName']").val();
+  const listEmNo = $(this).find("input[name='emNo']").val();
+  
   if($('.ap-selected-name').length < 3) {
     let html = '<li class="ap-selected-name list-group-item">';
-    html += listName+' '+listPoName+'('+listDeName+')'
-    html += '<button type="button" class="btn btn-sm ms-1 mb-1">삭제</button>'
+    html += '<span>'+listName+' '+listPoName+'('+listDeName+')'+'</span>';
+    html += '<button type="button" class="btn btn-sm ms-1 mb-1">삭제</button>';
+    html += '<input type="hidden" name="emNo" value="' + listEmNo+ '"/>';
     html += '</li></p>'
     $('#ap-alist-selected').append(html);
   } else {
@@ -99,8 +102,8 @@ $(document).on('click', '.ap-selected-name', function(event){
 let insertAlList = '<table class="table mb-0 table-bordered"><tbody>';
 $(document).on('click', '#ap-alist-selected-sticky .ap-form-btn', function(){
   $('.ap-selected-name').each(function(index){
-    insertAlList += '<tr><td>'+'<span class="badge rounded-pill bg-light text-dark">'+(index+1)+'</span>'+$(this).text();
-    insertAlList += '<input type="hidden" name="line['+(index)+'].alNo" value="'+$(this).find('.ap-hidden-emNo').val()+'"/>'
+    insertAlList += '<tr><td>'+'<span class="badge rounded-pill bg-light text-dark">'+(index+1)+'</span>'+$(this).find('span').text();
+    insertAlList += '<input type="hidden" name="line['+(index)+'].alNo" value="'+$(this).find('input[name="emNo"]').val()+'"/>'
     insertAlList += '<input type="hidden" name="line['+(index)+'].alOrder" value="'+(index+1)+'"/>'
     insertAlList += '</td></tr>'
   })
@@ -111,7 +114,9 @@ $(document).on('click', '#ap-alist-selected-sticky .ap-form-btn', function(){
 
 // form reset 될 때 선택한 결재선 삭제, summernote 내용 비우기
 $(document).on('click', '.ap-form-reset', function(){
-  $('#ap-list-selected').empty();
+  if($('#ap-list-selected')) {
+    $('#ap-list-selected').empty();
+  }
   $('#summernote').summernote('reset');
 });
 
@@ -129,17 +134,21 @@ $(document).ready(function(e) {
     
     let str = "";
     
-    $('#ap-upload-file ul li').each(function(i, obj) {
+    if($('#ap-upload-file ul li')) {
+      $('#ap-upload-file ul li').each(function(i, obj) {
       
-      const jobj = $(obj);
-      console.dir(jobj);
+        const jobj = $(obj);
+        console.dir(jobj);
       
-      str += "<input type='hidden' name='attachList["+i+"].fname' value='"+jobj.data("fname")+"'/>";
-      str += "<input type='hidden' name='attachList["+i+"].aaNo' value='"+jobj.data("uuid")+"'/>";
-      str += "<input type='hidden' name='attachList["+i+"].path' value='"+jobj.data("path")+"'/>";
-    });//end each
+        str += "<input type='hidden' name='attachList["+i+"].fname' value='"+jobj.data("fname")+"'/>";
+        str += "<input type='hidden' name='attachList["+i+"].aaNo' value='"+jobj.data("uuid")+"'/>";
+        str += "<input type='hidden' name='attachList["+i+"].path' value='"+jobj.data("path")+"'/>";
+      });//end each
+    }
     
-    formObj.append(str).submit();
+    if(confirm("상신하시겠습니까?")) {
+      formObj.append(str).submit();
+    }
   });//end submit click event
   
   const regex = new RegExp("(.*?)\.(exe|sh|zip|alz)$");
@@ -179,7 +188,7 @@ $(document).ready(function(e) {
     console.log(files);
     
     $.ajax({
-      url: '/approval/file',
+      url: '/haroo/approval/file',
       processData: false,
       contentType: false,
       data: formData,
@@ -207,7 +216,7 @@ $(document).ready(function(e) {
       
       str += '<li class="list-group-item" data-path="'+obj.path+'" data-uuid="'+obj.aaNo+'"'
         + 'data-fname="'+obj.fname
-        + '"><div><a class="ap-list-title" href="/approval/file?fname='
+        + '"><div><a class="ap-list-title" href="/haroo/approval/file?fname='
         + fileCallPath + '">' 
         + obj.fname + "</a>" 
         + "<span class='badge rounded-pill bg-light text-dark' data-file=\'"
@@ -226,7 +235,7 @@ $(document).ready(function(e) {
     const targetLi = $(this).closest("li");
     
     $.ajax({
-      url: '/approval/file/delete',
+      url: '/haroo/approval/file/delete',
       data: {fname: targetFile},
       dataType: 'text',
       type: 'POST',
@@ -243,7 +252,7 @@ $(document).ready(function(e) {
     const fileCallPath = encodeURIComponent($(this).data("path") 
     + "/" + $(this).data("uuid") + "_" + $(this).data("fname"));
     
-    location.href="/approval/file?fname="+fileCallPath;
+    location.href="/haroo/approval/file?fname="+fileCallPath;
     
   });
 

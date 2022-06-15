@@ -14,11 +14,13 @@ import com.haroo.approval.domain.ApprovalLineVO;
 import com.haroo.approval.domain.ApprovalVO;
 import com.haroo.approval.domain.Criteria;
 import com.haroo.approval.domain.EmpVO;
+import com.haroo.approval.domain.FormVO;
 import com.haroo.approval.domain.LeaveVO;
 import com.haroo.approval.mapper.ApprovalAttachMapper;
 import com.haroo.approval.mapper.ApprovalLineMapper;
 import com.haroo.approval.mapper.ApprovalMapper;
 import com.haroo.approval.mapper.ExpenseListMapper;
+import com.haroo.approval.mapper.FormMapper;
 import com.haroo.approval.mapper.LeaveMapper;
 
 import lombok.extern.log4j.Log4j;
@@ -41,6 +43,9 @@ public class ApprovalServiceImpl implements ApprovalService {
   
   @Autowired
   private ApprovalAttachMapper attachMapper;
+  
+  @Autowired
+  private FormMapper formMapper;
 
   @Transactional
   @Override
@@ -157,8 +162,6 @@ public class ApprovalServiceImpl implements ApprovalService {
       }
     });
     
-    log.info("emp: " + map);
-    
     return map;
   }
 
@@ -259,6 +262,37 @@ public class ApprovalServiceImpl implements ApprovalService {
     log.info("get All List with Paging......" + cri);
     
     return mapper.getAllListWithPaging(cri);
+  }
+
+  @Override
+  public int insertForm(FormVO form) {
+    
+    log.info("insert form......" + form);
+    return formMapper.insert(form);
+  }
+
+  @Override
+  public FormVO readForm(int foNo) {
+    
+    log.info("get form......" + foNo);
+    
+    return formMapper.read(foNo);
+  }
+
+  @Override
+  public List<FormVO> getFormList() {
+    
+    log.info("get form list......");
+    
+    return formMapper.getList();
+  }
+
+  @Override
+  public int modifyForm(FormVO form) {
+    
+    log.info("modify form......"+form.getFoNo());
+    
+    return formMapper.modify(form);
   }
 
 

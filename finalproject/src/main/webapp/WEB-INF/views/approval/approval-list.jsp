@@ -54,7 +54,7 @@
             <tr>
               <th scope="row">${ap.foKind }</th>
               <td><a class="ap-list-title ap-link"
-                href="/approval/process/${ap.apNo }">${ap.apTitle }</a></td>
+                href="/haroo/approval/process/${ap.apNo }">${ap.apTitle }</a></td>
               <td>${ap.emName }</td>
               <td>${ap.apDate }</td>
               <td>진행중</td>
@@ -64,7 +64,7 @@
             <tr>
               <th scope="row">${ap.foKind }</th>
               <td><a class="ap-list-title ap-link"
-                href="/approval/done/${ap.apNo }">${ap.apTitle }</a></td>
+                href="/haroo/approval/done/${ap.apNo }">${ap.apTitle }</a></td>
               <td>${ap.emName }</td>
               <td>${ap.apDate }</td>
               <c:if test="${ap.apStatus == 1 }">
@@ -79,7 +79,7 @@
             <tr>
               <th scope="row">${ap.foKind }</th>
               <td><a class="ap-list-title ap-link"
-                href="/approval/takeback/${ap.apNo }">${ap.apTitle }</a></td>
+                href="/haroo/approval/takeback/${ap.apNo }">${ap.apTitle }</a></td>
               <td>${ap.emName }</td>
               <td>${ap.apDate }</td>
               <td>취소</td>

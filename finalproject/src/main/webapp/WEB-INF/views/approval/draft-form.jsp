@@ -6,29 +6,36 @@
 <div class="p-3 container-sm" id="ap-contents">
   <div class="ap-form-container container">
 
-    <form class="ap-form row" action="/approval/form/1" method="post"
+    <form class="ap-form row" action="" method="post"
     enctype="multipart/form-data">
     <div class="ap-report-body col-9">
     <div class="text-center">
-      <h1 class="fs-2 ap-form-name">기안서</h1>
+      <h1 class="fs-2 ap-form-name">
+      <c:if test="${form != null }">
+        ${form.foKind }
+      </c:if>
+      <c:if test="${form == null }">
+        기안서
+      </c:if>
+      </h1>
     </div>
 <!--     <input type="hidden" name="foNo" value="1" /> -->
     <table class="table table-bordered">
       <tbody>
         <tr>
           <th class="text-center" scope="row">기안자</th>
-          <td><input type="hidden" name="emNo" value="45424411" />백민주</td>
+          <td><input type="hidden" name="emNo" value="${employee.em_no }" />${employee.em_name }</td>
         </tr>
         <tr>
           <th class="text-center" scope="row">제목</th>
           <td><div class="input-group input-group-sm">
-            <c:if test="${ap.apTitle == null }">
+            <c:if test="${ap.apTitle == null}">
               <input class="form-control" type="text" name="apTitle" />
             </c:if>
             <c:if test="${ap.apTitle != null }">
               <input class="form-control" type="text" name="apTitle"  value="${ap.apTitle }"/>
             </c:if>
-              
+
           </div></td>
         </tr>
         <tr>
@@ -36,6 +43,9 @@
           <td><textarea id="summernote" name="apContent">
             <c:if test="${ap.apContent != null }">
               ${ap.apContent }
+            </c:if>
+            <c:if test="${form != null }">
+              ${form.foContent }
             </c:if>
           </textarea></td>
         </tr>
@@ -111,7 +121,8 @@
           ['fontsize', ['fontsize']],
           ['color', ['color']],
           ['para', ['ul', 'ol', 'paragraph']],
-          ['height', ['height']]
+          ['height', ['height']],
+          ['table', ['table']]
         ]
     });
   });

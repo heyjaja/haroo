@@ -33,7 +33,7 @@
           <c:when test="${ap.alStatus == 0 }">
           <tr>
             <th scope="row">${ap.foKind }</th>
-            <td><a class="ap-list-title ap-link" href="/approval/wait/${ap.apNo }">${ap.apTitle }</a></td>
+            <td><a class="ap-list-title ap-link" href="/haroo/approval/wait/${ap.apNo }">${ap.apTitle }</a></td>
             <td>${ap.emName }</td>
             <td>${ap.apDate }</td>
             <td>진행중</td>
@@ -42,7 +42,7 @@
           <c:when test="${ap.alStatus > 0 }">
           <tr>
             <th scope="row">${ap.foKind }</th>
-            <td><a class="ap-list-title ap-link" href="/approval/sign/${ap.apNo }">${ap.apTitle }</a></td>
+            <td><a class="ap-list-title ap-link" href="/haroo/approval/sign/${ap.apNo }">${ap.apTitle }</a></td>
             <td>${ap.emName }</td>
             <td>${ap.apDate }</td>
             <c:choose>

@@ -6,7 +6,7 @@
 <div class="p-3 container-sm" id="ap-contents">
   <div class="ap-form-container">
   
-    <form class="ap-form row" action="/approval/form/2" method="post">
+    <form class="ap-form row" action="/haroo/approval/report/2" method="post">
     <div class="ap-report-body col-9">
     <div class="text-center">
       <h1 class="fs-2 ap-form-name">품의서</h1>
@@ -16,7 +16,7 @@
       <tbody>
         <tr>
           <th class="text-center" scope="row">기안자</th>
-          <td><input type="hidden" name="emNo" value="45424411" />백민주</td>
+          <td><input type="hidden" name="emNo" value="${employee.em_no }" />${employee.em_name }</td>
         </tr>
         <tr>
           <th class="text-center" scope="row">제목</th>
@@ -107,6 +107,20 @@
            </div>
           </div>
         </div>
+        <div class="card border-secondary mb-3" style="max-width: 18rem;">
+        <div class="card-header">첨부파일</div>
+          <div class="card-body text-dark">
+            <div class="input-group-sm upload-div">
+              <input class="form-control ap-file" type="file" name="uploadFile" multiple />
+            </div>
+            <div id="ap-upload-file" class="mt-2">
+              <ul class="list-group list-group-flush">
+
+              </ul>
+           </div>
+          </div>
+        </div>
+        <!-- .card -->
       </div>
     </form>
   </div>
@@ -125,7 +139,8 @@
           ['fontsize', ['fontsize']],
           ['color', ['color']],
           ['para', ['ul', 'ol', 'paragraph']],
-          ['height', ['height']]
+          ['height', ['height']],
+          ['table', ['table']]
         ]
     });
   });

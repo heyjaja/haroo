@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,13 +35,16 @@ import com.haroo.approval.domain.ApprovalLineVO;
 import com.haroo.approval.domain.ApprovalVO;
 import com.haroo.approval.domain.Criteria;
 import com.haroo.approval.domain.EmpVO;
+import com.haroo.approval.domain.FormVO;
 import com.haroo.approval.domain.PageDTO;
 import com.haroo.approval.service.ApprovalService;
+import com.haroo.login.domain.EmployeeVO;
 
 import lombok.extern.log4j.Log4j;
+import oracle.jdbc.proxy.annotation.Post;
 
 @Controller
-@RequestMapping("/approval/*")
+@RequestMapping("/haroo/approval")
 @Log4j
 public class ApprovalController {
   
@@ -51,26 +53,31 @@ public class ApprovalController {
   @Autowired
   ApprovalService service;
   
-  @GetMapping("/main")
-  public void main(HttpServletRequest request) { // 메인
+  @GetMapping
+  public String main() { // 메인
     log.info("approval main..........");
     
-    HttpSession session = request.getSession();
-    
-    EmpVO employeeVO = new EmpVO();
-    employeeVO.setEmNo(45424411);
-    employeeVO.setEmName("백민주");
-    
-    session.setAttribute("employeeVO", employeeVO);
+//    EmpVO employeeVO = new EmpVO();
+//    employeeVO.setEmNo(45424411);
+//    employeeVO.setEmName("백민주");
+//    
+//    session.setAttribute("employeeVO", employeeVO);
+    return "/approval/main";
   }
   
   @GetMapping("/forms")
-  public void forms() { // 양식 목록
+  public String forms(Model model) { // 양식 목록
     log.info("form list.............");
+    
+    List<FormVO> list = service.getFormList();
+    
+    model.addAttribute("forms", list);
+    
+    return "/approval/forms";
   }
   
-  @GetMapping("/form/{foNo}")
-  public String getFormList(@PathVariable("foNo") int foNo) { // 양식 선택
+  @GetMapping("/report/{foNo}")
+  public String getReportForm(@PathVariable("foNo") int foNo, Model model) { // 양식 선택
     
     log.info("form..................");
     String formName="draft-form";
@@ -81,13 +88,15 @@ public class ApprovalController {
       formName="leave-form";
     }
     
+      FormVO form = service.readForm(foNo);
+      
+      model.addAttribute("form", form);
+    
     return "/approval/"+formName;
   }
   
-  @PostMapping("/form/{foNo}")
-  public String postForm(ApprovalVO approval, @PathVariable("foNo") int foNo) { // 상신하기
-    
-    approval.setFoNo(foNo);
+  @PostMapping("/report/{foNo}")
+  public String postReportForm(ApprovalVO approval) { // 상신하기
     
     log.info("==========================");
     log.info("resister: " + approval);
@@ -96,15 +105,52 @@ public class ApprovalController {
     service.insertApproval(approval);
     
     
-    return "redirect:/approval/main";
+    return "redirect:/haroo/approval";
+  }
+  
+  @GetMapping("/form")
+  public String getInsertForm() {
+    return "/approval/form";
+  }
+  
+  @PostMapping("/form")
+  public String insertForm(FormVO form) {
+    
+    log.info("insert form..................");
+    
+    service.insertForm(form);
+    
+    return "redirect:/haroo/approval/forms";
+  }
+  
+  @GetMapping("/form/{foNo}")
+  public String getForm(@PathVariable("foNo") int foNo, Model model) {
+    
+    log.info("get form......");
+    
+    FormVO form = service.readForm(foNo);
+    
+    model.addAttribute("form", form);
+    
+    return "/approval/form";
+  }
+ 
+  @PostMapping("/form/{foNo}")
+  public String postForm(FormVO form) {
+    
+    log.info("modify form...");
+    
+    service.modifyForm(form);
+    
+    return "redirect:/haroo/approval/forms";
   }
   
   @GetMapping("/process")
-  public String processList(Criteria cri, Model model) { // 상신-진행
+  public String processList(HttpSession session, Criteria cri, Model model) { // 상신-진행
     
     log.info("get Process List");
     
-    int emNo = 45424411;
+    int emNo = ((EmployeeVO) session.getAttribute("employee")).getEm_no();
     int status = 0;
     
     model.addAttribute("list", service.getReportList(cri, emNo, status));
@@ -117,11 +163,11 @@ public class ApprovalController {
   }
   
   @GetMapping("/done")
-  public String doneList(Criteria cri, Integer status, Model model) { // 상신-완료
+  public String doneList(HttpSession session, Criteria cri, Integer status, Model model) { // 상신-완료
     
     log.info("get done List");
     
-    int emNo = 45424411;
+    int emNo = ((EmployeeVO) session.getAttribute("employee")).getEm_no();
     
     if(status == null) {
       status = 9;
@@ -138,11 +184,11 @@ public class ApprovalController {
   }
   
   @GetMapping("/takeback")
-  public String takebacksList(Criteria cri, Model model) { // 상신-취소
+  public String takebacksList(HttpSession session, Criteria cri, Model model) { // 상신-취소
     
     log.info("get takeback List");
     
-    int emNo = 45424411;
+    int emNo = ((EmployeeVO) session.getAttribute("employee")).getEm_no();
     int status = -1;
     
     model.addAttribute("list", service.getReportList(cri, emNo, status));
@@ -169,11 +215,11 @@ public class ApprovalController {
   }
   
   @GetMapping("/wait")
-  public String waitList(Criteria cri, Model model) { // 수신-대기
+  public String waitList(HttpSession session, Criteria cri, Model model) { // 수신-대기
     
     log.info("get wait list");
     
-    int emNo = 45424411;
+    int emNo = ((EmployeeVO) session.getAttribute("employee")).getEm_no();
     int status = 0;
     
     model.addAttribute("list", service.getReceiveList(cri, emNo, status));
@@ -187,11 +233,11 @@ public class ApprovalController {
   }
   
   @GetMapping("/sign")
-  public String signList(Criteria cri, Model model) { // 수신-완료
+  public String signList(HttpSession session, Criteria cri, Model model) { // 수신-완료
     
     log.info("get wait list");
     
-    int emNo = 45424411;
+    int emNo = ((EmployeeVO) session.getAttribute("employee")).getEm_no();
     int status = 1;
     
     model.addAttribute("list", service.getReceiveList(cri, emNo, status));
@@ -242,7 +288,7 @@ public class ApprovalController {
       deleteFiles(attachList);
     };
     
-    return "redirect:/approval/process";
+    return "redirect:/haroo/approval/process";
   }
   
   @PostMapping("/wait/{apNo}")
@@ -256,7 +302,7 @@ public class ApprovalController {
       deleteFiles(attachList);
     }
     
-    return "redirect:/approval/wait";
+    return "redirect:/haroo/approval/wait";
   }
   
   @GetMapping("/re/{apNo}")
@@ -273,10 +319,12 @@ public class ApprovalController {
   
   
   @GetMapping("/line")
-  public void getEmployeeList(Model model) { // 결재자 목록 창
+  public String getEmployeeList(Model model) { // 결재자 목록 창
     Map<String, List<EmpVO>> map = service.getEmpList();
     
     model.addAttribute("map", map);
+    
+    return "/approval/line";
   }
   
   

@@ -58,7 +58,7 @@
             </ul>
             <div class="text-end">
               <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li class="nav-item"><a class="nav-link link-secondary">${employeeVO.emName}님 환영합니다 :)</a></li>
+                <li class="nav-item"><a class="nav-link link-secondary">${employee.em_name}님 환영합니다 :)</a></li>
                 <li class="nav-item">
                   <a class="nav-link link-secondary" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-exclamation-triangle" viewBox="0 0 16 16">
                   <path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.146.146 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.163.163 0 0 1-.054.06.116.116 0 0 1-.066.017H1.146a.115.115 0 0 1-.066-.017.163.163 0 0 1-.054-.06.176.176 0 0 1 .002-.183L7.884 2.073a.147.147 0 0 1 .054-.057zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z"/>
@@ -110,7 +110,7 @@
             <path d="M4 11H2v3h2v-3zm5-4H7v7h2V7zm5-5v12h-2V2h2zm-2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1h-2zM6 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7zm-5 4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-3z"/>
           </svg>
           <p>설문조사</p></a></li>
-        <li class="nav-item"><a class="nav-link link-dark text-center" href="/haroo/ap/main">
+        <li class="nav-item"><a class="nav-link link-dark text-center" href="/haroo/approval">
           <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-file-earmark-text" viewBox="0 0 16 16">
             <path d="M5.5 7a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5z"/>
             <path d="M9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.5L9.5 0zm0 1v2A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"/>
@@ -132,7 +132,7 @@
   
   <!-- 사이드메뉴 -->
   <div class="p-3 bg-white" style="width: 280px;">
-    <a href="/approval/main" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
+    <a href="/haroo/approval" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
       <svg class="bi me-2" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
       <span class="fs-5 fw-semibold">전자결재</span>
     </a>
@@ -143,10 +143,10 @@
         </button>
         <div class="collapse" id="form-collapse" style="">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li><a href="/approval/form/1" class="ap-link link-dark rounded">기안서</a></li>
-            <li><a href="/approval/form/2" class="ap-link link-dark rounded">품의서</a></li>
-            <li><a href="/approval/form/3" class="ap-link link-dark rounded">휴가신청서</a></li>
-            <li><a href="/approval/forms" class="ap-link link-dark rounded">양식보기</a></li>
+            <li><a href="/haroo/approval/report/1" class="ap-link link-dark rounded">기안서</a></li>
+            <li><a href="/haroo/approval/report/2" class="ap-link link-dark rounded">품의서</a></li>
+            <li><a href="/haroo/approval/report/3" class="ap-link link-dark rounded">휴가신청서</a></li>
+            <li><a href="/haroo/approval/forms" class="ap-link link-dark rounded">양식보기</a></li>
           </ul>
         </div>
       </li>
@@ -157,8 +157,8 @@
         </button>
         <div class="collapse" id="home-collapse" style="">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li><a href="/approval/wait" id="ap-wait" class="ap-link link-dark rounded">미결재</a></li>
-            <li><a href="/approval/sign" id="ap-sign" class="ap-link link-dark rounded">결재완료</a></li>
+            <li><a href="/haroo/approval/wait" id="ap-wait" class="ap-link link-dark rounded">미결재</a></li>
+            <li><a href="/haroo/approval/sign" id="ap-sign" class="ap-link link-dark rounded">결재완료</a></li>
           </ul>
         </div>
       </li>
@@ -168,16 +168,16 @@
         </button>
         <div class="collapse" id="dashboard-collapse" style="">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li><a href="/approval/process" id="ap-process" class="ap-link link-dark rounded">진행</a></li>
-            <li><a href="/approval/done" id="ap-done" class="ap-link link-dark rounded">완료</a></li>
-            <li><a href="/approval/takeback" id="ap-takeback" class="ap-link link-dark rounded">취소</a></li>
+            <li><a href="/haroo/approval/process" id="ap-process" class="ap-link link-dark rounded">진행</a></li>
+            <li><a href="/haroo/approval/done" id="ap-done" class="ap-link link-dark rounded">완료</a></li>
+            <li><a href="/haroo/approval/takeback" id="ap-takeback" class="ap-link link-dark rounded">취소</a></li>
           </ul>
         </div>
       </li>
       <li class="border-top my-3"></li>
       <li class="mb-1">
         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1">
-            <li><a href="/approval/all" id="ap-all" class="ap-link link-dark rounded">전체문서</a></li>
+            <li><a href="/haroo/approval/all" id="ap-all" class="ap-link link-dark rounded">전체문서</a></li>
           </ul>
       </li>
     </ul>
