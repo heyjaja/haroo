@@ -80,17 +80,17 @@
 <!-- 					</table> -->
 				</div>
 			</div>
-<!-- 			<form action="insertReplyAction.do" method="post"> -->
-<%-- 				<input type="hidden" name="bdNo" value="${board.bdNo }"> --%>
+			<form action="insertReplyAction.do" method="post">
+				<input type="hidden" name="bdNo" value="${board.bdNo }">
 <%-- 				댓글작성자:<%=employeeVO.getEm_name()%> --%>
 <%-- 				<input type="hidden" name="name" value="<%=employeeVO.getEm_name()%>"><br>  --%>
-<!-- 				댓글 내용 : <input type="text" name="reContents"><br>  -->
-<!-- 				<input type="submit" value="댓글쓰기"> -->
-<!-- 			</form> -->
-			<div class="panel-heading">
-				<i class="fa fa-comments fa-fw"></i> Reply
-				<button id='addReplyBtn' class='btn btn-primary btn-xs pull-right'>New Reply</button>
-			</div>
+				댓글 내용 : <input type="text" name="reContents"><br> 
+				<input type="submit" value="댓글쓰기">
+			</form>
+<!-- 			<div class="panel-heading"> -->
+<!-- 				<i class="fa fa-comments fa-fw"></i> Reply -->
+<!-- 				<button id='addReplyBtn' class='btn btn-primary btn-xs pull-right'>New Reply</button> -->
+<!-- 			</div> -->
 				<button data-oper='list' class="btn btn-primary float-end">목록</button>
 				<form id='operForm' action="/board/modify" method="get">
 					<input type='hidden' id='bdNo' name='bdNo' value='<c:out value="${board.bdNo}"/>'> 
