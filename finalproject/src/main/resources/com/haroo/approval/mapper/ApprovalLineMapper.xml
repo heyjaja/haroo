@@ -40,7 +40,7 @@
 
 	<!-- 2 해당 문서 결재선 불러오기 -->
  	<select id="read" resultType="com.haroo.approval.domain.ApprovalLineVO" resultMap="LineMap">
-	  SELECT ap_no, em_no AS al_no, al_order, al_status, TO_CHAR(al_date, 'YYYY.MM.DD.. HH24:MI') al_date, al_comment, em_name, po_name, de_name 
+	  SELECT ap_no, em_no AS al_no, al_order, al_status, TO_CHAR(al_date, 'YYYY.MM.DD. HH24:MI') al_date, al_comment, em_name, po_name, de_name 
 	    FROM approval_line al JOIN employee e
 	      ON al.al_no = e.em_no
 	      JOIN position p

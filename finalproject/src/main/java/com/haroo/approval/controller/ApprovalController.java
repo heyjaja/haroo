@@ -57,6 +57,10 @@ public class ApprovalController {
   public String main(HttpSession session, Model model) { // 메인
     log.info("approval main..........");
     
+    if(session.getAttribute("employee") == null) {
+      return "redirect:/haroo/login";
+    };
+    
     int emNo = ((EmployeeVO) session.getAttribute("employee")).getEm_no();
     
     int processCount = service.getReportTotal(new Criteria(), emNo, 0);
@@ -154,6 +158,10 @@ public class ApprovalController {
     
     log.info("get Process List");
     
+    if(session.getAttribute("employee") == null) {
+      return "redirect:/haroo/login";
+    };
+    
     int emNo = ((EmployeeVO) session.getAttribute("employee")).getEm_no();
     int status = 0;
     
@@ -170,6 +178,10 @@ public class ApprovalController {
   public String doneList(HttpSession session, Criteria cri, Integer status, Model model) { // 상신-완료
     
     log.info("get done List");
+    
+    if(session.getAttribute("employee") == null) {
+      return "redirect:/haroo/login";
+    };
     
     int emNo = ((EmployeeVO) session.getAttribute("employee")).getEm_no();
     
@@ -191,6 +203,10 @@ public class ApprovalController {
   public String takebacksList(HttpSession session, Criteria cri, Model model) { // 상신-취소
     
     log.info("get takeback List");
+    
+    if(session.getAttribute("employee") == null) {
+      return "redirect:/haroo/login";
+    };
     
     int emNo = ((EmployeeVO) session.getAttribute("employee")).getEm_no();
     int status = -1;
@@ -223,6 +239,10 @@ public class ApprovalController {
     
     log.info("get wait list");
     
+    if(session.getAttribute("employee") == null) {
+      return "redirect:/haroo/login";
+    };
+    
     int emNo = ((EmployeeVO) session.getAttribute("employee")).getEm_no();
     int status = 0;
     
@@ -240,6 +260,10 @@ public class ApprovalController {
   public String signList(HttpSession session, Criteria cri, Model model) { // 수신-완료
     
     log.info("get wait list");
+    
+    if(session.getAttribute("employee") == null) {
+      return "redirect:/haroo/login";
+    };
     
     int emNo = ((EmployeeVO) session.getAttribute("employee")).getEm_no();
     int status = 1;
