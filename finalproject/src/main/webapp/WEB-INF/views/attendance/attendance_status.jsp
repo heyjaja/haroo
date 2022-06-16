@@ -6,9 +6,6 @@
 
 <%@ include file="./includes/header.jsp"%>
 
-<!-- 사이드바 css -->
-<link rel="stylesheet" href="/resources/css/sidebar.css" />
-
 <style type="text/css">
 .haroo-body {
 	display: flex;
@@ -32,8 +29,9 @@ tr {
     color: #5a5a5a;
 }
 
-h4 {
-	font-weight: bold;
+#start-btn,  #out-btn, #end-btn{
+	width: 70px; 
+	height: 45px; 
 }
 
 </style>
@@ -43,7 +41,7 @@ h4 {
 
 	<!-- 사이드바 -->
 	<div class="p-3 bg-white" style="width: 280px;">
-		<a href="status"
+		<a href="/attendance/status"
 			class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
 			<svg class="bi me-2" width="30" height="24">
 				<use xlink:href="#bootstrap"></use></svg> <span class="fs-5 fw-semibold">근태관리</span>
@@ -65,6 +63,7 @@ h4 {
 					</ul>
 				</div>
 			</li>
+			<li class="border-top my-3"></li>
 			<li class="mb-1">
 				<button class="btn btn-toggle align-items-center rounded collapsed"
 					data-bs-toggle="collapse" data-bs-target="#dashboard-collapse"
@@ -82,40 +81,57 @@ h4 {
 
 	<!-- 근태버튼  -->
 	<div class="p-3 container-sm">
-		<div class="text-start"> <!-- 중앙정렬을 왼쪽정렬로 하는 class -->
-			
-			<!-- 시계 출력 -->
-			<div id="time" class="time"></div>
-        	<div id="date" class="date"></div>
-			<br>
-				
-			<form action="/attendance/start" method="post" class="start-form" id="start-form">
-				<input type="hidden" name="emNo" value="${emNo }">
-				<button id="start-btn" class="btn btn-outline-primary" value="출근">출근</button>
-			</form>
+		<div class="text-start row"> <!-- 중앙정렬을 왼쪽정렬로 하는 class : text-start -->
+			<div class="col-2">
+				<!-- 시계 출력 -->
+				<div id="time" class="time"></div>
+				<div id="date" class="date"></div>
+				<br>
+				<!--end 시계 출력 -->
+			</div>
 
-			<form action="/attendance/end" method="post" class="end-form" id="end-form">
-				<input type="hidden" name="emNo" value="${emNo }"> 
-				<input id="end-btn" class="btn btn-outline-secondary" type="submit" value="퇴근">
-			</form>
+			<!-- 출/퇴/외근 버튼 form -->
+			<div class="col">
+				<br>
+				<form action="/attendance/start" method="post" class="start-form"
+					id="start-form">
+					<input type="hidden" name="emNo" value="${emNo }">
+					<button id="start-btn" class="btn btn-outline-primary " value="출근">출근</button>
+				</form>
 
-			<form action="/attendance/outside" method="post" class="out-form" id="out-form">
-				<input type="hidden" name="emNo" value="${emNo }"> 
-				<input id="out-btn" class="btn btn-outline-warning" type="submit" value="외근">
-			</form>
+				<form action="/attendance/end" method="post" class="end-form"
+					id="end-form">
+					<input type="hidden" name="emNo" value="${emNo }"> 
+					<input id="end-btn" class="btn btn-outline-secondary " type="submit" value="퇴근">
+				</form>
+
+				<form action="/attendance/outside" method="post" class="out-form"
+					id="out-form">
+					<input type="hidden" name="emNo" value="${emNo }"> 
+					<input id="out-btn" class="btn btn-outline-warning " type="submit" 	value="외근">
+				</form>
+			</div>
+			<!-- end 출/퇴/외근 버튼 form -->
 		</div>
+		<!-- end div row -->
 		<br>
 
 		<!-- 근태목록  -->
-		<c:forEach var="dept" items="${depts }" begin="0" end="0">
-			<h4>${dept.deName } 근태 목록</h4>
-			<br>
-		</c:forEach>
-
+		<div>
+			<c:forEach var="dept" items="${depts }" begin="0" end="0">
+				<h4 class="fw-bold">
+					<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-list-ul" viewBox="0 0 16 16">
+					  <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+					</svg>
+					${dept.deName } 근태 목록
+				</h4>
+				<br>
+			</c:forEach>
+		</div>
 
 		<!-- 오늘의 날짜 -->
 		<div class="text-start">
-			<h5>TODAY : ${today }</h5>
+			<h6>TODAY : ${today }</h6>
 		</div>
 
 		<!-- 목록 테이블 -->
@@ -210,7 +226,12 @@ h4 {
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title">근태 입력</h5>
+					<h5 class="modal-title">
+						<svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-check-circle-fill text-success" viewBox="0 0 16 16">
+						  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+						</svg>
+						근태 입력
+					</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body"> 입력 처리 완료	</div>
@@ -227,4 +248,4 @@ h4 {
 </div>
 <!-- end 바디 -->
 
-<%@ include file="../includes/footer.jsp"%>
+<%@ include file="./includes/footer.jsp"%>
