@@ -3,6 +3,8 @@ package com.haroo.attendance.controller;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.haroo.attendance.domain.AttendanceVO;
 import com.haroo.attendance.service.AttendanceService;
+import com.haroo.login.domain.EmployeeVO;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -28,13 +31,15 @@ public class AttendanceController {
 	private AttendanceService service;
 	
 	@GetMapping("/status")
-	public String status(Model model) { //오늘 출근명단 + 로그인한 사원 부사원 목록 + 오늘 날짜 @RequestParam("emNo") int emNo, 
+	public String status(Model model, HttpSession httpSession) { //오늘 출근명단 + 로그인한 사원 부사원 목록 + 오늘 날짜 @RequestParam("emNo") int emNo, 
 			
-		int emNo = 19362300;
+		int emNo = ((EmployeeVO) httpSession.getAttribute("employee")).getEm_no();
+		//int emNo = 19362300;
 		
 		log.warn("오늘 날짜 출력" + model.addAttribute("today", service.printToday()));
 		log.warn("출근 목록" + model.addAttribute("list", service.statusAttendance(emNo)));
 		log.warn("로그인한 사원의 부서 목록" + model.addAttribute("depts", service.listDept(emNo)));
+		model.addAttribute("emNo", emNo);
 		
 		return "/attendance/attendance_status";
 	}
@@ -43,7 +48,7 @@ public class AttendanceController {
 	public String start(int emNo, RedirectAttributes rttr) { //출근시간 입력 + 휴가자 입력
 		
 		log.warn("출근 시간 입력 : " + service.insertStartTime(emNo));
-		log.warn("휴가자 입력 : " + service.insertDayoff());
+		//log.warn("휴가자 입력 : " + service.insertDayoff()); ==> db 스케쥴러 사용
 		
 		rttr.addFlashAttribute("emNo", emNo);
 		
@@ -72,9 +77,11 @@ public class AttendanceController {
 	}
 	
 	@GetMapping("/list/day")
-	public String listDay(AttendanceVO attendance, Model model) { //일별 부서 근태조회 	
+	public String listDay(AttendanceVO attendance, Model model, HttpSession httpSession) { //일별 부서 근태조회 	
 		
-		attendance.setEmNo(19362300);
+		int emNo = ((EmployeeVO) httpSession.getAttribute("employee")).getEm_no();
+		attendance.setEmNo(emNo);
+		//attendance.setEmNo(19362300);
 		//attendance.setAtDate("2022-06-05");
 		
 		if (attendance.getAtDate()== null || attendance.getAtDate().equals("")) {
@@ -92,9 +99,11 @@ public class AttendanceController {
 	}
 	
 	@GetMapping("/list/month")
-	public String listMonth(AttendanceVO attendance, Model model) { //월별 개인 근태조회 	
+	public String listMonth(AttendanceVO attendance, Model model, HttpSession httpSession) { //월별 개인 근태조회 	
 		
-		attendance.setEmNo(19362300);
+		int emNo = ((EmployeeVO) httpSession.getAttribute("employee")).getEm_no();
+		attendance.setEmNo(emNo);
+		//attendance.setEmNo(19362300);
 		// attendance.setAtDate("2022-06");
 
 		String currentMonth = service.printToday().substring(0, 7);

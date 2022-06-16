@@ -90,17 +90,17 @@ h4 {
 			<br>
 				
 			<form action="/attendance/start" method="post" class="start-form" id="start-form">
-				<input type="hidden" name="emNo" value="${19362300 }">
+				<input type="hidden" name="emNo" value="${emNo }">
 				<button id="start-btn" class="btn btn-outline-primary" value="출근">출근</button>
 			</form>
 
 			<form action="/attendance/end" method="post" class="end-form" id="end-form">
-				<input type="hidden" name="emNo" value="${19362300 }"> 
+				<input type="hidden" name="emNo" value="${emNo }"> 
 				<input id="end-btn" class="btn btn-outline-secondary" type="submit" value="퇴근">
 			</form>
 
 			<form action="/attendance/outside" method="post" class="out-form" id="out-form">
-				<input type="hidden" name="emNo" value="${19362301 }"> 
+				<input type="hidden" name="emNo" value="${emNo }"> 
 				<input id="out-btn" class="btn btn-outline-warning" type="submit" value="외근">
 			</form>
 		</div>

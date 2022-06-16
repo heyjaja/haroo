@@ -1,5 +1,7 @@
 package com.haroo.dayoff.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.haroo.dayoff.domain.DayoffUsageVO;
 import com.haroo.dayoff.domain.DayoffVO;
 import com.haroo.dayoff.service.DayoffService;
+import com.haroo.login.domain.EmployeeVO;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -24,10 +27,11 @@ public class DayoffController {
 	private DayoffService service;
 	
 	@GetMapping("/status")
-	public String status(DayoffVO vo, DayoffUsageVO usage, Model model) { //@RequestParam("emNo") int emNo, 
+	public String status(DayoffVO vo, DayoffUsageVO usage, Model model, HttpSession httpSession) { //@RequestParam("emNo") int emNo, 
 		
+		int emNo = ((EmployeeVO) httpSession.getAttribute("employee")).getEm_no();
 		//vo.setEmNo(19362300);
-		vo.setEmNo(45424411);
+		vo.setEmNo(emNo);
 		
 		log.warn("오늘 날짜 : " + model.addAttribute("today", service.printToday()));
 		
@@ -36,7 +40,7 @@ public class DayoffController {
 		model.addAttribute("dayoff", service.statusDayoff(vo.getEmNo()));
 	
 		//검색한 사용 기록
-		usage.setEmNo(45424411);
+		usage.setEmNo(emNo);
 		
 		if (usage.getLeStart() == null || usage.getLeStart().equals("")) {
 			usage.setLeStart(service.printToday().substring(0, 4));

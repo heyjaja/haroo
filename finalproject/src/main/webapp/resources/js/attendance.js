@@ -1,77 +1,81 @@
-//출근버튼 누르면 인삿말 띄우기 + 버튼 비활성화 => 버튼 비활성화는 되지 않습니다!
-$(document).ready(function() {
+//출근버튼 수정
+$(function(){
+    var startForm = $("#start-form");
 
-	$(document).on('click', '#start-btn', function(){
+	$("#start-form #start-btn").on("click", function(e) {
+	
+		//기본이벤트 막기
+		e.preventDefault();
+		
 		$(".modal-body").html("출근 - 오늘 하루도 힘내시길 바랍니다!");	
 		$("#myModal").modal("show");
-		  
-		$(this).prop('disabled', true);
-		$('#out-btn').prop('disabled', true);	 
 		
 		$("#modal-close").on('click', function(){
-			startSubmit();		
+			startSubmit();
 		});
 		
-	});	
-	
-	//출근버튼 클릭 -> submit 함수		
+		//버튼 클릭 -> submit 함수		
 	startSubmit = function() {	    
-		$('#start-form').attr("action", "/attendance/start");
-		$('#start-form').attr("method", "post");
-		$('#start-form').submit();
+		startForm.attr("action", "/attendance/start");
+		startForm.attr("method", "post");
+		startForm.submit();
 	}
+	});
 	
 });
 
-//퇴근버튼 누르면 인삿말 띄우기 + 출근버튼 활성화 => 버튼 비활성화는 되지 않습니다!, 자동으로 모달창이 꺼지면서 기록됨...하
-$(document).ready(function() {
 
-	$(document).on('click', '#end-btn', function(){
+//퇴근버튼 수정해보기
+$(function(){
+    var endForm = $("#end-form");
+
+	$("#end-form #end-btn").on("click", function(e) {
+	
+		//기본이벤트 막기
+		e.preventDefault();
+		
 		$(".modal-body").html("퇴근 - 오늘도 수고하셨습니다.");	
 		$("#myModal").modal("show");
-		  
-		$('#start-btn').prop('disabled', false);
-		$('#out-btn').prop('disabled', false); 
 		
 		$("#modal-close").on('click', function(){
 			endSubmit();
 		});
 		
-	});	
-	
-	//퇴근버튼 클릭 -> submit 함수		
+		//퇴근버튼 클릭 -> submit 함수		
 	endSubmit = function() {	    
-		$('#end-form').attr("action", "/attendance/end");
-		$('#end-form').attr("method", "post");
-		$('#end-form').submit();
+		endForm.attr("action", "/attendance/end");
+		endForm.attr("method", "post");
+		endForm.submit();
 	}
+	});
 	
 });
 
-//외근버튼 누르면 인삿말 띄우기 + 외근, 출근, 퇴근 버튼 비활성화 => 버튼 비활성화는 되지 않습니다!
-$(document).ready(function() {
 
-	$(document).on('click', '#out-btn', function(){
+//외근수정
+$(function(){
+    var outForm = $("#out-form");
+
+	$("#out-form #out-btn").on("click", function(e) {
+	
+		//기본이벤트 막기
+		e.preventDefault();
 		
-		$(".modal-body").html("외근 - 조심히 다녀오십시오.");	
+		$(".modal-body").html("외근 - 조심히 다녀오시길 바랍니다.");	
 		$("#myModal").modal("show");
-		  
-		$(this).prop('disabled', true);
-	    $('#start-btn').prop('disabled', true);
-	    $('#end-btn').prop('disabled', true);
-		  
+		
 		$("#modal-close").on('click', function(){
-			outSubmit();		
-		 });
-	});
-
-	//submit 함수		
+			outSubmit();
+		});
+		
+		//버튼 클릭 -> submit 함수		
 	outSubmit = function() {	    
-		$('#out-form').attr("action", "/attendance/outside");
-	    $('#out-form').attr("method", "post");
-	    $('#out-form').submit();
+		outForm.attr("action", "/attendance/outside");
+		outForm.attr("method", "post");
+		outForm.submit();
 	}
-
+	});
+	
 });
 
 //현재시간, 오늘 날짜
