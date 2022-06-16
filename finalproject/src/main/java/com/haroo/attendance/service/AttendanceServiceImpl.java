@@ -95,9 +95,9 @@ public class AttendanceServiceImpl implements AttendanceService {
 	}
 
 	@Override
-	public int getMonthLastDay(String date) { //월 말일 구하기
+	public int getWorkingDay(String date) { //근무일수 구하기
 		log.info("get Month Last Day..............");
-		return mapper.getMonthLastDay(date);
+		return mapper.getWorkingDay(date);
 	}
 
 	@Override

@@ -21,6 +21,6 @@ public interface AttendanceService {
 	
 	public int countOnTime(AttendanceVO attendance); //정상출근 일수
 	public int countLate(AttendanceVO attendance); //지각 일수
-	public int getMonthLastDay(String date); //월 막날 구하기
+	public int getWorkingDay(String date); //근무일수 구하기
 	public int countDayoffDay(AttendanceVO attendance); //월 사용 휴가 일수
 }

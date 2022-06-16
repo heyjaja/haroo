@@ -119,7 +119,7 @@ public class AttendanceController {
 		
 		int onTime = service.countOnTime(attendance);
 		int late = service.countLate(attendance);
-		int monthLastDay = service.getMonthLastDay(attendance.getAtDate());
+		int workingDay = service.getWorkingDay(attendance.getAtDate());
 		int absent = 0;
 		int dayoff = service.countDayoffDay(attendance);
 		
@@ -137,10 +137,11 @@ public class AttendanceController {
         //검색일 기준 오늘과 비교
         int compare = searchDate.compareTo(today);
         if (compare < 0) { //현재 월보다 이전일 때
-        	absent = monthLastDay - (onTime + late + dayoff);
+        	absent = workingDay - (onTime + late + dayoff);
         }else { //현재월과 같을 때 오늘 일자에서 출근+지각+휴가 빼기
         	int currentLastDay = Integer.parseInt(service.printToday().substring(8, 10));
-        	absent = currentLastDay - (onTime + late + dayoff);
+        	//absent = currentLastDay - (onTime + late + dayoff);
+        	absent = 0;
             System.out.println( "searchDate = today" );
         }	
 		

@@ -29,7 +29,7 @@ tr {
     color: #5a5a5a;
 }
 
-#start-btn,  #out-btn, #end-btn{
+#start-btn, #out-btn, #end-btn{
 	width: 70px; 
 	height: 45px; 
 }

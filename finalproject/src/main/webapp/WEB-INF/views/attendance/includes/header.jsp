@@ -32,7 +32,7 @@
 		<div class="container">
 			<div
 				class="d-flex flex-wrap align-items-center justify-content-center justify-content-start">
-				<a href="/haroo"
+				<a href="/main"
 					class="d-flex align-items-center mb-2 mb-lg-0 text-secondary text-decoration-none">
 					<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
 						fill="currentColor" class="bi bi-cloud-fill" viewBox="0 0 16 16">
@@ -49,13 +49,14 @@
 							haroo</a>
 						<ul class="dropdown-menu" aria-labelledby="dropdown01">
 							<li><a class="dropdown-item" href="#">인사정보</a></li>
-							<li><a class="dropdown-item" href="#">근태관리</a></li>
-							<li><a class="dropdown-item" href="#">캘린더</a></li>
-							<li><a class="dropdown-item" href="#">게시판</a></li>
+							<li><a class="dropdown-item" href="/attendance/status">근태관리</a></li>
+							<li><a class="dropdown-item" href="/task">캘린더</a></li>
+							<li><a class="dropdown-item" href="/board/list">게시판</a></li>
 							<li><a class="dropdown-item" href="#">설문조사</a></li>
-							<li><a class="dropdown-item" href="#">전자결재</a></li>
-							<li><a class="dropdown-item" href="#">채팅</a></li>
-						</ul></li>
+							<li><a class="dropdown-item" href="/approval">전자결재</a></li>
+							<li><a class="dropdown-item" href="/chat/main">채팅</a></li>
+						</ul>
+					</li>
 				</ul>
 				<div class="text-end">
 					<ul
@@ -94,7 +95,7 @@
 		<ul class="nav justify-content-center alert-info"
 			style="padding-top: 15px;">
 			<li class="nav-item"><a class="nav-link link-dark text-center"
-				href="/haroo/department/departmentAction.do"> <svg
+				href="#"> <svg
 						xmlns="http://www.w3.org/2000/svg" width="40" height="40"
 						fill="currentColor" class="bi bi-emoji-smile" viewBox="0 0 16 16">
             <path
@@ -104,7 +105,7 @@
           </svg>
 					<p>인사정보</p></a></li>
 			<li class="nav-item"><a class="nav-link link-dark text-center"
-				href="/haroo/attendance/status"> <svg
+				href="/attendance/status"> <svg
 						xmlns="http://www.w3.org/2000/svg" width="40" height="40"
 						fill="currentColor" class="bi bi-briefcase" viewBox="0 0 16 16">
             <path
@@ -112,7 +113,7 @@
           </svg>
 					<p>근태관리</p></a></li>
 			<li class="nav-item"><a class="nav-link link-dark text-center"
-				href="/haroo/task"> <svg xmlns="http://www.w3.org/2000/svg"
+				href="/task"> <svg xmlns="http://www.w3.org/2000/svg"
 						width="40" height="40" fill="currentColor"
 						class="bi bi-calendar4-event" viewBox="0 0 16 16">
             <path
@@ -122,7 +123,7 @@
           </svg>
 					<p>캘린더</p></a></li>
 			<li class="nav-item"><a class="nav-link link-dark text-center"
-				href="/haroo/board/listAction.do"> <svg
+				href="/board/list"> <svg
 						xmlns="http://www.w3.org/2000/svg" width="40" height="40"
 						fill="currentColor" class="bi bi-layout-text-window-reverse"
 						viewBox="0 0 16 16">
@@ -141,7 +142,7 @@
           </svg>
 					<p>설문조사</p></a></li>
 			<li class="nav-item"><a class="nav-link link-dark text-center"
-				href="/haroo/ap/main"> <svg xmlns="http://www.w3.org/2000/svg"
+				href="/approval"> <svg xmlns="http://www.w3.org/2000/svg"
 						width="40" height="40" fill="currentColor"
 						class="bi bi-file-earmark-text" viewBox="0 0 16 16">
             <path
@@ -151,7 +152,7 @@
           </svg>
 					<p>전자결재</p></a></li>
 			<li class="nav-item"><a class="nav-link link-dark text-center"
-				href="/haroo/chat/chatFormAction.do"> <svg
+				href="/chat/main"> <svg
 						xmlns="http://www.w3.org/2000/svg" width="40" height="40"
 						fill="currentColor" class="bi bi-chat-dots" viewBox="0 0 16 16">
             <path

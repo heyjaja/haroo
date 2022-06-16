@@ -24,6 +24,11 @@ caption {
 	color: #3fd2c7;
 }
 
+.absentComment {
+	font-weight: normal;
+	color: #8C8C8C;
+}
+
 
 
 </style>
@@ -106,7 +111,7 @@ caption {
 		<table id="countTable" class="table table-sm table-bordered caption-top">
 			<c:forEach var="list" items="${list }" begin="0" end="0">
 				<c:set var="date" value="${list.atDate }"/>			
-				<caption>${fn:substring(date, 0, 7) } 누계</caption>
+				<caption>${fn:substring(date, 0, 7) } 누계 <span class="absentComment">(결근은 익월에 처리됨)</span></caption>
 			</c:forEach>
 
 			<tr>
