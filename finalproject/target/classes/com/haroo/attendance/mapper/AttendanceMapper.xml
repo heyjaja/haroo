@@ -182,6 +182,33 @@
 		]]>
 	</select>
 	
+	<!-- 오늘 기준 근무일수 구하기 -->
+	<select id="getWorkingDayAsOfToday" parameterType="String" resultType="int">
+	<![CDATA[
+		SELECT
+		COUNT(1) WORKING_DAYS
+		--*
+		FROM
+		(
+		SELECT
+		TO_CHAR(start_dt + level - 1,'YYYYMMDD') dates,
+		TO_CHAR(start_dt + level - 1,'D') d
+		FROM
+		(
+		SELECT
+		TO_date(concat('2022-06', '-01'), 'YYYY-MM-DD') AS start_dt, 
+		TO_date(To_char(sysdate, 'YYYY-MM-DD'), 'YYYY-MM-DD') AS end_dt
+		FROM dual
+		)
+		CONNECT BY
+		level <= end_dt - start_dt + 1
+		) a 
+		WHERE
+		a.d NOT IN ('1', '7')
+		ORDER BY a.dates
+		]]>
+	</select>
+	
 	<!-- 월 휴가간 일수 -->
 	<select id="countDayoffDay" parameterType="com.haroo.attendance.domain.AttendanceVO" resultType="int">
 		select count(em_no) AS atDate  FROM attendance where at_state = 4 and em_no = #{emNo} and substr(TO_char(at_date, 'YYYY-MM-DD HH24:MI:SS'), 1, 7) = #{atDate}

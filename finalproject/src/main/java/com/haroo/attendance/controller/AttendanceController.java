@@ -139,9 +139,8 @@ public class AttendanceController {
         if (compare < 0) { //현재 월보다 이전일 때
         	absent = workingDay - (onTime + late + dayoff);
         }else { //현재월과 같을 때 오늘 일자에서 출근+지각+휴가 빼기
-        	int currentLastDay = Integer.parseInt(service.printToday().substring(8, 10));
-        	//absent = currentLastDay - (onTime + late + dayoff);
-        	absent = 0;
+        	int workingDayAsOfToday = service.getWorkingDayAsOfToday(attendance.getAtDate());
+        	absent = workingDayAsOfToday - (onTime + late + dayoff);
             System.out.println( "searchDate = today" );
         }	
 		

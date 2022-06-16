@@ -96,14 +96,21 @@ public class AttendanceServiceImpl implements AttendanceService {
 
 	@Override
 	public int getWorkingDay(String date) { //근무일수 구하기
-		log.info("get Month Last Day..............");
+		log.info("get Working Days..............");
 		return mapper.getWorkingDay(date);
 	}
 
+	@Override
+	public int getWorkingDayAsOfToday(String date) { //오늘 기준 근무일수 구하기
+		log.info("get Working Days As of Today............... ");
+		return mapper.getWorkingDayAsOfToday(date);
+	}
+	
 	@Override
 	public int countDayoffDay(AttendanceVO attendance) { //월 사용휴가 일수 카운트
 		log.info("count dayoff Days..............");
 		return mapper.countDayoffDay(attendance);
 	}
+
 
 }
