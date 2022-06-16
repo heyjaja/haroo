@@ -176,7 +176,7 @@ public class ApprovalMapperTests {
     
     log.info("get process list");
     
-    List<ApprovalVO> list =  mapper.getReportList(45424411, 9);
+    List<ApprovalVO> list =  mapper.getReportList(45424402, 9);
     
     list.forEach(ap -> log.info(ap));
   }

@@ -44,7 +44,7 @@ import lombok.extern.log4j.Log4j;
 import oracle.jdbc.proxy.annotation.Post;
 
 @Controller
-@RequestMapping("/haroo/approval")
+@RequestMapping("/approval")
 @Log4j
 public class ApprovalController {
   
@@ -54,14 +54,18 @@ public class ApprovalController {
   ApprovalService service;
   
   @GetMapping
-  public String main() { // 메인
+  public String main(HttpSession session, Model model) { // 메인
     log.info("approval main..........");
     
-//    EmpVO employeeVO = new EmpVO();
-//    employeeVO.setEmNo(45424411);
-//    employeeVO.setEmName("백민주");
-//    
-//    session.setAttribute("employeeVO", employeeVO);
+    int emNo = ((EmployeeVO) session.getAttribute("employee")).getEm_no();
+    
+    int processCount = service.getReportTotal(new Criteria(), emNo, 0);
+    
+    int waitCount = service.getReceiveTotal(new Criteria(), emNo, 0);
+    
+    model.addAttribute("processCount", processCount);
+    model.addAttribute("waitCount", waitCount);
+    
     return "/approval/main";
   }
   
@@ -105,7 +109,7 @@ public class ApprovalController {
     service.insertApproval(approval);
     
     
-    return "redirect:/haroo/approval";
+    return "redirect:/approval";
   }
   
   @GetMapping("/form")
@@ -120,7 +124,7 @@ public class ApprovalController {
     
     service.insertForm(form);
     
-    return "redirect:/haroo/approval/forms";
+    return "redirect:/approval/forms";
   }
   
   @GetMapping("/form/{foNo}")
@@ -142,7 +146,7 @@ public class ApprovalController {
     
     service.modifyForm(form);
     
-    return "redirect:/haroo/approval/forms";
+    return "redirect:/approval/forms";
   }
   
   @GetMapping("/process")
@@ -288,7 +292,7 @@ public class ApprovalController {
       deleteFiles(attachList);
     };
     
-    return "redirect:/haroo/approval/process";
+    return "redirect:/approval/process";
   }
   
   @PostMapping("/wait/{apNo}")
@@ -302,7 +306,7 @@ public class ApprovalController {
       deleteFiles(attachList);
     }
     
-    return "redirect:/haroo/approval/wait";
+    return "redirect:/approval/wait";
   }
   
   @GetMapping("/re/{apNo}")

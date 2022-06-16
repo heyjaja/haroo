@@ -7,13 +7,13 @@
 
 <!-- 사이드메뉴 제외한 영역 -->
 <div class="p-3 container-sm" id="ap-contents">
-
+  <div class="d-flex justify-content-between">
   <c:set var="url"
     value="${requestScope['javax.servlet.forward.request_uri']}" />
   <c:choose>
     <c:when test="${fn:contains(url, 'done')  }">
-      <h3 class="float-start">완료 문서</h3>
-      <div class="btn-group btn-group-sm float-end ap-status" role="group" aria-label="done">
+      <h4>완료 문서</h4>
+      <div class="btn-group btn-group-sm ap-status mb-1" role="group" aria-label="done">
         <input type="radio" class="btn-check" name="status" 
           id="btnradio1" value="9" autocomplete="off" ${status == 9 ? "checked" : "" }>
         <label class="btn btn-outline-primary" for="btnradio1">전체</label>
@@ -28,67 +28,73 @@
       </div>
     </c:when>
     <c:when test="${fn:contains(url, 'process') }">
-      <h3>진행 문서</h3>
+      <h4>진행 문서</h4>
     </c:when>
     <c:when test="${fn:contains(url, 'takeback') }">
-      <h3>취소 문서</h3>
+      <h4>취소 문서</h4>
     </c:when>
     <c:when test="${fn:contains(url, 'all') }">
-      <h3>전체 문서</h3>
+      <h4>전체 문서</h4>
     </c:when>
   </c:choose>
-  <table class="table table-hover mt-3">
-    <thead>
-      <tr>
-        <th scope="col">양식</th>
-        <th scope="col">제목</th>
-        <th scope="col">기안자</th>
-        <th scope="col">상신날짜</th>
-        <th scope="col">결재상태</th>
-      </tr>
-    </thead>
-    <tbody>
-      <c:forEach var="ap" items="${list }">
+  </div>
+  
+  <div class="container rounded border mt-3 mb-4">
+  
+  <c:forEach var="ap" items="${list }">
+  
+    <div class="shadow p-3 mb-3 mt-3 bg-body rounded d-flex align-items-center position-relative ap-list-item">
+    <div class="col-2 d-flex flex-column align-items-center">
+      <div class="d-flex flex-column align-items-center text-muted">
+        <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="currentColor" class="bi bi-file-earmark-text" viewBox="0 0 16 16">
+            <path d="M5.5 7a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5z"/>
+            <path d="M9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.5L9.5 0zm0 1v2A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"/>
+          </svg>
+        <small class="fw-bold mb-0 mt-1">${ap.foKind }</small>
+      </div>
+    </div>
+    <div class="col-5 d-flex flex-column">
+      <div class="fw-bold">
         <c:choose>
           <c:when test="${ap.apStatus == 0 }">
-            <tr>
-              <th scope="row">${ap.foKind }</th>
-              <td><a class="ap-list-title ap-link"
-                href="/haroo/approval/process/${ap.apNo }">${ap.apTitle }</a></td>
-              <td>${ap.emName }</td>
-              <td>${ap.apDate }</td>
-              <td>진행중</td>
-            </tr>
+            <a class="ap-list-title stretched-link text-dark" href="/approval/process/${ap.apNo }">${ap.apTitle }</a>
           </c:when>
           <c:when test="${ap.apStatus > 0 }">
-            <tr>
-              <th scope="row">${ap.foKind }</th>
-              <td><a class="ap-list-title ap-link"
-                href="/haroo/approval/done/${ap.apNo }">${ap.apTitle }</a></td>
-              <td>${ap.emName }</td>
-              <td>${ap.apDate }</td>
-              <c:if test="${ap.apStatus == 1 }">
-                <td>승인</td>
-              </c:if>
-              <c:if test="${ap.apStatus == 2 }">
-                <td>반려</td>
-              </c:if>
-            </tr>
+            <a class="ap-list-title stretched-link text-dark" href="/approval/done/${ap.apNo }">${ap.apTitle }</a>
           </c:when>
           <c:when test="${ap.apStatus == -1 }">
-            <tr>
-              <th scope="row">${ap.foKind }</th>
-              <td><a class="ap-list-title ap-link"
-                href="/haroo/approval/takeback/${ap.apNo }">${ap.apTitle }</a></td>
-              <td>${ap.emName }</td>
-              <td>${ap.apDate }</td>
-              <td>취소</td>
-            </tr>
+            <a class="ap-list-title stretched-link text-dark" href="/approval/takeback/${ap.apNo }">${ap.apTitle }</a>
           </c:when>
         </c:choose>
-      </c:forEach>
-    </tbody>
-  </table>
+        
+        </div>
+      <div><small class="text-muted">${ap.apDate }</small></div>
+    </div>
+    <div class="col-4 d-flex flex-column">
+      <div class="fw-bold">${ap.emName } ${ap.poName }</div>
+      <div><small class="text-muted">${ap.deName }</small></div>
+    </div>
+    <div class="col-1">
+      <c:choose>
+        <c:when test="${ap.apStatus == 0 }">
+          <button type="button" class="btn btn-outline-primary btn-sm">진행중</button>
+        </c:when>
+        <c:when test="${ap.apStatus == 1 }">
+          <button type="button" class="btn btn-success btn-sm">승인</button>
+        </c:when>
+        <c:when test="${ap.apStatus == 2 }">
+          <button type="button" class="btn btn-secondary btn-sm">반려</button>
+        </c:when>
+        <c:when test="${ap.apStatus == -1 }">
+          <button type="button" class="btn btn-outline-secondary btn-sm">취소</button>
+        </c:when>
+      </c:choose>
+    </div>
+    </div>
+    </c:forEach>
+  </div>
+  
+  
   <nav aria-label="Page navigation mt-5">
     <ul class="pagination pagenation-sm justify-content-center ap-pagination">
       <c:if test="${pageMaker.prev }">
@@ -101,7 +107,7 @@
       
       <c:forEach var="num" begin="${pageMaker.start }"
         end="${pageMaker.end }">
-        <li class="page-item ${pageMaker.cri.page == num ? "active" : "" }">
+        <li class='page-item ${pageMaker.cri.page == num ? "active" : "" }'>
           <a class="page-link" href="${num }">${num }</a></li>
       </c:forEach>
       

@@ -17,6 +17,8 @@
     <result property="apStatus" column="ap_status"/>
     <result property="foKind" column="fo_kind"/>
     <result property="emName" column="em_name"/>
+    <result property="poName" column="po_name"/>
+    <result property="deName" column="de_name"/>
     <result property="alStatus" column="al_status"/>
   </resultMap>
   
@@ -58,11 +60,15 @@
 	
 	<!-- 상신 문서 리스트 불러오기  진행:0, 완료: 9, 취소: -1 / 승인: 1, 반려: 2 -->
 	<select id="getReportList" resultType="com.haroo.approval.domain.ApprovalVO" resultMap="ApprovalMap">
-    SELECT ap_no, ap_title, ap_date, ap_public, ap_status, fo_kind, em_name
+    SELECT ap_no, ap_title, TO_CHAR(ap_date, 'YYYY.MM.DD.') ap_date, ap_public, ap_status, fo_kind, em_name, po_name, de_name
       FROM approval ap JOIN approval_form af
       ON ap.fo_no = af.fo_no
       JOIN employee e
       ON ap.em_no = e.em_no
+      JOIN position p
+      ON e.po_no = p.po_no
+      JOIN department d
+      ON d.de_no = e.de_no
       WHERE ap.em_no=#{emNo}
       <choose>
         <when test="status == 0">
@@ -86,14 +92,18 @@
   
   <!-- 상신문서 페이징 -->
   <select id="getReportListWithPaging" resultType="com.haroo.approval.domain.ApprovalVO" resultMap="ApprovalMap">
-    SELECT ap_no, ap_title, ap_date, ap_public, ap_status, fo_kind, em_name
+    SELECT ap_no, ap_title, TO_CHAR(ap_date, 'YYYY.MM.DD.') ap_date, ap_public, ap_status, fo_kind, em_name, po_name, de_name
     FROM (
     SELECT /*+INDEX_DESC(ap pk_approval_no) */
-      rownum rn, ap_no, ap_title, ap_date, ap_public, ap_status, fo_kind, em_name
+      rownum rn, ap_no, ap_title, ap_date, ap_public, ap_status, fo_kind, em_name, po_name, de_name
       FROM approval ap JOIN approval_form af
       ON ap.fo_no = af.fo_no
       JOIN employee e
       ON ap.em_no = e.em_no
+      JOIN position p
+      ON e.po_no = p.po_no
+      JOIN department d
+      ON d.de_no = e.de_no
       WHERE ap.em_no=#{emNo}
       <choose>
         <when test="status == 0">
@@ -152,23 +162,31 @@
 	
 	<!-- 1 문서 내용 불러오기 -->
 	<select id="read" resultType="com.haroo.approval.domain.ApprovalVO" resultMap="ApprovalMap">
-	  SELECT ap_no, ap.fo_no, ap_title, ap_content, ap_date, ap_public, ap_status, fo_kind, em_name
+	  SELECT ap_no, ap.fo_no, ap_title, ap_content, TO_CHAR(ap_date, 'YYYY.MM.DD. HH24:MI') ap_date, ap_public, ap_status, fo_kind, em_name, po_name, de_name
       FROM approval ap JOIN approval_form af
       ON ap.fo_no = af.fo_no
       JOIN employee e
       ON ap.em_no = e.em_no
+      JOIN position p
+      ON e.po_no = p.po_no
+      JOIN department d
+      ON d.de_no = e.de_no
       WHERE ap_no = #{apNo}
 	</select>
 	
 	<!-- 수신문서 목록 -->
 	<select id="getReceiveList" resultType="com.haroo.approval.domain.ApprovalVO" resultMap="ApprovalMap">
-	  SELECT ap_no, ap_title, ap_date, ap_public, ap_status, fo_kind, em_name, al_status
+	  SELECT ap_no, ap_title, TO_CHAR(ap_date, 'YYYY.MM.DD.') ap_date, ap_public, ap_status, fo_kind, em_name, al_status, po_name, de_name
       FROM approval ap JOIN approval_form af
       ON ap.fo_no = af.fo_no
       JOIN employee e
       ON ap.em_no = e.em_no
       JOIN approval_line al
       ON ap.ap_no = al.ap_no 
+      JOIN position p
+      ON e.po_no = p.po_no
+      JOIN department d
+      ON d.de_no = e.de_no
       WHERE al_no=#{emNo} AND ap.ap_no != -1
       <choose>
         <when test="status == 0">
@@ -189,16 +207,20 @@
   
 	<!-- 수신문서 페이징  -->
 	<select id="getReceiveListWithPaging" resultType="com.haroo.approval.domain.ApprovalVO" resultMap="ApprovalMap">
-  SELECT ap_no, ap_title, ap_date, ap_public, ap_status, fo_kind, em_name, al_status
+  SELECT ap_no, ap_title, TO_CHAR(ap_date, 'YYYY.MM.DD.') ap_date, ap_public, ap_status, fo_kind, em_name, al_status, po_name, de_name
     FROM (
     SELECT /*+INDEX_DESC(ap pk_approval_no) */
-      rownum rn, ap.ap_no, ap_title, ap_date, ap_public, ap_status, fo_kind, em_name, al_status
+      rownum rn, ap.ap_no, ap_title, ap_date, ap_public, ap_status, fo_kind, em_name, al_status, po_name, de_name
       FROM approval ap JOIN approval_form af
       ON ap.fo_no = af.fo_no
       JOIN employee e
       ON ap.em_no = e.em_no
       JOIN approval_line al
       ON ap.ap_no = al.ap_no 
+      JOIN position p
+      ON e.po_no = p.po_no
+      JOIN department d
+      ON d.de_no = e.de_no
       WHERE al_no=#{emNo} AND ap.ap_no != -1
       <choose>
         <when test="status == 0">
@@ -263,25 +285,33 @@
   
   <!-- 전체문서함 -->
   <select id="getAllList" resultType="com.haroo.approval.domain.ApprovalVO" resultMap="ApprovalMap">
-    SELECT ap_no, ap_title, ap_date, ap_public, ap_status, fo_kind, em_name
+    SELECT ap_no, ap_title, TO_CHAR(ap_date, 'YYYY.MM.DD.') ap_date, ap_public, ap_status, fo_kind, em_name, po_name, de_name
       FROM approval ap JOIN approval_form af
       ON ap.fo_no = af.fo_no
       JOIN employee e
       ON ap.em_no = e.em_no
+      JOIN position p
+      ON e.po_no = p.po_no
+      JOIN department d
+      ON d.de_no = e.de_no
       WHERE ap_status = 1 AND ap_public = 1
       ORDER BY ap_date DESC
   </select>
 	
   <!-- 전체문서함 페이징-->
   <select id="getAllListWithPaging" resultType="com.haroo.approval.domain.ApprovalVO" resultMap="ApprovalMap">
-    SELECT ap_no, ap_title, ap_date, ap_public, ap_status, fo_kind, em_name
+    SELECT ap_no, ap_title, TO_CHAR(ap_date, 'YYYY.MM.DD.') ap_date, ap_public, ap_status, fo_kind, em_name, po_name, de_name
     FROM(
     SELECT /*+INDEX_DESC(ap pk_approval_no) */
-      rownum rn, ap_no, ap_title, ap_date, ap_public, ap_status, fo_kind, em_name
+      rownum rn, ap_no, ap_title, ap_date, ap_public, ap_status, fo_kind, em_name, po_name, de_name
       FROM approval ap JOIN approval_form af
       ON ap.fo_no = af.fo_no
       JOIN employee e
       ON ap.em_no = e.em_no
+      JOIN position p
+      ON e.po_no = p.po_no
+      JOIN department d
+      ON d.de_no = e.de_no
       WHERE ap_status = 1 AND ap_public = 1
         <include refid="criteria"></include>
         AND rownum <![CDATA[<=]]> #{cri.page} * #{cri.amount}
@@ -299,6 +329,4 @@
       WHERE ap_status = 1 AND ap_public = 1
       <include refid="criteria"></include>
   </select>
-	
-
 </mapper>

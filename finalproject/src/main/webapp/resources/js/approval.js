@@ -69,7 +69,7 @@ $(document).on('change', '.ap-el input', function(){
 $(document).on('click', '.ap-al-select', function(event){
   event.preventDefault();
   $('#ap-list-selected').empty();
-  window.open("/haroo/approval/line", "결재선 선택", "width=600, height=500, left=50, top=50");
+  window.open("/approval/line", "결재선 선택", "width=600, height=500, left=50, top=50");
 });
 
 //결재선 선택
@@ -188,7 +188,7 @@ $(document).ready(function(e) {
     console.log(files);
     
     $.ajax({
-      url: '/haroo/approval/file',
+      url: '/approval/file',
       processData: false,
       contentType: false,
       data: formData,
@@ -216,7 +216,7 @@ $(document).ready(function(e) {
       
       str += '<li class="list-group-item" data-path="'+obj.path+'" data-uuid="'+obj.aaNo+'"'
         + 'data-fname="'+obj.fname
-        + '"><div><a class="ap-list-title" href="/haroo/approval/file?fname='
+        + '"><div><a class="ap-list-title" href="/approval/file?fname='
         + fileCallPath + '">' 
         + obj.fname + "</a>" 
         + "<span class='badge rounded-pill bg-light text-dark' data-file=\'"
@@ -235,7 +235,7 @@ $(document).ready(function(e) {
     const targetLi = $(this).closest("li");
     
     $.ajax({
-      url: '/haroo/approval/file/delete',
+      url: '/approval/file/delete',
       data: {fname: targetFile},
       dataType: 'text',
       type: 'POST',
@@ -252,7 +252,7 @@ $(document).ready(function(e) {
     const fileCallPath = encodeURIComponent($(this).data("path") 
     + "/" + $(this).data("uuid") + "_" + $(this).data("fname"));
     
-    location.href="/haroo/approval/file?fname="+fileCallPath;
+    location.href="/approval/file?fname="+fileCallPath;
     
   });
 

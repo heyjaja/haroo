@@ -6,7 +6,7 @@
 <div class="p-3 container-sm" id="ap-contents">
   <div class="ap-form-container">
     
-    <form class="ap-form row" action="/haroo/approval/report/3" method="post">
+    <form class="ap-form row" action="/approval/report/3" method="post">
     <div class="ap-report-body col-9">
     <div class="text-center">
       <h1 class="fs-2 ap-form-name">휴가신청서</h1>

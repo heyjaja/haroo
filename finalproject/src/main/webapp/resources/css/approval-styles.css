@@ -150,3 +150,8 @@ li.ap-file {
     background-color: gray !important;
     border-color: white;
 }
+
+div.ap-list-item:hover {
+  background-color: #fafafa !important;
+  transform:scale(1.005);
+}

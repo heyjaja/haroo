@@ -18,11 +18,11 @@
           </tr>
           <tr>
             <th scope="row">작성일자</th>
-            <td>${ap.apDate }</td>
+            <td><small class="text-muted">${ap.apDate }</small></td>
           </tr>
           <tr>
-            <th scope="row">기안자</th>
-            <td>${ap.emName }</td>
+            <th class="align-middle" scope="row">기안자</th>
+            <td><small class="text-muted d-block">${ap.deName }</small>${ap.emName } ${ap.poName }</td>
           </tr>
           <c:if test="${ap.leave != null }">
             <tr>
@@ -144,7 +144,7 @@
                         결재하기
                       </button>
                       <div class="collapse ap-line-sign-form" id="al-sign-form">
-                        <form action="/haroo/approval/wait/${ap.apNo }" method="post">
+                        <form action="/approval/wait/${ap.apNo }" method="post">
                           <input type="hidden" name="apNo" value="${ap.apNo }" />
                           <input type="hidden" name="alNo" value="${employee.em_no }" />
                           <input type="hidden" name="foNo" value="${ap.foNo }" />

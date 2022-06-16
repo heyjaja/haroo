@@ -36,7 +36,7 @@ public class ApprovalControllerTests {
   public void testList() throws Exception {
     
     log.info(mockMvc.perform(
-        MockMvcRequestBuilders.get("/haroo/approval/process")
+        MockMvcRequestBuilders.get("/approval/process")
         .param("page", "3")
         .param("amount", "10")
         ).andReturn().getModelAndView().getModelMap());
@@ -44,7 +44,7 @@ public class ApprovalControllerTests {
   
   @Test
   public void testInsertForm() throws Exception {
-    log.info(mockMvc.perform(MockMvcRequestBuilders.post("/haroo/approval/form")
+    log.info(mockMvc.perform(MockMvcRequestBuilders.post("/approval/form")
         .param("foKind", "테스트")
         .param("foTitle", "테스트 문서 양식 2")
         .param("foContent", "테스트2: ")
@@ -57,7 +57,7 @@ public class ApprovalControllerTests {
   public void testFormList() throws Exception {
     
     log.info(mockMvc.perform(
-        MockMvcRequestBuilders.get("/haroo/approval/forms")
+        MockMvcRequestBuilders.get("/approval/forms")
         ).andReturn().getModelAndView().getModelMap());
   }
   
@@ -65,7 +65,7 @@ public class ApprovalControllerTests {
   public void testGetForm() throws Exception {
     
     log.info(mockMvc.perform(
-        MockMvcRequestBuilders.get("/haroo/approval/form/4")
+        MockMvcRequestBuilders.get("/approval/form/4")
         ).andReturn().getModelAndView().getModelMap());
   }
 
