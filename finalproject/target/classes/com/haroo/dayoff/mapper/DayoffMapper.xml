@@ -41,42 +41,99 @@
 	
 	<!-- 사용일수 --> 
 	<update id="updateUse" parameterType="int" >
-		update dayoff set da_cnt = (
-			select 
-    		case when leave.le_status = 0 then 0
-		 	when leave.le_status = 1 then SUM(le_end - le_start + 1)
-         	else da_cnt 
-         	end 
-    	from leave, dayoff 
-    	where leave.em_no = dayoff.em_no 
-    	and leave.em_no = #{emNo}
-        and leave.le_status = 1
-    	group by da_cnt, le_status 
-    	)
-    	where exists (
-    		select 
-    		case when leave.le_status = 0 then 0
-		 	when leave.le_status = 1 then SUM(le_end - le_start + 1)
-         	else da_cnt 
-         	end 
-    	from leave, dayoff 
-    	where leave.em_no = dayoff.em_no 
-    	and leave.em_no = #{emNo}
-        and leave.le_status = 1
-        group by da_cnt, le_status)  
-		and em_no = #{emNo}
+	<![CDATA[
+		UPDATE dayoff
+			SET
+			    da_cnt = (
+			        SELECT
+			            CASE
+			                WHEN leave.le_status = 0 THEN
+			                    0
+			                WHEN leave.le_status = 1 THEN
+			                    (
+			                        SELECT
+			                            COUNT(1) working_days
+					--*
+			                        FROM
+			                            (
+			                                SELECT
+			                                    to_char(le_start + level - 1, 'YYYYMMDD') dates,
+			                                    to_char(le_start + level - 1, 'D')        d
+			                                FROM
+			                                    (
+			                                        SELECT
+			                                            le_start,
+			                                            le_end
+			                                        FROM
+			                                            leave
+			                                    )
+			                                CONNECT BY
+			                                    level <= le_end - le_start + 1
+			                            ) a
+			                        WHERE
+			                            a.d NOT IN ( '1', '7' )
+			                    )
+			                ELSE
+			                    da_cnt
+			            END
+			        FROM
+			            leave,
+			            dayoff
+			        WHERE
+			                leave.em_no = dayoff.em_no
+			            AND leave.em_no = #{emNo}
+			            AND leave.le_status = 1
+			        GROUP BY
+			            da_cnt,
+			            le_status
+			    )
+			WHERE
+			    EXISTS (
+			        SELECT
+			            CASE
+			                WHEN leave.le_status = 0 THEN
+			                    0
+			                WHEN leave.le_status = 1 THEN
+			                    (
+			                        SELECT
+			                            COUNT(1) working_days
+					--*
+			                        FROM
+			                            (
+			                                SELECT
+			                                    to_char(le_start + level - 1, 'YYYYMMDD') dates,
+			                                    to_char(le_start + level - 1, 'D')        d
+			                                FROM
+			                                    (
+			                                        SELECT
+			                                            le_start,
+			                                            le_end
+			                                        FROM
+			                                            leave
+			                                    )
+			                                CONNECT BY
+			                                    level <= le_end - le_start + 1
+			                            ) a
+			                        WHERE
+			                            a.d NOT IN ( '1', '7' )
+			                    )
+			                ELSE
+			                    da_cnt
+			            END
+			        FROM
+			            leave,
+			            dayoff
+			        WHERE
+			                leave.em_no = dayoff.em_no
+			            AND leave.em_no = #{emNo}
+			            AND leave.le_status = 1
+			        GROUP BY
+			            da_cnt,
+			            le_status
+			    )
+			    AND em_no = #{emNo}
+	]]>
 	</update> 
-	
-	<!-- 사용내역 출력 -->
-	<!-- <select id="printUsageList" parameterType="int" 
-				resultType="com.haroo.dayoff.domain.DayoffUsageVO" resultMap="dayoffUsageResult">
-		select le_title, ap_content, le_kind, le_start, le_end, (le_end - le_start + 1) AS le_days
-		from leave
-		join approval
-		on leave.ap_no = approval.ap_no
-		where le_status = 1 and leave.em_no = #{emNo} 
-		order by le_start
-	</select> -->
 	
 	<!-- 사용내역 출력 -->
 	<select id="printUsageList" parameterType="com.haroo.dayoff.domain.DayoffUsageVO" 
@@ -94,8 +151,6 @@
 		]]>
 	</select>	
 		
-	
-	
 	<!-- 오늘 날짜 출력 -->
 	<select id="printToday" resultType="String">
 		select TO_char(sysdate, 'YYYY-MM-DD') from dual
