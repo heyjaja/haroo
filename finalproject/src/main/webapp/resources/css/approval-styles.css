@@ -124,3 +124,27 @@ span.ap-text-area{
 .ap-hover:hover{
 	background-color: #f8f9fa;
 }
+
+#ap-upload-file span.badge {
+  cursor: pointer;
+}
+
+li.ap-file {
+  color: gray;
+  cursor: pointer;
+}
+
+#ap-upload-file li {
+  font-size: 0.9em;
+}
+
+.ap-pagination .page-link {
+  color: gray;
+}
+
+.ap-pagination .page-item.active .page-link {
+    z-index: 3;
+    color: #fff;
+    background-color: gray !important;
+    border-color: white;
+}

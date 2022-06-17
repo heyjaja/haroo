@@ -5,6 +5,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,6 +26,7 @@ import com.haroo.board.domain.BoardVO;
 import com.haroo.board.domain.Criteria;
 import com.haroo.board.domain.PageDTO;
 import com.haroo.board.service.BoardService;
+import com.haroo.board.service.ReplyService;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -37,6 +40,8 @@ public class BoardController {
 	@Autowired
 	private BoardService service;
 
+	@Autowired
+	private ReplyService service2;
 //	@GetMapping("/list")
 //	public void list(Model model) {
 //		log.info("list");
@@ -46,7 +51,7 @@ public class BoardController {
 
 	@GetMapping("/list")
 	public void list(Criteria cri, Model model) {
-
+		
 		log.info("list : " + cri);
 
 		model.addAttribute("list", service.getList(cri));
@@ -90,6 +95,7 @@ public class BoardController {
 		
 		log.info("/get or modify");
 		model.addAttribute("board", service.get(bdNo));
+		model.addAttribute("replys", service2.getList(cri, bdNo));
 	}
 	
 	@PostMapping("/modify")
@@ -109,7 +115,7 @@ public class BoardController {
 		return "redirect:/board/list" + cri.getListLink();
 	}
 	
-	@PostMapping("/remove")
+	@GetMapping("/remove")
 	public String remove(@RequestParam("bdNo") Long bdNo, @ModelAttribute("cri") Criteria cri, RedirectAttributes rttr) {
 		
 		log.info("reomve... " + bdNo );

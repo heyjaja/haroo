@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="com.haroo.dayoff.mapper.DayoffMapper">
+	<!-- <cache /> -->
+	
+	<!-- 이렇게 맞춰 놓으면 밑에서 AS 안 써도 됨 -->
+	<resultMap type="com.haroo.dayoff.domain.DayoffVO" id="dayoffResult">
+		<result property="emNo" column="em_no" />
+		<result property="emName" column="em_name" />
+		<result property="daTotal" column="da_total" />
+		<result property="daCnt" column="da_cnt" />
+		<result property="daRemainder" column="da_remainder" />	
+	</resultMap>
+	
+	<resultMap type="com.haroo.dayoff.domain.DayoffUsageVO" id="dayoffUsageResult">
+		<result property="emNo" column="em_no" />
+		<result property="leTitle" column="le_title" />
+		<result property="apContent" column="ap_content" />
+		<result property="leKind" column="le_kind" />
+		<result property="leStart" column="le_start" />	
+		<result property="leEnd" column="le_end" />	
+		<result property="leDays" column="le_days"/>
+	</resultMap>
+	
+	<!-- 쿼리문 작성 -->
+	
+	<!-- 휴가현황 전체 -->
+	<select id="statusDayoff" parameterType="int" resultType="com.haroo.dayoff.domain.DayoffVO" resultMap="dayoffResult">
+		
+		select (select em_name from employee where em_no = #{emNo}) as em_name, 
+			da_total, 
+			da_cnt, 
+			(da_total-da_cnt) as da_remainder 
+    	from dayoff
+    	where em_no = #{emNo}
+	</select>
+	
+	<!-- 사용일수 --> 
+	<update id="updateUse" parameterType="int" >
+		update dayoff set da_cnt = (
+			select 
+    		case when leave.le_status = 0 then 0
+		 	when leave.le_status = 1 then SUM(le_end - le_start + 1)
+         	else da_cnt 
+         	end 
+    	from leave, dayoff 
+    	where leave.em_no = dayoff.em_no 
+    	and leave.em_no = #{emNo}
+        and leave.le_status = 1
+    	group by da_cnt, le_status 
+    	)
+    	where exists (
+    		select 
+    		case when leave.le_status = 0 then 0
+		 	when leave.le_status = 1 then SUM(le_end - le_start + 1)
+         	else da_cnt 
+         	end 
+    	from leave, dayoff 
+    	where leave.em_no = dayoff.em_no 
+    	and leave.em_no = #{emNo}
+        and leave.le_status = 1
+        group by da_cnt, le_status)  
+		and em_no = #{emNo}
+	</update> 
+	
+	<!-- 사용내역 출력 -->
+	<!-- <select id="printUsageList" parameterType="int" 
+				resultType="com.haroo.dayoff.domain.DayoffUsageVO" resultMap="dayoffUsageResult">
+		select le_title, ap_content, le_kind, le_start, le_end, (le_end - le_start + 1) AS le_days
+		from leave
+		join approval
+		on leave.ap_no = approval.ap_no
+		where le_status = 1 and leave.em_no = #{emNo} 
+		order by le_start
+	</select> -->
+	
+	<!-- 사용내역 출력 -->
+	<select id="printUsageList" parameterType="com.haroo.dayoff.domain.DayoffUsageVO" 
+				resultType="com.haroo.dayoff.domain.DayoffUsageVO" resultMap="dayoffUsageResult">
+		<![CDATA[
+		select le_title, ap_content, le_kind, le_start, le_end, (le_end - le_start + 1) AS le_days
+		from leave
+		join approval
+		on leave.ap_no = approval.ap_no
+		where le_status = 1 
+		and leave.em_no = #{emNo} 
+		and substr(TO_char(le_start, 'YYYY-MM-DD HH24:MI:SS'), 1, 4) = #{leStart}
+		and le_start <= sysdate
+		order by le_start
+		]]>
+	</select>	
+		
+	
+	
+	<!-- 오늘 날짜 출력 -->
+	<select id="printToday" resultType="String">
+		select TO_char(sysdate, 'YYYY-MM-DD') from dual
+	</select>
+	
+	
+</mapper>

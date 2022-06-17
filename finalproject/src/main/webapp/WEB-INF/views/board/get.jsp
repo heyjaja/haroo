@@ -3,9 +3,7 @@
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%
-	EmployeeVO employeeVO = ((EmployeeVO) request.getSession().getAttribute("employeeVO"));
-%>
+
 <%@ include file="../includes/header.jsp"%>
 	<div class="haroo-body">
 
@@ -56,34 +54,40 @@
 					<h4>댓글목록</h4>
 
 
-<!-- 					<table class="table table-striped" -->
-<!-- 						style="text-align: center; border: 1px solid #dddddd"> -->
-<!-- 						<thead> -->
-<!-- 							<tr> -->
-						
-
-<!-- 								<td>댓글작성자</td> -->
-<!-- 								<td>댓글내용</td> -->
-<!-- 								<td>댓글일자</td> -->
-<!-- 							</tr> -->
-<!-- 						</thead> -->
-<!-- 						<tbody> -->
-<%-- 						<c:forEach var="reply" items="${replys}"> --%>
-<!-- 							<tr> -->
-								
-<%-- 								<td>${reply.reWriter }</td> --%>
-<%-- 								<td>${reply.reContents}</td> --%>
-<%-- 								<td>${reply.reRegdate }</td> --%>
-<!-- 							</tr> -->
-<%-- 						</c:forEach> --%>
-<!-- 						</tbody> -->
-<!-- 					</table> -->
+					<table class="table table-striped"
+						style="text-align: center; border: 1px solid #dddddd">
+						<thead>
+							<tr>
+								<td>댓글작성자</td>
+								<td>댓글내용</td>
+								<td>댓글일자</td>
+								<td>댓글수정/삭제</td>
+							</tr>
+						</thead>
+						<tbody>
+						<c:forEach var="reply" items="${replys}">
+							<tr>
+								<td>${reply.reWriter }</td>
+								<td>${reply.reContents}</td>
+								<td>${reply.reRegdate }</td>
+								<td>
+									<c:if test="${employee.em_name == reply.reWriter}">
+										<a href="/replies/modify?bdNo=${board.bdNo}&reNo=${reply.reNo}"
+											class="btn btn-warning float-end">글수정</a>
+										<a href="/replies/remove?reNo=${reply.reNo}"
+											class="btn btn-danger float-end">글삭제</a>
+									</c:if>
+								</td>
+							</tr>
+						</c:forEach>
+						</tbody>
+					</table>
 				</div>
 			</div>
-			<form action="insertReplyAction.do" method="post">
+			<form action="/replies/register" method="post">
 				<input type="hidden" name="bdNo" value="${board.bdNo }">
-<%-- 				댓글작성자:<%=employeeVO.getEm_name()%> --%>
-<%-- 				<input type="hidden" name="name" value="<%=employeeVO.getEm_name()%>"><br>  --%>
+				댓글작성자:${employee.em_name}
+				<input type="hidden" name="reWriter" value="${employee.em_name}"><br> 
 				댓글 내용 : <input type="text" name="reContents"><br> 
 				<input type="submit" value="댓글쓰기">
 			</form>
@@ -99,12 +103,12 @@
 					<input type='hidden' name='keyword' value='<c:out value="${cri.keyword}"/>'> 
 					<input type='hidden' name='type' value='<c:out value="${cri.type}"/>'>
 				</form>
-<%-- 			<c:if test="${employeeVO.em_name == board.writer}"> --%>
+				<c:if test="${employee.em_name == board.writer}">
 				<a href="/board/modify?bdNo=${board.bdNo}"
 					class="btn btn-warning float-end">글수정</a>
-				<a href="/board/reomve?bdNo=${board.bdNo}"
+				<a href="/board/remove?bdNo=${board.bdNo}"
 					class="btn btn-danger float-end">글삭제</a>
-<%-- 			</c:if> --%>
+				</c:if>
 		</div>
 
 	</div>
@@ -132,71 +136,7 @@
 	</script>
 	
 	<script src="http://code.jquery.com/jquery-latest.js"></script> 
-	<script type="text/javascript" src="/resources/js/reply.js"></script>
-	<script type="text/javascript">
-	$(document).ready(function() {
-		console.log("replyService");
-		
-	});
-	</script>
-	<script>
-	console.log("===============");
-	console.log("JS TEST");
-
-	var bdnoValue = '<c:out value="${board.bdNo}"/>'; 
-	var replyUL = $(".chat");
-
-	 showList(1);
-	    
-	 function showList(page){
-	    	
-	    	console.log("show list " + page);
-	        
-	        replyService.getList({bdno:bdnoValue,page: page|| 1 }, function(replyCnt, list) {
-	          
-	        console.log("replyCnt: "+ replyCnt );
-	        console.log("list: " + list);
-	        console.log(list);
-	        
-	        if(page == -1){
-	          pageNum = Math.ceil(replyCnt/10.0);
-	          showList(pageNum);
-	          return;
-	        }
-	          
-	         var str="";
-	         
-	         if(list == null || list.length == 0){
-	           return;
-	         }
-	         
-	         for (var i = 0, len = list.length || 0; i < len; i++) {
-	           str +="<li class='left clearfix' data-rno='"+list[i].rno+"'>";
-	           str +="  <div><div class='header'><strong class='primary-font'>["
-	        	   +list[i].rno+"] "+list[i].replyer+"</strong>"; 
-	           str +="    <small class='pull-right text-muted'>"
-	               +replyService.displayTime(list[i].replyDate)+"</small></div>";
-	           str +="    <p>"+list[i].reply+"</p></div></li>";
-	         }
-	         
-	         replyUL.html(str);
-	         
-	         showReplyPage(replyCnt);
-
-	     
-	       });//end function
-	         
-	     }//end showList
-	//for replyService add test
-	 replyService.add(
-	    
-	    {reContents:"JS Test", reWriter:"tester", bdNo:bnoValue}
-	    ,
-	    function(result){ 
-	      alert("RESULT: " + result);
-	    }
-	); 
-	</script>
+	
 	<script type="text/javascript">
 	$(document).ready(function() {
 
@@ -215,6 +155,18 @@
 			operForm.submit();
 
 		});
+		
+		$(".move").on("click", function(e) {
+
+			e.preventDefault();
+			if(actionForm.find("input[name='bdNo']")){
+				actionForm.find("input[name='bdNo']").remove();
+			}
+			actionForm.append("<input type='hidden' name='bdNo' value='"+ 
+				$(this).attr("href")+ "'>");
+				actionForm.attr("action", "/board/get");
+				actionForm.submit();
+			});
 	});
 </script>
 </body>

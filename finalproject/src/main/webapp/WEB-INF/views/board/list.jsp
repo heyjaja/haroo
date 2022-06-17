@@ -168,20 +168,41 @@
 	</script>	
 	<script src="http://code.jquery.com/jquery-latest.js"></script> 
 	<script type="text/javascript">
+	$(function(){
+		history.replaceState({}, null, location.pathname);
+	});
+	
 	$(document).ready(function() {
 		
 		var actionForm = $("#actionForm");
+		
+		var result = '<c:out value="${result}"/>';
+
+		checkModal(result);	
+		history.replaceState({}, null, null);
+		
+		function checkModal(result) {
+
+			if (result === '' || history.state) {
+				return;
+			}
+		}
 
 		$(".page_nation a").on("click", function(e) {
 			e.preventDefault();
+			
 			console.log('click');
 			actionForm.find("input[name='pageNum']").val($(this).attr("href"));
+			actionForm.attr("action", "/board/list");
 			actionForm.submit();
 			});
 		
 		$(".move").on("click", function(e) {
 
 			e.preventDefault();
+			if(actionForm.find("input[name='bdNo']")){
+				actionForm.find("input[name='bdNo']").remove();
+			}
 			actionForm.append("<input type='hidden' name='bdNo' value='"+ 
 				$(this).attr("href")+ "'>");
 				actionForm.attr("action", "/board/get");

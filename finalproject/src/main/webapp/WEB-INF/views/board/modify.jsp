@@ -78,10 +78,11 @@
 						<input type='hidden' name='keyword' value='<c:out value="${cri.keyword}"/>'> 
 						<input type='hidden' name='type' value='<c:out value="${cri.type}"/>'>
 						<input type="hidden" name="bdNo" value="${board.bdNo}">
+						<input type="hidden" name="writer" value="${board.writer}">
 						작성자 :<div class="form-control"> ${board.writer}</div><br> 
 						제목 : <input type="text" name="title" class="form-control" maxlength="50" value="${board.title}"><br> 내용 : <br>
 						<textarea name="contents" class="form-control" maxlength="500" placeholder="글 내용" style="height: 350px;">${board.contents}</textarea>
-						<button type="submit"  data-oper='modify' class="btn btn-primary float-end">수정완료</button>
+						<button type="submit"  href="/board/modify" class="btn btn-primary float-end">수정완료</button>
 						
 						<button type="submit" data-oper='remove' class="btn btn-danger">삭제</button>
 						<button type="submit" data-oper='list' class="btn btn-info">글 목록</button>
@@ -147,7 +148,11 @@
 		      formObj.append(keywordTag);
 		      formObj.append(typeTag);	  
 		      
-		    }
+		    }else if(operation === 'modify'){
+		        
+		        console.log("submit clicked");
+		       
+	        }
 		    formObj.submit();
 		  });
 	

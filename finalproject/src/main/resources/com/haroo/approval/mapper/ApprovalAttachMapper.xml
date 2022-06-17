@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="com.haroo.approval.mapper.ApprovalAttachMapper">
+	<cache />
+  
+  <resultMap type="com.haroo.approval.domain.ApprovalAttachVO" id="AttachMap">
+    <result property="apNo" column="ap_no"/>
+    <result property="aaNo" column="aa_no"/>
+  </resultMap>
+
+  <insert id="insert">
+    INSERT INTO approval_attach (aa_no, path, fname, ap_no)
+    VALUES (#{aaNo}, #{path}, #{fname}, #{apNo})
+  </insert>
+  
+  <delete id="delete">
+    DELETE FROM approval_attach WHERE aa_no = #{aaNo}
+  </delete>
+  
+  <select id="findByApNo" resultType="com.haroo.approval.domain.ApprovalAttachVO" resultMap="AttachMap">
+    SELECT * FROM approval_attach WHERE ap_no = #{apNo}
+  </select>
+  
+  <delete id="deleteAll">
+    DELETE approval_attach WHERE ap_no = #{apNo}
+  </delete>
+
+</mapper>

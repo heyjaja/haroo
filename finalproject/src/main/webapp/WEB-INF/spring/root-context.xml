@@ -52,10 +52,33 @@
 	<!-- <mybatis-spring:scan base-package="org.hongki.mapper"/> -->
 	<!--aop 관련 auto-proxy 설정 -->
 
-	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
 
-	<mybatis-spring:scan
-		base-package="com.haroo.board.mapper" />
-	<context:component-scan
-		base-package="com.haroo.board.service" />
+	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+	
+	<!-- 훈 -->
+	<mybatis-spring:scan base-package="com.haroo.board.mapper" />
+	<context:component-scan base-package="com.haroo.board.service" />
+	<!-- 훈 -->
+   
+    <!-- 홍기 추가 시작-->
+    <mybatis-spring:scan base-package="com.haroo.login.mapper"/>
+    <mybatis-spring:scan base-package="com.haroo.mypage.mapper"/>
+    <mybatis-spring:scan base-package="com.haroo.task.mapper"/>
+
+	<context:component-scan base-package="com.haroo.login.service"/>
+    <context:component-scan base-package="com.haroo.mypage.service"/>
+    <context:component-scan base-package="com.haroo.task.service"/>
+    
+    <!-- 홍기 추가 끝-->
+    <!-- 자은 -->
+    <context:component-scan base-package="com.haroo.approval.service"/>
+    <mybatis-spring:scan base-package="com.haroo.approval.mapper"/>
+    
+    <!-- 자은 -->
+    
+    <!-- 주영 -->
+    <context:component-scan base-package="com.haroo.attendance, com.haroo.dayoff"/>
+	<mybatis-spring:scan base-package="com.haroo.attendance.mapper, com.haroo.dayoff.mapper"/>
+    <!-- 주영 -->
+
 </beans>

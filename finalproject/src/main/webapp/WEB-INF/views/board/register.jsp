@@ -19,7 +19,7 @@
 			
 	<div class="container">
 		<div class="row">
-			<form action="insertAction.do" method="post">
+			<form action="/board/register" method="post">
 				<table class="table table-striped"
 					style="text-align: center; border: 1px solid #dddddd">
 					<tr>
@@ -27,17 +27,16 @@
 					</tr>
 
 					<tr>
-<!-- 						<td> -->
-<%-- 						<input type="hidden" class="form-control" name="emNo" value="<%=employeeVO.getEm_no()%>"> --%>
-<!-- 						제목 :<inputtype="text" class="form-control" name="title" placeholder="글 제목" maxlength="50"> -->
-<!-- 						</td> -->
+						<td>
+						<input type="hidden" class="form-control" name="emNo" value="${employee.em_no}">
+						제목 :<input type="text" class="form-control" name="title" placeholder="글 제목" maxlength="50">
+						</td>
 					</tr>
 					<tr>
-<!-- 						<td>작성자 : -->
-<%-- 							<div class="form-control"><%=employeeVO.getEm_name()%></div> --%>
-<!-- 							<input type="hidden" name="name" -->
-<%-- 							value="<%=employeeVO.getEm_name()%>"> --%>
-<!-- 						</td> -->
+						<td>작성자 :
+							<div class="form-control">${employee.em_name}</div>
+							<input type="hidden" name="writer" value="${employee.em_name}">
+						</td>
 					</tr>
 					<tr>
 						<td>내용 <textarea name="contents" class="form-control"
