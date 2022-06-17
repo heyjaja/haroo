@@ -25,8 +25,8 @@
             crossorigin="anonymous"></script>
 
     <!--kakao map -->
-    <script type="text/javascript"
-            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b89e623fa5a7450da9e317c87329cb31&libraries=services"></script>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b89e623fa5a7450da9e317c87329cb31&libraries=services"></script>
+
     <link rel="stylesheet" href="/resources/css/kakao-map.css"/>
 
     <style>
@@ -109,7 +109,7 @@
                 <path d="M4.285 9.567a.5.5 0 0 1 .683.183A3.498 3.498 0 0 0 8 11.5a3.498 3.498 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.498 4.498 0 0 1 8 12.5a4.498 4.498 0 0 1-3.898-2.25.5.5 0 0 1 .183-.683zM7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zm4 0c0 .828-.448 1.5-1 1.5s-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5z"/>
             </svg>
             <p>인사정보</p></a></li>
-        <li class="nav-item"><a class="nav-link link-dark text-center" href="#">
+        <li class="nav-item"><a class="nav-link link-dark text-center" href="/attendance/status">
             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-briefcase"
                  viewBox="0 0 16 16">
                 <path d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v8A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1h-3zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5zm1.886 6.914L15 7.151V12.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5V7.15l6.614 1.764a1.5 1.5 0 0 0 .772 0zM1.5 4h13a.5.5 0 0 1 .5.5v1.616L8.129 7.948a.5.5 0 0 1-.258 0L1 6.116V4.5a.5.5 0 0 1 .5-.5z"/>
@@ -123,7 +123,7 @@
             </svg>
             <p>캘린더</p></a>
         </li>
-        <li class="nav-item"><a class="nav-link link-dark text-center" href="/haroo/board/listAction.do">
+        <li class="nav-item"><a class="nav-link link-dark text-center" href="/board/list">
             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor"
                  class="bi bi-layout-text-window-reverse" viewBox="0 0 16 16">
                 <path d="M13 6.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 .5-.5zm0 3a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 .5-.5zm-.5 2.5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1h5z"/>
@@ -136,14 +136,14 @@
                 <path d="M4 11H2v3h2v-3zm5-4H7v7h2V7zm5-5v12h-2V2h2zm-2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1h-2zM6 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7zm-5 4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-3z"/>
             </svg>
             <p>설문조사</p></a></li>
-        <li class="nav-item"><a class="nav-link link-dark text-center" href="/haroo/ap/main">
+        <li class="nav-item"><a class="nav-link link-dark text-center" href="/approval">
             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor"
                  class="bi bi-file-earmark-text" viewBox="0 0 16 16">
                 <path d="M5.5 7a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5z"/>
                 <path d="M9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.5L9.5 0zm0 1v2A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"/>
             </svg>
             <p>전자결재</p></a></li>
-        <li class="nav-item"><a class="nav-link link-dark text-center" href="#">
+        <li class="nav-item"><a class="nav-link link-dark text-center" href="/chat/main">
             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-chat-dots"
                  viewBox="0 0 16 16">
                 <path d="M5 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
@@ -224,7 +224,6 @@
 <script>
     var myLat = 33.450701;
     var myLng = 126.570667;
-
     document.addEventListener('DOMContentLoaded', function () {
         let calendarEl = document.getElementById('calendar'); // new FullCalendar.Calendar(대상 DOM객체, {속성:속성값, 속성2:속성값2..})
         let calendar = new FullCalendar.Calendar(calendarEl, {
@@ -239,34 +238,26 @@
             navLinks: true, // can click day/week names to navigate views
             selectable: true,
             selectMirror: true, // 이벤트명 : function(){} : 각 날짜에 대한 이벤트를 통해 처리할 내용..
-
             //없는 일정 부를 때
             select: function (arg) {
                 //모달 띄우기
                 $('#bookingModal').modal('toggle');
-
                 //내용 비우기
                 $('input[id=title]').attr("value", "");
                 $('input[id=content]').attr("value", "");
-
                 //버튼 할당 방식
                 $('#addBtn').show();
                 $('#modBtn').hide();
                 $('#delBtn').hide();
                 $('#markBtn').hide();
-
                 myLat = 33.450701;
                 myLng = 126.570667;
-
                 console.log("위도 : " + myLat + " 경도 : " + myLng);
-
                 map.relayout();
-
                 //추가하기 버튼을 눌렀을 시
                 $('#addBtn').off().on('click', function () {
                     let title = $('#title').val();
                     let content = $('#content').val();
-
                     if (title) {
                         //달력 출력
                         calendar.addEvent({
@@ -288,7 +279,6 @@
                             start = moment(arg.start).format('YYYY/MM/DD hh:mm');
                             end = moment(arg.end).format('YYYY/MM/DD hh:mm');
                         }
-
                         let data = {
                             "title": title,
                             "start": start,
@@ -303,7 +293,6 @@
                             "latitude": (latlng.getLat()).toString(),
                             "longitude": (latlng.getLng()).toString()
                         };
-
                         $.ajax({
                             url: '/task/new',
                             method: 'POST',
@@ -319,7 +308,6 @@
                                 console.log(error);
                             }
                         })
-
                     } else {
                         alert('일정 명을 입력해주세요.');
                         return;
@@ -328,39 +316,29 @@
                 })
                 calendar.unselect();
             },
-
             // 있는 일정 클릭시, 수정, 삭제
             eventClick: function (arg) {
                 $('#bookingModal').modal('toggle');
-
                 $('input[id=title]').attr("value", arg.event.title);
                 $('input[id=content]').attr("value", arg.event.extendedProps.content);
-
                 //화면 버튼 활성화
                 $('#addBtn').hide();
                 $('#modBtn').show();
                 $('#delBtn').show();
                 $('#markBtn').show();
-
                 //검색어 넣기
                 $('input[id=keyword]').attr('value',arg.event.extendedProps.location);
-
                 //위도, 경도 재설정
                 myLat = parseFloat(arg.event.extendedProps.latitude);
                 myLng = parseFloat(arg.event.extendedProps.longitude);
-
                 console.log("위도 : " + myLat + " 경도 : " + myLng);
-
                 map.relayout();
-
                 //일정 id 가져오기
                 let id = arg.event.id;
-
                 //수정 버튼 클릭시
                 $('#modBtn').off().on('click', function () {
                     let title = $('#title').val();
                     let content = $('#content').val();
-
                     if (title) {
                         //달력 출력
                         calendar.addEvent({
@@ -374,7 +352,6 @@
                         //일정 추가[DB에 저장]
                         //하루면 YYYY/MM/DD hh:mm
                         //이틀 이상이면 YYYY/MM/DD
-
                         let data = {
                             "id": id,
                             "title": title,
@@ -383,7 +360,6 @@
                             "latitude": (latlng.getLat()).toString(),
                             "longitude": (latlng.getLng()).toString()
                         };
-
                         $.ajax({
                             url: '/task',
                             method: 'PATCH',
@@ -405,7 +381,6 @@
                     }
                     $('#bookingModal').modal('hide');
                 });
-
                 //삭제 버튼 클릭시
                 $('#delBtn').off().on('click', function () {
                     if (id) {
@@ -418,11 +393,9 @@
                             backgroundColor: "#B464EB",
                             textColor: "#000000"
                         })
-
                         let data = {
                             "id": id
                         };
-
                         $.ajax({
                             url: '/task/' + id,
                             method: 'DELETE',
@@ -446,14 +419,11 @@
                 });
                 calendar.unselect();
             },
-
             editable: true,
             dayMaxEvents: true, // allow "more" link when too many events
-
             //일정들을 json으로 받는다.
             events: ${json}
         });
-
         calendar.render();
     });
 </script>
@@ -462,146 +432,102 @@
 <script>
     // 마커를 담을 배열입니다
     var markers = [];
-
     //위도 경도 표현
     var latlng;
-
     var mapContainer = document.getElementById('map'), // 지도를 표시할 div
         mapOption = {
             center: new kakao.maps.LatLng(37.539922, 127.070609), // 지도의 중심좌표
             level: 3 // 지도의 확대 레벨
         };
-
     // 지도를 생성합니다
     var map = new kakao.maps.Map(mapContainer, mapOption);
-
     var myPosition = new kakao.maps.LatLng(myLat, myLng);
-
     var marker = new kakao.maps.Marker({
         // 지도 중심좌표에 마커를 생성합니다
         position: myPosition
     });
-
     // 지도에 마커를 표시합니다
     marker.setMap(map);
-
     function showMarker() {
         marker.setMap(null);
         map.setLevel(3);
-
         myPosition = new kakao.maps.LatLng(myLat, myLng);
-
         marker = new kakao.maps.Marker({
             // 지도 중심좌표에 마커를 생성합니다
             position: myPosition
         });
-
         // 지도에 마커를 표시합니다
         marker.setMap(map);
         panTo(myPosition);
     }
-
     function panTo(myPosition) {
         // 이동할 위도 경도 위치를 생성합니다
         // var moveLatLon = new kakao.maps.LatLng(myLat, myLng);
-
         // 지도 중심을 부드럽게 이동시킵니다
         // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
         map.panTo(myPosition);
     }
-
-
     // 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
     kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
-
         // 클릭한 위도, 경도 정보를 가져옵니다
         latlng = mouseEvent.latLng;
-
         // 마커 위치를 클릭한 위치로 옮깁니다
         marker.setPosition(latlng);
-
         var message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
         message += '경도는 ' + latlng.getLng() + ' 입니다';
-
         console.log(message);
     });
-
-
-
     // 장소 검색 객체를 생성합니다
     var ps = new kakao.maps.services.Places();
-
     // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
     var infowindow = new kakao.maps.InfoWindow({zIndex: 1});
-
-
     // 키워드로 장소를 검색합니다
     searchPlaces();
-
     // 키워드 검색을 요청하는 함수입니다
     function searchPlaces() {
-
         var keyword = document.getElementById('keyword').value;
-
         if (!keyword.replace(/^\s+|\s+$/g, '')) {
             alert('키워드를 입력해주세요!');
             return false;
         }
-
         // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
         ps.keywordSearch(keyword, placesSearchCB);
     }
-
     // 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
     function placesSearchCB(data, status, pagination) {
         if (status === kakao.maps.services.Status.OK) {
-
             // 정상적으로 검색이 완료됐으면
             // 검색 목록과 마커를 표출합니다
             displayPlaces(data);
-
             // 페이지 번호를 표출합니다
             displayPagination(pagination);
-
         } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
-
             alert('검색 결과가 존재하지 않습니다.');
             return;
-
         } else if (status === kakao.maps.services.Status.ERROR) {
-
             alert('검색 결과 중 오류가 발생했습니다.');
             return;
-
         }
     }
-
     // 검색 결과 목록과 마커를 표출하는 함수입니다
     function displayPlaces(places) {
-
         var listEl = document.getElementById('placesList'),
             menuEl = document.getElementById('menu_wrap'),
             fragment = document.createDocumentFragment(),
             bounds = new kakao.maps.LatLngBounds(),
             listStr = '';
-
         // 검색 결과 목록에 추가된 항목들을 제거합니다
         removeAllChildNods(listEl);
-
         // 지도에 표시되고 있는 마커를 제거합니다
         removeMarker();
-
         for (var i = 0; i < places.length; i++) {
-
             // 마커를 생성하고 지도에 표시합니다
             var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
                 marker = addMarker(placePosition, i),
                 itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
-
             // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
             // LatLngBounds 객체에 좌표를 추가합니다
             bounds.extend(placePosition);
-
             // 마커와 검색결과 항목에 mouseover 했을때
             // 해당 장소에 인포윈도우에 장소명을 표시합니다
             // mouseout 했을 때는 인포윈도우를 닫습니다
@@ -609,55 +535,42 @@
                 kakao.maps.event.addListener(marker, 'mouseover', function () {
                     displayInfowindow(marker, title);
                 });
-
                 kakao.maps.event.addListener(marker, 'mouseout', function () {
                     infowindow.close();
                 });
-
                 itemEl.onmouseover = function () {
                     displayInfowindow(marker, title);
                 };
-
                 itemEl.onmouseout = function () {
                     infowindow.close();
                 };
             })(marker, places[i].place_name);
-
             fragment.appendChild(itemEl);
         }
-
         // 검색결과 항목들을 검색결과 목록 Element에 추가합니다
         listEl.appendChild(fragment);
         menuEl.scrollTop = 0;
-
         // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
         map.setBounds(bounds);
     }
-
     // 검색결과 항목을 Element로 반환하는 함수입니다
     function getListItem(index, places) {
-
         var el = document.createElement('li'),
             itemStr = '<span class="markerbg marker_' + (index + 1) + '"></span>' +
                 '<div class="info">' +
                 '   <h5>' + places.place_name + '</h5>';
-
         if (places.road_address_name) {
             itemStr += '    <span>' + places.road_address_name + '</span>' +
                 '   <span class="jibun gray">' + places.address_name + '</span>';
         } else {
             itemStr += '    <span>' + places.address_name + '</span>';
         }
-
         itemStr += '  <span class="tel">' + places.phone + '</span>' +
             '</div>';
-
         el.innerHTML = itemStr;
         el.className = 'item';
-
         return el;
     }
-
     // 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
     function addMarker(position, idx, title) {
         var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
@@ -672,13 +585,10 @@
                 position: position, // 마커의 위치
                 image: markerImage
             });
-
         marker.setMap(map); // 지도 위에 마커를 표출합니다
         markers.push(marker);  // 배열에 생성된 마커를 추가합니다
-
         return marker;
     }
-
     // 지도 위에 표시되고 있는 마커를 모두 제거합니다
     function removeMarker() {
         for (var i = 0; i < markers.length; i++) {
@@ -686,23 +596,19 @@
         }
         markers = [];
     }
-
     // 검색결과 목록 하단에 페이지번호를 표시는 함수입니다
     function displayPagination(pagination) {
         var paginationEl = document.getElementById('pagination'),
             fragment = document.createDocumentFragment(),
             i;
-
         // 기존에 추가된 페이지번호를 삭제합니다
         while (paginationEl.hasChildNodes()) {
             paginationEl.removeChild(paginationEl.lastChild);
         }
-
         for (i = 1; i <= pagination.last; i++) {
             var el = document.createElement('a');
             el.href = "#";
             el.innerHTML = i;
-
             if (i === pagination.current) {
                 el.className = 'on';
             } else {
@@ -712,21 +618,17 @@
                     }
                 })(i);
             }
-
             fragment.appendChild(el);
         }
         paginationEl.appendChild(fragment);
     }
-
     // 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
     // 인포윈도우에 장소명을 표시합니다
     function displayInfowindow(marker, title) {
         var content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
-
         infowindow.setContent(content);
         infowindow.open(map, marker);
     }
-
     // 검색결과 목록의 자식 Element를 제거하는 함수입니다
     function removeAllChildNods(el) {
         while (el.hasChildNodes()) {

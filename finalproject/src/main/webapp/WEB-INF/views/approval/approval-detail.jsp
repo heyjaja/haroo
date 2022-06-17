@@ -7,7 +7,7 @@
 <div class="p-3 container-sm" id="ap-contents">
   <div class="ap-form-container container row">
     <div class="ap-report-body col-9">
-    <table class="table table-bordered">
+    <table class="table table-bordered ap-table">
       <tbody>
         <tr>
           <th class="text-center fs-2" scope="col" colspan="2">${ap.foKind }</th>
@@ -18,11 +18,11 @@
         </tr>
         <tr>
           <th scope="row">작성일자</th>
-          <td>${ap.apDate }</td>
+          <td><small class="text-muted">${ap.apDate }</small></td>
         </tr>
         <tr>
-          <th scope="row">기안자</th>
-          <td>${ap.emName }</td>
+          <th class="align-middle" scope="row">기안자</th>
+          <td><small class="text-muted d-block">${ap.deName }</small>${ap.emName } ${ap.poName }</td>
         </tr>
         <c:if test="${ap.leave != null }">
           <tr>
@@ -125,10 +125,10 @@
 
       <div class="text-end">
         <c:if test="${ap.apStatus == 0 }">
-          <form action="/approval/process/${ap.apNo }" method="post">
+          <form action="/approval/process/${ap.apNo }" method="post" id="takebackForm">
             <input type="hidden" name="apNo" value="${ap.apNo }" />
             <input type="hidden" name="foNo" value="${ap.foNo }" />
-            <button class="btn btn-outline-secondary btn-sm">상신취소</button>
+            <button class="btn btn-outline-secondary btn-sm" id="takebackBtn">상신취소</button>
           </form>
         </c:if>
         <c:if test="${(ap.foNo != 2 && ap.foNo != 3) && (ap.apStatus == -1 || ap.apStatus == 2) }">

@@ -20,7 +20,6 @@ public class EmployeeServiceImplTest {
     @Setter(onMethod_ = @Autowired)
     private EmployeeMapper employeeMapper;
 
-
     //Test OK
     @Test
     public void loginEmployeeServiceTest() {
@@ -34,6 +33,6 @@ public class EmployeeServiceImplTest {
         employeeVO = employeeMapper.loginEmployee(employeeVO);
 
         //then
-        log.info("Current Join Employee = {}", employeeVO);
+        System.out.println(employeeVO);
     }
 }

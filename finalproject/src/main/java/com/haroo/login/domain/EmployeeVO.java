@@ -9,16 +9,16 @@ import lombok.*;
 @ToString
 public class EmployeeVO {
 
-	private int emNo;// ì‚¬ì› ë²ˆí˜¸
-	private int poNo;// ì§ì±… ë²ˆí˜¸
-	private int deNo;// ë¶€ì„œ ë²ˆí˜¸
-	private String emName;// ì‚¬ì›ì´ë¦„
-	private String emExt;// ë‚´ì„  ì „í™”
-	private String emPhone;// íœ´ëŒ€ ì „í™”
-	private String emEmail;// ì´ë©”ì¼
-	private String emFirst;// ì…ì‚¬ì¼
-	private String emLast;// í‡´ì‚¬ì¼
-	private int auNo;// ê¶Œí•œ ë²ˆí˜¸
-	private String emPw;// ë¹„ë°€ë²ˆí˜¸
+	private int emNo;// »ç¿ø ¹øÈ£
+	private int poNo;// Á÷Ã¥ ¹øÈ£
+	private int deNo;// ºÎ¼­ ¹øÈ£
+	private String emName;// »ç¿øÀÌ¸§
+	private String emExt;// ³»¼± ÀüÈ­
+	private String emPhone;// ÈŞ´ë ÀüÈ­
+	private String emEmail;// ÀÌ¸ŞÀÏ
+	private String emFirst;// ÀÔ»çÀÏ
+	private String emLast;// Åğ»çÀÏ
+	private int auNo;// ±ÇÇÑ ¹øÈ£
+	private String emPw;// ºñ¹Ğ¹øÈ£
 
 }

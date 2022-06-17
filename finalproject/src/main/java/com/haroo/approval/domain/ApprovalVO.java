@@ -23,6 +23,8 @@ public class ApprovalVO implements Serializable {
   private List<ApprovalAttachVO> attachList;
   
   private String emName;
+  private String poName; // 직책이름
+  private String deName; // 부서이름
   private String foKind;
   
   private String alStatus;

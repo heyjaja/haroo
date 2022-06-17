@@ -47,4 +47,20 @@ public class LoginController {
 
         return modelAndView;
     }
+    
+    @GetMapping("/main")
+    public ModelAndView getMain(HttpSession httpSession) {
+      
+      ModelAndView modelAndView = new ModelAndView(); 
+      EmployeeVO employeeVO = (EmployeeVO) httpSession.getAttribute("employee");
+
+      if (employeeVO == null) modelAndView.setViewName("/login/login_form");
+      else {
+          httpSession.setAttribute("employee", employeeVO);
+          modelAndView.setViewName("home");
+      }
+
+      return modelAndView;
+    }
+
 }

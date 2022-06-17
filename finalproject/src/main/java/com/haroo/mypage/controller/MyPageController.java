@@ -25,7 +25,7 @@ public class MyPageController {
         this.myPageService = myPageService;
     }
 
-    @GetMapping
+    @GetMapping("")
     public ModelAndView getMyPage() {
 
         ModelAndView modelAndView = new ModelAndView("mypage/mypage_form");

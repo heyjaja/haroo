@@ -70,18 +70,20 @@
 	position: sticky;
   top: 100px;
   right: 800px;
+  text-align: center;
 }
 .ap-alist-select {
 	margin-left: 50px;
 }
 
-a.ap-alist-name, a.ap-selected-name, a.ap-list-title {
+a.ap-list-title {
 	text-decoration: none;
 	color: gray;
 }
 
-li.ap-alist-name {
+li.ap-alist-name, li.ap-selected-name{
 	padding-top: 10px;
+	cursor: pointer;
 }
 
 .ap-alist-container {
@@ -147,4 +149,9 @@ li.ap-file {
     color: #fff;
     background-color: gray !important;
     border-color: white;
+}
+
+div.ap-list-item:hover {
+  background-color: #fafafa !important;
+  transform:scale(1.005);
 }

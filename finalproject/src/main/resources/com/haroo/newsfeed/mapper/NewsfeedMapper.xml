@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="com.haroo.newsfeed.mapper.NewsfeedMapper">
+	<cache />
+ 	<resultMap type="com.haroo.newsfeed.domain.NewsfeedVO" id="NewsfeedMap">
+    <result property="neNo" column="ne_no"/>
+    <result property="emNo" column="em_no"/>
+  </resultMap>
+  
+  <insert id="insert">
+    INSERT INTO newsfeed VALUES(ne_seq.nextval, #{writer}, #{content}, sysdate, #{emNo})
+  </insert>
+  
+  <delete id="remove">
+    DELETE FROM newsfeed WHERE ne_no = #{neNo}
+  </delete>
+  
+  <select id="getList" resultType="com.haroo.newsfeed.domain.NewsfeedVO" resultMap="NewsfeedMap">
+    SELECT ne_no, writer, content, regdate, em_no
+    FROM (
+      SELECT /*+INDEX_DESC (newsfeed pk_newsfeed) */
+        rownum, ne_no, writer, content, regdate, em_no 
+      FROM newsfeed
+      WHERE rownum <![CDATA[<=]]> 10
+    )
+  </select>
+  
+  <select id="getListPlus" resultType="com.haroo.newsfeed.domain.NewsfeedVO" resultMap="NewsfeedMap">
+    SELECT ne_no, writer, content, regdate, em_no
+    FROM (
+      SELECT /*+INDEX_DESC (newsfeed pk_newsfeed) */
+        rownum rn, ne_no, writer, content, regdate, em_no 
+      FROM newsfeed
+      WHERE rownum <![CDATA[<=]]> #{page} * 10
+    )
+    WHERE rn <![CDATA[>]]> (#{page} -1) * 10
+  </select>
+</mapper>

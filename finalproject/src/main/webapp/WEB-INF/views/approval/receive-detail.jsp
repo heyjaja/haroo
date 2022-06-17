@@ -18,11 +18,11 @@
           </tr>
           <tr>
             <th scope="row">작성일자</th>
-            <td>${ap.apDate }</td>
+            <td><small class="text-muted">${ap.apDate }</small></td>
           </tr>
           <tr>
-            <th scope="row">기안자</th>
-            <td>${ap.emName }</td>
+            <th class="align-middle" scope="row">기안자</th>
+            <td><small class="text-muted d-block">${ap.deName }</small>${ap.emName } ${ap.poName }</td>
           </tr>
           <c:if test="${ap.leave != null }">
             <tr>
@@ -137,7 +137,7 @@
             </tr>
               <c:choose>
                   <c:when test="${apLine.alStatus == 0}">
-                    <c:if test="${apLine.alNo == employeeVO.emNo }">
+                    <c:if test="${apLine.alNo == employee.emNo }">
                     <tr>
                      <td class="text-center">
                       <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#al-sign-form" aria-expanded="false" aria-controls="collapseExample">
@@ -146,7 +146,7 @@
                       <div class="collapse ap-line-sign-form" id="al-sign-form">
                         <form action="/approval/wait/${ap.apNo }" method="post">
                           <input type="hidden" name="apNo" value="${ap.apNo }" />
-                          <input type="hidden" name="alNo" value="${employeeVO.emNo }" />
+                          <input type="hidden" name="alNo" value="${employee.emNo }" />
                           <input type="hidden" name="foNo" value="${ap.foNo }" />
                           <div class="input-group input-group-sm">
                             <input type="radio" class="btn-check" id="al-option1" name="alStatus" value="1" autocomplete="off" checked>
@@ -164,7 +164,7 @@
                       </td>
                     </tr>
                     </c:if>
-                    <c:if test="${apLine.alNo != employeeVO.emNo and ap.apStatus == 0}">
+                    <c:if test="${apLine.alNo != employee.emNo and ap.apStatus == 0}">
                     <tr>
                      <td class="text-center">
                         <button class="btn btn-outline-secondary btn-sm">진행중</button>

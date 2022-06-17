@@ -73,13 +73,22 @@ $(document).on('click', '.ap-al-select', function(event){
 });
 
 //결재선 선택
-$('a.ap-alist-name').click(function(event){
+$('li.ap-alist-name').click(function(event){
   event.preventDefault();
-  let listName = $(this).html();
-  if($('.ap-selected-name').length <3) {
-    $('#ap-alist-selected').append('<p><a class="ap-selected-name" href="#">'+listName+'</a></p>');
+  const listName = $(this).find("input[name='emName']").val();
+  const listPoName = $(this).find("input[name='poName']").val();
+  const listDeName = $(this).find("input[name='deName']").val();
+  const listEmNo = $(this).find("input[name='emNo']").val();
+  
+  if($('.ap-selected-name').length < 3) {
+    let html = '<li class="ap-selected-name list-group-item">';
+    html += '<span>'+listName+' '+listPoName+'('+listDeName+')'+'</span>';
+    html += '<button type="button" class="btn btn-sm ms-1 mb-1">삭제</button>';
+    html += '<input type="hidden" name="emNo" value="' + listEmNo+ '"/>';
+    html += '</li></p>'
+    $('#ap-alist-selected').append(html);
   } else {
-    alert("3명까지 선택 가능")
+    alert("3명까지 선택 가능");
   }
 })
 
@@ -93,8 +102,8 @@ $(document).on('click', '.ap-selected-name', function(event){
 let insertAlList = '<table class="table mb-0 table-bordered"><tbody>';
 $(document).on('click', '#ap-alist-selected-sticky .ap-form-btn', function(){
   $('.ap-selected-name').each(function(index){
-    insertAlList += '<tr><td>'+'<span class="badge rounded-pill bg-light text-dark">'+(index+1)+'</span>'+$(this).text();
-    insertAlList += '<input type="hidden" name="line['+(index)+'].alNo" value="'+$(this).find('.ap-hidden-emNo').val()+'"/>'
+    insertAlList += '<tr><td>'+'<span class="badge rounded-pill bg-light text-dark">'+(index+1)+'</span>'+$(this).find('span').text();
+    insertAlList += '<input type="hidden" name="line['+(index)+'].alNo" value="'+$(this).find('input[name="emNo"]').val()+'"/>'
     insertAlList += '<input type="hidden" name="line['+(index)+'].alOrder" value="'+(index+1)+'"/>'
     insertAlList += '</td></tr>'
   })
@@ -105,9 +114,21 @@ $(document).on('click', '#ap-alist-selected-sticky .ap-form-btn', function(){
 
 // form reset 될 때 선택한 결재선 삭제, summernote 내용 비우기
 $(document).on('click', '.ap-form-reset', function(){
-  $('#ap-list-selected').empty();
+  if($('#ap-list-selected')) {
+    $('#ap-list-selected').empty();
+  }
   $('#summernote').summernote('reset');
 });
+
+const takebackForm = $("#takebackForm");
+
+$("#takebackBtn").on("click", function(e){
+  e.preventDefault();
+  
+  if(confirm("결재문서 상신을 취소합니다.")) {
+    takebackForm.submit();
+  }
+})
 
 // 첨부파일 처리
 $(document).ready(function(e) {
@@ -123,17 +144,21 @@ $(document).ready(function(e) {
     
     let str = "";
     
-    $('#ap-upload-file ul li').each(function(i, obj) {
+    if($('#ap-upload-file ul li')) {
+      $('#ap-upload-file ul li').each(function(i, obj) {
       
-      const jobj = $(obj);
-      console.dir(jobj);
+        const jobj = $(obj);
+        console.dir(jobj);
       
-      str += "<input type='hidden' name='attachList["+i+"].fname' value='"+jobj.data("fname")+"'/>";
-      str += "<input type='hidden' name='attachList["+i+"].aaNo' value='"+jobj.data("uuid")+"'/>";
-      str += "<input type='hidden' name='attachList["+i+"].path' value='"+jobj.data("path")+"'/>";
-    });//end each
+        str += "<input type='hidden' name='attachList["+i+"].fname' value='"+jobj.data("fname")+"'/>";
+        str += "<input type='hidden' name='attachList["+i+"].aaNo' value='"+jobj.data("uuid")+"'/>";
+        str += "<input type='hidden' name='attachList["+i+"].path' value='"+jobj.data("path")+"'/>";
+      });//end each
+    }
     
-    formObj.append(str).submit();
+    if(confirm("문서를 상신합니다.")) {
+      formObj.append(str).submit();
+    }
   });//end submit click event
   
   const regex = new RegExp("(.*?)\.(exe|sh|zip|alz)$");

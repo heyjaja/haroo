@@ -13,6 +13,7 @@ import com.haroo.approval.domain.ApprovalLineVO;
 import com.haroo.approval.domain.ApprovalVO;
 import com.haroo.approval.domain.Criteria;
 import com.haroo.approval.domain.ExpenseListVO;
+import com.haroo.approval.domain.FormVO;
 import com.haroo.approval.domain.LeaveVO;
 
 import lombok.extern.log4j.Log4j;
@@ -33,6 +34,9 @@ public class ApprovalMapperTests {
   
   @Autowired
   private ExpenseListMapper elMapper;
+  
+  @Autowired
+  private FormMapper foMapper;
 
   @Test
   public void test() {
@@ -172,7 +176,7 @@ public class ApprovalMapperTests {
     
     log.info("get process list");
     
-    List<ApprovalVO> list =  mapper.getReportList(45424411, 9);
+    List<ApprovalVO> list =  mapper.getReportList(45424402, 9);
     
     list.forEach(ap -> log.info(ap));
   }
@@ -196,6 +200,23 @@ public class ApprovalMapperTests {
     List<ApprovalVO> list = mapper.getReportListWithPaging(cri, 45424411, 0);
     
     list.forEach(ap -> log.info(ap));
+  }
+  
+  @Test
+  public void testFormInsert() {
+    log.info("test Form insert");
+    
+    FormVO form = new FormVO();
+    
+    form.setFoKind("테스트");
+    form.setFoTitle("테스트 문서 양식");
+    form.setFoContent("테스트:");
+    form.setFoInfo("테스트를 위한 양식");
+    form.setFoStatus(0);
+    
+    foMapper.insert(form);
+    
+    log.info(form);
   }
   
 }

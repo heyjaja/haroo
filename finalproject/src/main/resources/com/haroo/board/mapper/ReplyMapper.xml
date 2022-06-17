@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.haroo.board.mapper.ReplyMapper">
+
+	<insert id="insert">
+		insert into reply
+		(re_no, re_writer, re_contents,
+		re_regdate, bd_no)
+		values
+		(re_seq.nextval, #{reWriter}, #{reContents},
+		sysdate, #{bdNo})
+	</insert>
+
+	<select id="read" resultType="com.haroo.board.domain.ReplyVO">
+		select re_no as reNo, bd_no as bdNo, re_contents as reContents, re_writer as reWriter, re_regdate as reRegdate 
+		from reply where re_no =
+		#{reNo}
+	</select>
+	
+	<delete id="delete">
+		delete from reply where re_no = #{reNo}
+	</delete>
+
+	<update id="update">
+		update reply set re_contents = #{reContents}
+		where re_no = #{reNo}
+	</update>
+
+	<select id="getListWithPaging" resultType="com.haroo.board.domain.ReplyVO"> 
+		select re_no as reNo, bd_no as bdNo, re_contents as reContents, re_writer as reWriter, re_regdate as reRegdate 
+		from reply 
+		where bd_no = #{bdNo} order by re_no asc 
+	</select>
+
+<!-- 	<select id="getListWithPaging" -->
+<!-- 		resultType="com.haroo.board.domain.ReplyVO"> -->
+<!-- 	  <![CDATA[ -->
+<!-- 	 select  re_no, bno, reply, replyer, replydate, updatedate -->
+<!-- 	 from  -->
+<!-- 	   ( -->
+<!-- 	    select /*+INDEX(tbl_reply idx_reply) */  -->
+<!-- 	      rownum rn,  rno, bno, reply, replyer, replyDate, updatedate -->
+<!-- 	    from reply -->
+<!-- 	    where bno =  #{bno} -->
+<!-- 	    and rno > 0 -->
+<!-- 	    and rownum <= #{cri.pageNum} * #{cri.amount} -->
+<!-- 	   ) where rn > (#{cri.pageNum} -1) * #{cri.amount} -->
+<!-- 	]]> -->
+<!-- 	</select> -->
+	
+</mapper>

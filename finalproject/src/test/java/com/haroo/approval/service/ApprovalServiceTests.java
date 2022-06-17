@@ -1,7 +1,9 @@
 package com.haroo.approval.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -215,10 +217,16 @@ public class ApprovalServiceTests {
   
   @Test
   public void testGetEmpList() {
-    List<EmpVO> list = new ArrayList<EmpVO>();
-    list = service.getEmpList();
+    // List<EmpVO> list = new ArrayList<EmpVO>();
+    // list = service.getEmpList();
     
-    list.forEach(emp -> log.info(emp));
+    // list.forEach(emp -> log.info(emp));
+    
+    Map<String, List<EmpVO>> map = new HashMap<>();
+    
+    map = service.getEmpList();
+    
+    log.info(map);
   }
   
   @Test

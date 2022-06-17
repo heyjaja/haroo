@@ -1,9 +1,10 @@
 package com.haroo.approval.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,18 +14,20 @@ import com.haroo.approval.domain.ApprovalLineVO;
 import com.haroo.approval.domain.ApprovalVO;
 import com.haroo.approval.domain.Criteria;
 import com.haroo.approval.domain.EmpVO;
+import com.haroo.approval.domain.FormVO;
 import com.haroo.approval.domain.LeaveVO;
 import com.haroo.approval.mapper.ApprovalAttachMapper;
 import com.haroo.approval.mapper.ApprovalLineMapper;
 import com.haroo.approval.mapper.ApprovalMapper;
 import com.haroo.approval.mapper.ExpenseListMapper;
+import com.haroo.approval.mapper.FormMapper;
 import com.haroo.approval.mapper.LeaveMapper;
-import com.haroo.controller.HomeController;
+
+import lombok.extern.log4j.Log4j;
 
 @Service
+@Log4j
 public class ApprovalServiceImpl implements ApprovalService {
-  
-  private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
   
   @Autowired
   private ApprovalMapper mapper;
@@ -40,12 +43,15 @@ public class ApprovalServiceImpl implements ApprovalService {
   
   @Autowired
   private ApprovalAttachMapper attachMapper;
+  
+  @Autowired
+  private FormMapper formMapper;
 
   @Transactional
   @Override
   public void insertApproval(ApprovalVO approval) { // 상신
     
-    logger.info("insert approval...............");
+    log.info("insert approval...............");
     
     mapper.insert(approval);
     
@@ -92,7 +98,7 @@ public class ApprovalServiceImpl implements ApprovalService {
   @Override
   public List<ApprovalVO> getReportList(int emNo, int status) { // 상신문서
     
-    logger.info("get report list...............status: " + status);
+    log.info("get report list...............status: " + status);
     
     return mapper.getReportList(emNo, status);
   }
@@ -100,7 +106,7 @@ public class ApprovalServiceImpl implements ApprovalService {
   @Override
   public List<ApprovalVO> getReceiveList(int emNo, int status) { // 수신문서
     
-    logger.info("get receive list...............status: " + status);
+    log.info("get receive list...............status: " + status);
     
     return mapper.getReceiveList(emNo, status);
   }
@@ -108,7 +114,7 @@ public class ApprovalServiceImpl implements ApprovalService {
   @Override
   public List<ApprovalVO> getAllList() { // 전체문서
     
-    logger.info("get All list...............");
+    log.info("get All list...............");
     
     return mapper.getAllList();
   }
@@ -116,7 +122,7 @@ public class ApprovalServiceImpl implements ApprovalService {
   @Override
   public ApprovalVO readApproval(int apNo) { // 읽기
     
-    logger.info("read approval...............");
+    log.info("read approval...............");
     
     ApprovalVO approval = mapper.read(apNo);
     approval.setLine(lineMapper.read(apNo));
@@ -138,18 +144,32 @@ public class ApprovalServiceImpl implements ApprovalService {
 
 
   @Override
-  public List<EmpVO> getEmpList() { // 사원목록
+  public Map<String, List<EmpVO>> getEmpList() { // 사원목록
     
-    logger.info("get employee list...............");
+    log.info("get employee list...............");
     
-    return lineMapper.getEmpList();
+    List<EmpVO> list = lineMapper.getEmpList();
+    
+    Map<String, List<EmpVO>> map = new HashMap<String, List<EmpVO>>();
+    
+    list.forEach(emp -> {
+      
+      if(!map.containsKey(emp.getDeName())){
+        map.put(emp.getDeName(), new ArrayList<EmpVO>());
+        map.get(emp.getDeName()).add(emp);
+      } else {
+        map.get(emp.getDeName()).add(emp);
+      }
+    });
+    
+    return map;
   }
 
   @Transactional
   @Override
   public boolean sign(ApprovalLineVO apLine, int foNo) { // 결재하기
     
-    logger.info("sign...............");
+    log.info("sign...............");
     
     lineMapper.sign(apLine);
     mapper.updateStatus(apLine);
@@ -175,7 +195,7 @@ public class ApprovalServiceImpl implements ApprovalService {
   @Override
   public boolean takeback(int apNo, int foNo) { // 상신취소
     
-    logger.info("takeback..............." + apNo);
+    log.info("takeback..............." + apNo);
     
     attachMapper.deleteAll(apNo);
     
@@ -190,7 +210,7 @@ public class ApprovalServiceImpl implements ApprovalService {
   @Override
   public List<ApprovalAttachVO> getAttachList(int apNo) {
     
-    logger.info("get attach List by apNo......"+apNo);
+    log.info("get attach List by apNo......"+apNo);
     
     return attachMapper.findByApNo(apNo);
   }
@@ -198,7 +218,7 @@ public class ApprovalServiceImpl implements ApprovalService {
   @Override
   public List<ApprovalVO> getReportList(Criteria cri, int emNo, int status) {
     
-    logger.info("get Report List with Paging......" + cri);
+    log.info("get Report List with Paging......" + cri);
     
     return mapper.getReportListWithPaging(cri, emNo, status);
   }
@@ -206,7 +226,7 @@ public class ApprovalServiceImpl implements ApprovalService {
   @Override
   public int getReportTotal(Criteria cri, int emNo, int status) {
     
-    logger.info("get Report Count......");
+    log.info("get Report Count......");
     
     return mapper.getReportCount(cri, emNo, status);
         
@@ -215,7 +235,7 @@ public class ApprovalServiceImpl implements ApprovalService {
   @Override
   public int getReceiveTotal(Criteria cri, int emNo, int status) {
     
-    logger.info("get Receive Count......");
+    log.info("get Receive Count......");
     
     return mapper.getReceiveCount(cri, emNo, status);
   }
@@ -223,7 +243,7 @@ public class ApprovalServiceImpl implements ApprovalService {
   @Override
   public int getAllTotal(Criteria cri) {
     
-    logger.info("get All Count......");
+    log.info("get All Count......");
     
     return mapper.getAllCount(cri);
   }
@@ -231,7 +251,7 @@ public class ApprovalServiceImpl implements ApprovalService {
   @Override
   public List<ApprovalVO> getReceiveList(Criteria cri, int emNo, int status) {
     
-    logger.info("get Receive List with Paging......" + cri);
+    log.info("get Receive List with Paging......" + cri);
     
     return mapper.getReceiveListWithPaging(cri, emNo, status);
   }
@@ -239,9 +259,40 @@ public class ApprovalServiceImpl implements ApprovalService {
   @Override
   public List<ApprovalVO> getAllList(Criteria cri) {
     
-    logger.info("get All List with Paging......" + cri);
+    log.info("get All List with Paging......" + cri);
     
     return mapper.getAllListWithPaging(cri);
+  }
+
+  @Override
+  public int insertForm(FormVO form) {
+    
+    log.info("insert form......" + form);
+    return formMapper.insert(form);
+  }
+
+  @Override
+  public FormVO readForm(int foNo) {
+    
+    log.info("get form......" + foNo);
+    
+    return formMapper.read(foNo);
+  }
+
+  @Override
+  public List<FormVO> getFormList() {
+    
+    log.info("get form list......");
+    
+    return formMapper.getList();
+  }
+
+  @Override
+  public int modifyForm(FormVO form) {
+    
+    log.info("modify form......"+form.getFoNo());
+    
+    return formMapper.modify(form);
   }
 
 
