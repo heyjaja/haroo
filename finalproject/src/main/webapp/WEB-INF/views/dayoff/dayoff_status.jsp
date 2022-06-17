@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -61,6 +61,7 @@ form {
 					</ul>
 				</div>
 			</li>
+			<li class="border-top my-3"></li>
 			<li class="mb-1">
 				<button class="btn btn-toggle align-items-center rounded collapsed"
 					data-bs-toggle="collapse" data-bs-target="#dashboard-collapse"
@@ -80,6 +81,7 @@ form {
 	<div class="p-3 container-sm">
 		<br>
 		<h5>${dayoff.emName } 휴가현황</h5>
+
 		<table class="table table-sm table-bordered caption-top">
 			<caption>휴가현황</caption>
 			<thead>
@@ -105,15 +107,18 @@ form {
 			<div class="col text-start">
 			<form id="searchForm" class="row row-cols-lg-auto"  action="/dayoff/status" method="get">
 				<div class="input-group mb-3">
-						<div class="col-2">
-							<label for="search">년도 입력 <p>(yyyy 형식) ex) 2022</p></label>
+						<div class="col-1">
+							<label for="search">년도 입력 <p>(yyyy 형식)</p></label>
 						</div>
 						<div class="col-3">
-							<input type="text" class="form-control" id="search" 
-								name="leStart" value="${sYear }">		
+							<input type="text" class="form-control" id="search" name="leStart" placeholder="예) 2022" value="${sYear }">		
 						</div>
 						<div class="col">
-							<button class="btn btn-outline-success" value="조회">조회</button>
+							<button class="btn btn-outline-success" value="조회">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+								  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+								</svg>
+							</button>
 						</div>
 					</div>		   
 			</form>
@@ -129,7 +134,7 @@ form {
 			<caption>휴가 사용내역 (${today } 기준)</caption>
 			<thead>
 				<tr>
-					<th scope="col">#</th>
+					<th scope="col">No</th>
 					<th scope="col">제목</th>
 					<th scope="col">내용</th>
 					<th scope="col">종류</th>

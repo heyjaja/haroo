@@ -27,13 +27,13 @@ public class TaskController {
         this.taskService = taskService;
     }
 
-    //ìº˜ë¦°ë” ë¡œë“œ
+    //Ä¶¸°´õ ·Îµå
     @GetMapping
     public ModelAndView getTaskPage(HttpSession httpSession) {
 
         ModelAndView modelAndView = new ModelAndView();
 
-        //í˜„ì¬ ì‚¬ì›ë²ˆí˜¸ ì„¤ì •
+        //ÇöÀç »ç¿ø¹øÈ£ ¼³Á¤
         int emNo = ((EmployeeVO) httpSession.getAttribute("employee")).getEmNo();
 
         try {
@@ -52,7 +52,7 @@ public class TaskController {
         return modelAndView;
     }
 
-    //ìƒˆë¡œìš´ ì¼ì • ìƒì„±
+    //»õ·Î¿î ÀÏÁ¤ »ı¼º
     @PostMapping("/new")
     public ResponseEntity<String> insertTask(@RequestBody TaskVO taskVO) {
 
@@ -63,7 +63,7 @@ public class TaskController {
                 : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    //ì¼ì • ì—…ë°ì´íŠ¸
+    //ÀÏÁ¤ ¾÷µ¥ÀÌÆ®
     @PatchMapping("")
     public ResponseEntity<String> updateTask(@RequestBody TaskVO taskVO) {
 
@@ -74,7 +74,7 @@ public class TaskController {
                 : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    //ì¼ì • ì—…ë°ì´íŠ¸
+    //ÀÏÁ¤ ¾÷µ¥ÀÌÆ®
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteTask(@PathVariable("id") Integer id) {
 

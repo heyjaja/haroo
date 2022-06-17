@@ -52,7 +52,6 @@
 	<!-- <mybatis-spring:scan base-package="org.hongki.mapper"/> -->
 	<!--aop 관련 auto-proxy 설정 -->
 
-
 	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
 	
 	<!-- 훈 -->

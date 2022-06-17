@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ include file="../includes/header.jsp" %>
@@ -59,14 +60,12 @@
                 let emPhone = $('#floatingPhone').val();
                 let emEmail = $('#floatingEmail').val();
                 let emPw = $('#floatingPassword').val();
-
                 let data = {
                     "emPhone": emPhone,
                     "emEmail": emEmail,
                     "emPw": emPw,
                     "emNo": emNo
                 };
-
                 $.ajax({
                     type: 'patch',
                     url: '/mypage/update-information',
@@ -78,7 +77,6 @@
                             $('#floatingPhone').text(result.emPhone);
                             $('#floatingEmail').text(result.emEmail);
                             $('#floatingPassword').text(result.emPw);
-
                             $('#myModal').modal('show');
                         }
                     },
