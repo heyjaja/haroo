@@ -71,7 +71,7 @@
 								<td>${reply.reContents}</td>
 								<td>${reply.reRegdate }</td>
 								<td>
-									<c:if test="${employee.em_name == reply.reWriter}">
+									<c:if test="${employee.emName == reply.reWriter}">
 										<a href="/replies/modify?bdNo=${board.bdNo}&reNo=${reply.reNo}"
 											class="btn btn-warning float-end">글수정</a>
 										<a href="/replies/remove?reNo=${reply.reNo}"
@@ -86,8 +86,8 @@
 			</div>
 			<form action="/replies/register" method="post">
 				<input type="hidden" name="bdNo" value="${board.bdNo }">
-				댓글작성자:${employee.em_name}
-				<input type="hidden" name="reWriter" value="${employee.em_name}"><br> 
+				댓글작성자:${employee.emName}
+				<input type="hidden" name="reWriter" value="${employee.emName}"><br> 
 				댓글 내용 : <input type="text" name="reContents"><br> 
 				<input type="submit" value="댓글쓰기">
 			</form>
@@ -103,7 +103,7 @@
 					<input type='hidden' name='keyword' value='<c:out value="${cri.keyword}"/>'> 
 					<input type='hidden' name='type' value='<c:out value="${cri.type}"/>'>
 				</form>
-				<c:if test="${employee.em_name == board.writer}">
+				<c:if test="${employee.emName == board.writer}">
 				<a href="/board/modify?bdNo=${board.bdNo}"
 					class="btn btn-warning float-end">글수정</a>
 				<a href="/board/remove?bdNo=${board.bdNo}"
