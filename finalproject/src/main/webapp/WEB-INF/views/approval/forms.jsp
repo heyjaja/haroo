@@ -13,9 +13,10 @@
         <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-start">
           <div>
             <a href="/approval/report/${form.foNo }" style="text-decoration: none; color:black;">
-              <span class="badge bg-light rounded-pill text-dark">${form.foNo }</span> ${form.foKind }
+              <span class="badge bg-light rounded-pill text-dark">${form.foNo }</span>
+              <span>${form.foKind }</span>
             </a>
-            <div><small class="ps-4">${form.foTitle }</small></div>
+            <div><small class="ps-4 text-muted">${form.foTitle }</small></div>
           </div>
           <c:if test="${form.foNo > 3 }">
             <a href="/approval/form/${form.foNo }">
@@ -27,8 +28,9 @@
     <c:if test="${form.foStatus == 1 }">
         <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-start">
           <div style="color: gray;">
-            <span class="badge bg-light rounded-pill text-dark">${form.foNo }</span> ${form.foKind }
-            <div><small class="ps-4">${form.foTitle }</small></div>
+            <span class="badge bg-light rounded-pill text-dark">${form.foNo }</span>
+            <span>${form.foKind }</span>
+            <div><small class="ps-4 text-muted">${form.foTitle }</small></div>
           </div>
           <a href="/approval/form/${form.foNo }">
               <span class="badge bg-light text-dark">수정</span>

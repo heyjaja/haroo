@@ -24,7 +24,7 @@
       <tbody>
         <tr>
           <th class="text-center" scope="row">기안자</th>
-          <td><input type="hidden" name="emNo" value="${employee.em_no }" />${employee.em_name }</td>
+          <td><input type="hidden" name="emNo" value="${employee.emNo }" />${employee.emName }</td>
         </tr>
         <tr>
           <th class="text-center" scope="row">제목</th>
@@ -34,6 +34,7 @@
             </c:if>
             <c:if test="${ap.apTitle != null }">
               <input class="form-control" type="text" name="apTitle"  value="${ap.apTitle }"/>
+              <input type="hidden" name="foNo" value="${ap.foNo }" />
             </c:if>
 
           </div></td>

@@ -31,7 +31,7 @@
           <div class="mb-3 text-start">
             <label for="newsfeedName" class="col-form-label">이름:</label>
             <input type="text" class="form-control" id="newsfeedName" name="writer">
-            <input type="hidden" name="emNo" value="${employee.em_no }">
+            <input type="hidden" name="emNo" value="${employee.emNo }">
           </div>
           <div class="mb-3 text-start">
             <label for="message" class="col-form-label">내용:</label>
@@ -68,7 +68,7 @@ $(document).ready(function() {
   
 });
 
-const emNo = '<c:out value="${employee.em_no}"/>';
+const emNo = '<c:out value="${employee.emNo}"/>';
 
 </script>
 <%@ include file="includes/footer.jsp" %>

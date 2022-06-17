@@ -58,10 +58,10 @@ public class ApprovalController {
     log.info("approval main..........");
     
     if(session.getAttribute("employee") == null) {
-      return "redirect:/haroo/login";
+      return "redirect:/login";
     };
     
-    int emNo = ((EmployeeVO) session.getAttribute("employee")).getEm_no();
+    int emNo = ((EmployeeVO) session.getAttribute("employee")).getEmNo();
     
     int processCount = service.getReportTotal(new Criteria(), emNo, 0);
     
@@ -103,7 +103,7 @@ public class ApprovalController {
     return "/approval/"+formName;
   }
   
-  @PostMapping("/report/{foNo}")
+  @PostMapping({"/report/{foNo}", "/re/{no}"})
   public String postReportForm(ApprovalVO approval) { // 상신하기
     
     log.info("==========================");
@@ -159,10 +159,10 @@ public class ApprovalController {
     log.info("get Process List");
     
     if(session.getAttribute("employee") == null) {
-      return "redirect:/haroo/login";
+      return "redirect:/login";
     };
     
-    int emNo = ((EmployeeVO) session.getAttribute("employee")).getEm_no();
+    int emNo = ((EmployeeVO) session.getAttribute("employee")).getEmNo();
     int status = 0;
     
     model.addAttribute("list", service.getReportList(cri, emNo, status));
@@ -180,10 +180,10 @@ public class ApprovalController {
     log.info("get done List");
     
     if(session.getAttribute("employee") == null) {
-      return "redirect:/haroo/login";
+      return "redirect:/login";
     };
     
-    int emNo = ((EmployeeVO) session.getAttribute("employee")).getEm_no();
+    int emNo = ((EmployeeVO) session.getAttribute("employee")).getEmNo();
     
     if(status == null) {
       status = 9;
@@ -205,10 +205,10 @@ public class ApprovalController {
     log.info("get takeback List");
     
     if(session.getAttribute("employee") == null) {
-      return "redirect:/haroo/login";
+      return "redirect:/login";
     };
     
-    int emNo = ((EmployeeVO) session.getAttribute("employee")).getEm_no();
+    int emNo = ((EmployeeVO) session.getAttribute("employee")).getEmNo();
     int status = -1;
     
     model.addAttribute("list", service.getReportList(cri, emNo, status));
@@ -240,10 +240,10 @@ public class ApprovalController {
     log.info("get wait list");
     
     if(session.getAttribute("employee") == null) {
-      return "redirect:/haroo/login";
+      return "redirect:/login";
     };
     
-    int emNo = ((EmployeeVO) session.getAttribute("employee")).getEm_no();
+    int emNo = ((EmployeeVO) session.getAttribute("employee")).getEmNo();
     int status = 0;
     
     model.addAttribute("list", service.getReceiveList(cri, emNo, status));
@@ -262,10 +262,10 @@ public class ApprovalController {
     log.info("get wait list");
     
     if(session.getAttribute("employee") == null) {
-      return "redirect:/haroo/login";
+      return "redirect:/login";
     };
     
-    int emNo = ((EmployeeVO) session.getAttribute("employee")).getEm_no();
+    int emNo = ((EmployeeVO) session.getAttribute("employee")).getEmNo();
     int status = 1;
     
     model.addAttribute("list", service.getReceiveList(cri, emNo, status));

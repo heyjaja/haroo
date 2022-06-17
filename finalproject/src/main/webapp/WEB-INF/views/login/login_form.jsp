@@ -30,11 +30,11 @@
         <h1 class="h3 mb-3 fw-normal">Please Sign-in</h1>
 
         <div class="form-floating">
-            <input type="text" class="form-control" id="floatingInput" placeholder="Employee Number" name="em_no">
+            <input type="text" class="form-control" id="floatingInput" placeholder="Employee Number" name="emNo">
             <label for="floatingInput">Employee Number</label>
         </div>
         <div class="form-floating">
-            <input type="password" class="form-control" id="floatingPassword" placeholder="Employee Password" name="em_pw">
+            <input type="password" class="form-control" id="floatingPassword" placeholder="Employee Password" name="emPw">
             <label for="floatingPassword">Password</label>
         </div>
 

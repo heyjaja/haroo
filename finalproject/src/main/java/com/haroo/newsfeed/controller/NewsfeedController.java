@@ -43,7 +43,7 @@ public class NewsfeedController {
     int result = service.insert(feed);
     
     return result == 1 
-        ? new ResponseEntity<String>("success", HttpStatus.OK)
+        ? new ResponseEntity<String>("등록 완료", HttpStatus.OK)
         : new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
         
   }
@@ -56,7 +56,7 @@ public class NewsfeedController {
     int result = service.remove(neNo);
     
     return result == 1 
-        ? new ResponseEntity<String>("success", HttpStatus.OK)
+        ? new ResponseEntity<String>("삭제 완료", HttpStatus.OK)
         : new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
   }
 }

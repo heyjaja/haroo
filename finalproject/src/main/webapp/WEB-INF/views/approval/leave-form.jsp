@@ -17,9 +17,9 @@
         <tr>
           <th class="text-center" scope="row">신청자</th>
           <td>
-          <input type="hidden" name="emNo" value="${employee.em_no }" />
-          <input type="hidden" name="leave.emNo" value="${employee.em_no }" />
-          ${employee.em_name }</td>
+          <input type="hidden" name="emNo" value="${employee.emNo }" />
+          <input type="hidden" name="leave.emNo" value="${employee.emNo }" />
+          ${employee.emName }</td>
         </tr>
         <tr>
           <th class="text-center" scope="row">제목</th>
@@ -57,9 +57,11 @@
           <td>
             <div class="input-group input-group-sm">
               <span class="input-group-text">시작일</span>
-              <input type="text" class="form-control" pattern="^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$" name="leave.leStart" placeholder="예)2022-11-01">
+              <!-- <input type="text" class="form-control" pattern="^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$" name="leave.leStart" placeholder="예)2022-11-01"> -->
+              <input type="date" class="form-control" name="leave.leStart"/>
               <span class="input-group-text">종료일</span>
-              <input type="text" class="form-control" pattern="^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$" name="leave.leEnd" placeholder="예)2022-11-01">
+              <!-- <input type="text" class="form-control" pattern="^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$" name="leave.leEnd" placeholder="예)2022-11-01"> -->
+              <input type="date" class="form-control" name="leave.leEnd"/>
             </div>
           </td>
         </tr>

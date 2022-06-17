@@ -63,11 +63,13 @@ const io = new IntersectionObserver((entry, observer) => {
 $(document).on("click", "#deleteBtn", function(e){
   const neNo = $(this).next().val();
   
-  remove(neNo, function(result){
+  if(confirm("피드를 삭제합니다.")) {
+    remove(neNo, function(result){
     alert(result);
     
     showList(1);
   });
+  }
 })
 
 // 뉴스피드 쓰기 모달 띄우기

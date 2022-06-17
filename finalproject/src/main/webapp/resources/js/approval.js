@@ -120,6 +120,16 @@ $(document).on('click', '.ap-form-reset', function(){
   $('#summernote').summernote('reset');
 });
 
+const takebackForm = $("#takebackForm");
+
+$("#takebackBtn").on("click", function(e){
+  e.preventDefault();
+  
+  if(confirm("결재문서 상신을 취소합니다.")) {
+    takebackForm.submit();
+  }
+})
+
 // 첨부파일 처리
 $(document).ready(function(e) {
   
@@ -146,7 +156,7 @@ $(document).ready(function(e) {
       });//end each
     }
     
-    if(confirm("상신하시겠습니까?")) {
+    if(confirm("문서를 상신합니다.")) {
       formObj.append(str).submit();
     }
   });//end submit click event
