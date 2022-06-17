@@ -14,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpSession;
 
 @RestController
-@RequestMapping("/haroo/mypage")
+@RequestMapping("/mypage")
 @Slf4j
 public class MyPageController {
 
@@ -25,7 +25,7 @@ public class MyPageController {
         this.myPageService = myPageService;
     }
 
-    @GetMapping
+    @GetMapping("")
     public ModelAndView getMyPage() {
 
         ModelAndView modelAndView = new ModelAndView("mypage/mypage_form");
@@ -40,9 +40,9 @@ public class MyPageController {
         try{
             myPageService.updateEmployeeService(myPageUserDTO);
 
-            ((EmployeeVO)httpSession.getAttribute("employee")).setEm_phone(myPageUserDTO.getEm_phone());
-            ((EmployeeVO)httpSession.getAttribute("employee")).setEm_email(myPageUserDTO.getEm_email());
-            ((EmployeeVO)httpSession.getAttribute("employee")).setEm_pw(myPageUserDTO.getEm_pw());
+            ((EmployeeVO)httpSession.getAttribute("employee")).setEmPhone(myPageUserDTO.getEmPhone());
+            ((EmployeeVO)httpSession.getAttribute("employee")).setEmEmail(myPageUserDTO.getEmEmail());
+            ((EmployeeVO)httpSession.getAttribute("employee")).setEmPw(myPageUserDTO.getEmPw());
 
             return new ResponseEntity<>(myPageUserDTO, HttpStatus.OK);
 
