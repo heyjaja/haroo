@@ -4,14 +4,12 @@ import com.haroo.login.domain.EmployeeVO;
 import com.haroo.login.service.EmployeeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 
 @RestController
-@RequestMapping("/haroo")
 @Slf4j
 public class LoginController {
 

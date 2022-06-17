@@ -3,10 +3,24 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.haroo.login.mapper.EmployeeMapper">
-    <select id="loginEmployee" resultType="com.haroo.login.domain.EmployeeVO">
+    <resultMap type="com.haroo.login.domain.EmployeeVO" id="EmployeeMap">
+        <id property="emNo" column="em_no"/>
+        <result property="poNo" column="po_no"/>
+        <result property="deNo" column="de_no"/>
+        <result property="emName" column="em_name"/>
+        <result property="emExt" column="em_ext"/>
+        <result property="emPhone" column="em_phone"/>
+        <result property="emEmail" column="em_email"/>
+        <result property="emFirst" column="em_first"/>
+        <result property="emLast" column="em_last"/>
+        <result property="auNo" column="au_no"/>
+        <result property="emPw" column="em_pw"/>
+    </resultMap>
+
+    <select id="loginEmployee" resultMap="EmployeeMap" resultType="com.haroo.login.domain.EmployeeVO">
         select *
         from employee
-        where em_no = #{em_no}
-        and em_pw = #{em_pw}
+        where em_no = #{emNo}
+          and em_pw = #{emPw}
     </select>
 </mapper>
