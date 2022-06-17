@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <!doctype html>
 <html lang="ko">
 <head>
@@ -24,17 +23,16 @@
 </head>
 <body class="text-center">
 <main class="form-signin">
-	<img class="mb-4" src="/resources/img/haroo-main.png" alt="" width="144" height="100">
-    <form action="main" method="post">
-        
+    <img class="mb-4" src="/resources/img/haroo-main.png" alt="" width="144" height="100">
+    <form action="/main" method="post">
         <h1 class="h3 mb-3 fw-normal">Please Sign-in</h1>
 
         <div class="form-floating">
-            <input type="text" class="form-control" id="floatingInput" placeholder="Employee Number" name="em_no">
+            <input type="text" class="form-control" id="floatingInput" placeholder="Employee Number" name="emNo">
             <label for="floatingInput">Employee Number</label>
         </div>
         <div class="form-floating">
-            <input type="password" class="form-control" id="floatingPassword" placeholder="Employee Password" name="em_pw">
+            <input type="password" class="form-control" id="floatingPassword" placeholder="Employee Password" name="emPw">
             <label for="floatingPassword">Password</label>
         </div>
 

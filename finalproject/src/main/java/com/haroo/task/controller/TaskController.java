@@ -16,7 +16,7 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RestController
-@RequestMapping("/haroo/task")
+@RequestMapping("/task")
 @Log4j
 public class TaskController {
 
@@ -34,7 +34,7 @@ public class TaskController {
         ModelAndView modelAndView = new ModelAndView();
 
         //현재 사원번호 설정
-        int emNo = ((EmployeeVO) httpSession.getAttribute("employee")).getEm_no();
+        int emNo = ((EmployeeVO) httpSession.getAttribute("employee")).getEmNo();
 
         try {
             List<TaskVO> taskVOList = taskService.getTaskListService(emNo);

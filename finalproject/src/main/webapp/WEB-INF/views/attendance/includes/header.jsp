@@ -32,7 +32,7 @@
 		<div class="container">
 			<div
 				class="d-flex flex-wrap align-items-center justify-content-center justify-content-start">
-				<a href="/haroo/main"
+				<a href="/main"
 					class="d-flex align-items-center mb-2 mb-lg-0 text-secondary text-decoration-none">
 					<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
 						fill="currentColor" class="bi bi-cloud-fill" viewBox="0 0 16 16">
@@ -61,7 +61,7 @@
 				<div class="text-end">
 					<ul
 						class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-						<li class="nav-item"><a class="nav-link link-secondary">${employee.em_name}님
+						<li class="nav-item"><a class="nav-link link-secondary">${employee.emName}님
 								환영합니다 :)</a></li>
 						<li class="nav-item"><a class="nav-link link-secondary"
 							href="#"><svg xmlns="http://www.w3.org/2000/svg" width="25"

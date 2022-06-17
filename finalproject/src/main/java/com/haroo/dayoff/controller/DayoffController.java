@@ -29,7 +29,7 @@ public class DayoffController {
 	@GetMapping("/status")
 	public String status(DayoffVO vo, DayoffUsageVO usage, Model model, HttpSession httpSession) { //@RequestParam("emNo") int emNo, 
 		
-		int emNo = ((EmployeeVO) httpSession.getAttribute("employee")).getEm_no();
+		int emNo = ((EmployeeVO) httpSession.getAttribute("employee")).getEmNo();
 		//vo.setEmNo(19362300);
 		vo.setEmNo(emNo);
 		

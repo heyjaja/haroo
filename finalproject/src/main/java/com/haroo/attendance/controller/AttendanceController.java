@@ -33,7 +33,7 @@ public class AttendanceController {
 	@GetMapping("/status")
 	public String status(Model model, HttpSession httpSession) { //오늘 출근명단 + 로그인한 사원 부사원 목록 + 오늘 날짜 @RequestParam("emNo") int emNo, 
 			
-		int emNo = ((EmployeeVO) httpSession.getAttribute("employee")).getEm_no();
+		int emNo = ((EmployeeVO) httpSession.getAttribute("employee")).getEmNo();
 		//int emNo = 19362300;
 		
 		log.warn("오늘 날짜 출력" + model.addAttribute("today", service.printToday()));
@@ -79,7 +79,7 @@ public class AttendanceController {
 	@GetMapping("/list/day")
 	public String listDay(AttendanceVO attendance, Model model, HttpSession httpSession) { //일별 부서 근태조회 	
 		
-		int emNo = ((EmployeeVO) httpSession.getAttribute("employee")).getEm_no();
+		int emNo = ((EmployeeVO) httpSession.getAttribute("employee")).getEmNo();
 		attendance.setEmNo(emNo);
 		//attendance.setEmNo(19362300);
 		//attendance.setAtDate("2022-06-05");
@@ -101,7 +101,7 @@ public class AttendanceController {
 	@GetMapping("/list/month")
 	public String listMonth(AttendanceVO attendance, Model model, HttpSession httpSession) { //월별 개인 근태조회 	
 		
-		int emNo = ((EmployeeVO) httpSession.getAttribute("employee")).getEm_no();
+		int emNo = ((EmployeeVO) httpSession.getAttribute("employee")).getEmNo();
 		attendance.setEmNo(emNo);
 		//attendance.setEmNo(19362300);
 		// attendance.setAtDate("2022-06");

@@ -1,19 +1,17 @@
 package com.haroo.mypage.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 public class MyPageUserDTO {
 
-    private int em_no;// 사원 번호
-    private String em_phone;// 휴대 전화
-    private String em_email;// 이메일
-    private String em_pw;// 비밀번호
+    private int emNo;// 사원 번호
+    private String emPhone;// 휴대 전화
+    private String emEmail;// 이메일
+    private String emPw;// 비밀번호
 
 }

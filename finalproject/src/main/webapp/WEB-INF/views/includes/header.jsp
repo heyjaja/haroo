@@ -26,7 +26,7 @@
   <header class="p-1 bg-light">
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-start">
-        <a href="/haroo/main" class="d-flex align-items-center mb-2 mb-lg-0 text-secondary text-decoration-none">
+        <a href="/main" class="d-flex align-items-center mb-2 mb-lg-0 text-secondary text-decoration-none">
           <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-cloud-fill" viewBox="0 0 16 16">
             <path d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383z"/>
           </svg>
@@ -49,7 +49,7 @@
             </ul>
             <div class="text-end">
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                    <li class="nav-item"><a class="nav-link link-secondary">${employee.em_name}님 환영합니다 :)</a></li>
+                    <li class="nav-item"><a class="nav-link link-secondary">${employee.emName}님 환영합니다 :)</a></li>
                     <li class="nav-item">
                         <a class="nav-link link-secondary" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-exclamation-triangle" viewBox="0 0 16 16">
                             <path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.146.146 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.163.163 0 0 1-.054.06.116.116 0 0 1-.066.017H1.146a.115.115 0 0 1-.066-.017.163.163 0 0 1-.054-.06.176.176 0 0 1 .002-.183L7.884 2.073a.147.147 0 0 1 .054-.057zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z"/>

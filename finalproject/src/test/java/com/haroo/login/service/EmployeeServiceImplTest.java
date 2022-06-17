@@ -28,8 +28,8 @@ public class EmployeeServiceImplTest {
         EmployeeVO employeeVO = new EmployeeVO();
 
         //when
-        employeeVO.setEm_no(19362300);
-        employeeVO.setEm_pw("1234");
+        employeeVO.setEmNo(19362300);
+        employeeVO.setEmPw("1");
 
         employeeVO = employeeMapper.loginEmployee(employeeVO);
 
