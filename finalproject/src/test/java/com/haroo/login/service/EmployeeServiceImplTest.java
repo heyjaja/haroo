@@ -20,7 +20,6 @@ public class EmployeeServiceImplTest {
     @Setter(onMethod_ = @Autowired)
     private EmployeeMapper employeeMapper;
 
-
     //Test OK
     @Test
     public void loginEmployeeServiceTest() {
@@ -28,12 +27,12 @@ public class EmployeeServiceImplTest {
         EmployeeVO employeeVO = new EmployeeVO();
 
         //when
-        employeeVO.setEm_no(19362300);
-        employeeVO.setEm_pw("1234");
+        employeeVO.setEmNo(19362300);
+        employeeVO.setEmPw("1");
 
         employeeVO = employeeMapper.loginEmployee(employeeVO);
 
         //then
-        log.info("Current Join Employee = {}", employeeVO);
+        System.out.println(employeeVO);
     }
 }

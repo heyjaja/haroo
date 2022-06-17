@@ -46,10 +46,10 @@ public class MyPageController1Test {
         //given
         MyPageUserDTO myPageUserDTO = new MyPageUserDTO();
 
-        myPageUserDTO.setEm_no(19362300);
-        myPageUserDTO.setEm_phone("010-9999-9999");
-        myPageUserDTO.setEm_email("rlaghdrl333@naver.com");
-        myPageUserDTO.setEm_pw("1");
+        myPageUserDTO.setEmNo(19362300);
+        myPageUserDTO.setEmPhone("010-9999-9999");
+        myPageUserDTO.setEmEmail("rlaghdrl333@naver.com");
+        myPageUserDTO.setEmPw("1");
 
         //when
         String json = new Gson().toJson(myPageUserDTO);

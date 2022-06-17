@@ -5,9 +5,9 @@
 <mapper namespace="com.haroo.mypage.mapper.MyPageMapper">
     <update id="updateEmployee" parameterType="com.haroo.mypage.domain.MyPageUserDTO">
         update employee
-        set em_phone = #{em_phone},
-            em_email = #{em_email},
-            em_pw = #{em_pw}
-        where em_no = #{em_no}
+        set em_phone = #{emPhone},
+            em_email = #{emEmail},
+            em_pw = #{emPw}
+        where em_no = #{emNo}
     </update>
 </mapper>
