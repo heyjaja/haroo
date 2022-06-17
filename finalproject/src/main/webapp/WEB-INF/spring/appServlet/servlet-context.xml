@@ -41,10 +41,10 @@
 	<!-- 자은 -->
 	<!-- 아래 내용 추가 -->
 	<context:component-scan base-package="com.haroo.approval.controller"/>
-  
+  	<context:component-scan base-package="com.haroo.newsfeed.controller"/>
     <!-- file upload -->
-  <beans:bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
-  </beans:bean>
+	  <beans:bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
+	  </beans:bean>
 	<!-- 자은 -->
 	
 	<!-- 주영 -->
