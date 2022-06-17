@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="com.haroo.approval.mapper.FormMapper">
+	<cache />
+ 	<resultMap type="com.haroo.approval.domain.FormVO" id="FormMap">
+    <result property="foNo" column="fo_no"/>
+    <result property="foKind" column="fo_kind"/>
+    <result property="foTitle" column="fo_title"/>
+    <result property="foContent" column="fo_content"/>
+    <result property="foInfo" column="fo_info"/>
+    <result property="foStatus" column="fo_status"/>
+  </resultMap>
+  
+  <insert id="insert">
+    <selectKey keyProperty="foNo" resultType="int" order="BEFORE">
+      SELECT fo_seq.nextval FROM dual
+    </selectKey>
+    INSERT INTO approval_form
+    VALUES (#{foNo}, #{foKind}, #{foTitle}, #{foContent}, #{foInfo}, #{foStatus})
+  </insert>
+  
+  <select id="getList" resultType="com.haroo.approval.domain.FormVO" resultMap="FormMap">
+    SELECT * FROM approval_form
+  </select>
+  
+  <select id="read" resultType="com.haroo.approval.domain.FormVO" resultMap="FormMap">
+    SELECT * FROM approval_form WHERE fo_no = #{foNo}
+  </select>
+  
+  <update id="modify">
+    UPDATE approval_form SET 
+      fo_kind = #{foKind}, 
+      fo_title = #{foTitle},
+      fo_content = #{foContent},
+      fo_info = #{foInfo},
+      fo_status = #{foStatus}
+    WHERE fo_no = #{foNo}
+  </update>
+</mapper>

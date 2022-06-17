@@ -9,13 +9,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -37,42 +35,59 @@ import com.haroo.approval.domain.ApprovalLineVO;
 import com.haroo.approval.domain.ApprovalVO;
 import com.haroo.approval.domain.Criteria;
 import com.haroo.approval.domain.EmpVO;
+import com.haroo.approval.domain.FormVO;
 import com.haroo.approval.domain.PageDTO;
 import com.haroo.approval.service.ApprovalService;
-import com.haroo.controller.HomeController;
+import com.haroo.login.domain.EmployeeVO;
+
+import lombok.extern.log4j.Log4j;
+import oracle.jdbc.proxy.annotation.Post;
 
 @Controller
-@RequestMapping("/approval/*")
+@RequestMapping("/approval")
+@Log4j
 public class ApprovalController {
   
-  private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
   private final String uploadFolder = "/Users/macbook/Documents/236/project/upload";
 
   @Autowired
   ApprovalService service;
   
-  @GetMapping("/main")
-  public void main(HttpServletRequest request) { // ∏ﬁ¿Œ
-    logger.info("approval main..........");
+  @GetMapping
+  public String main(HttpSession session, Model model) { // Î©îÏù∏
+    log.info("approval main..........");
     
-    HttpSession session = request.getSession();
+    if(session.getAttribute("employee") == null) {
+      return "redirect:/login";
+    };
     
-    EmpVO employeeVO = new EmpVO();
-    employeeVO.setEmNo(45424411);
-    employeeVO.setEmName("πÈπŒ¡÷");
+    int emNo = ((EmployeeVO) session.getAttribute("employee")).getEmNo();
     
-    session.setAttribute("employeeVO", employeeVO);
+    int processCount = service.getReportTotal(new Criteria(), emNo, 0);
+    
+    int waitCount = service.getReceiveTotal(new Criteria(), emNo, 0);
+    
+    model.addAttribute("processCount", processCount);
+    model.addAttribute("waitCount", waitCount);
+    
+    return "/approval/main";
   }
   
   @GetMapping("/forms")
-  public void forms() { // æÁΩƒ ∏Ò∑œ
-    logger.info("form list.............");
+  public String forms(Model model) { // ÏñëÏãù Î™©Î°ù
+    log.info("form list.............");
+    
+    List<FormVO> list = service.getFormList();
+    
+    model.addAttribute("forms", list);
+    
+    return "/approval/forms";
   }
   
-  @GetMapping("/form/{foNo}")
-  public String getFormList(@PathVariable("foNo") int foNo) { // æÁΩƒ º±≈√
+  @GetMapping("/report/{foNo}")
+  public String getReportForm(@PathVariable("foNo") int foNo, Model model) { // ÏñëÏãù ÏÑ†ÌÉù
     
-    logger.info("form..................");
+    log.info("form..................");
     String formName="draft-form";
     
     if(foNo == 2) {
@@ -81,30 +96,73 @@ public class ApprovalController {
       formName="leave-form";
     }
     
+      FormVO form = service.readForm(foNo);
+      
+      model.addAttribute("form", form);
+    
     return "/approval/"+formName;
   }
   
-  @PostMapping("/form/{foNo}")
-  public String postForm(ApprovalVO approval, @PathVariable("foNo") int foNo) { // ªÛΩ≈«œ±‚
+  @PostMapping({"/report/{foNo}", "/re/{no}"})
+  public String postReportForm(ApprovalVO approval) { // ÏÉÅÏã†ÌïòÍ∏∞
     
-    approval.setFoNo(foNo);
-    
-    logger.info("==========================");
-    logger.info("resister: " + approval);
+    log.info("==========================");
+    log.info("resister: " + approval);
     
     
     service.insertApproval(approval);
     
     
-    return "redirect:/approval/main";
+    return "redirect:/approval";
+  }
+  
+  @GetMapping("/form")
+  public String getInsertForm() {
+    return "/approval/form";
+  }
+  
+  @PostMapping("/form")
+  public String insertForm(FormVO form) {
+    
+    log.info("insert form..................");
+    
+    service.insertForm(form);
+    
+    return "redirect:/approval/forms";
+  }
+  
+  @GetMapping("/form/{foNo}")
+  public String getForm(@PathVariable("foNo") int foNo, Model model) {
+    
+    log.info("get form......");
+    
+    FormVO form = service.readForm(foNo);
+    
+    model.addAttribute("form", form);
+    
+    return "/approval/form";
+  }
+ 
+  @PostMapping("/form/{foNo}")
+  public String postForm(FormVO form) {
+    
+    log.info("modify form...");
+    
+    service.modifyForm(form);
+    
+    return "redirect:/approval/forms";
   }
   
   @GetMapping("/process")
-  public String processList(Criteria cri, Model model) { // ªÛΩ≈-¡¯«‡
+  public String processList(HttpSession session, Criteria cri, Model model) { // ÏÉÅÏã†-ÏßÑÌñâ
     
-    logger.info("get Process List");
+    log.info("get Process List");
     
-    int emNo = 45424411;
+    if(session.getAttribute("employee") == null) {
+      return "redirect:/login";
+    };
+    
+    int emNo = ((EmployeeVO) session.getAttribute("employee")).getEmNo();
     int status = 0;
     
     model.addAttribute("list", service.getReportList(cri, emNo, status));
@@ -117,11 +175,15 @@ public class ApprovalController {
   }
   
   @GetMapping("/done")
-  public String doneList(Criteria cri, Integer status, Model model) { // ªÛΩ≈-øœ∑·
+  public String doneList(HttpSession session, Criteria cri, Integer status, Model model) { // ÏÉÅÏã†-ÏôÑÎ£å
     
-    logger.info("get done List");
+    log.info("get done List");
     
-    int emNo = 45424411;
+    if(session.getAttribute("employee") == null) {
+      return "redirect:/login";
+    };
+    
+    int emNo = ((EmployeeVO) session.getAttribute("employee")).getEmNo();
     
     if(status == null) {
       status = 9;
@@ -138,11 +200,15 @@ public class ApprovalController {
   }
   
   @GetMapping("/takeback")
-  public String takebacksList(Criteria cri, Model model) { // ªÛΩ≈-√Îº“
+  public String takebacksList(HttpSession session, Criteria cri, Model model) { // ÏÉÅÏã†-Ï∑®ÏÜå
     
-    logger.info("get takeback List");
+    log.info("get takeback List");
     
-    int emNo = 45424411;
+    if(session.getAttribute("employee") == null) {
+      return "redirect:/login";
+    };
+    
+    int emNo = ((EmployeeVO) session.getAttribute("employee")).getEmNo();
     int status = -1;
     
     model.addAttribute("list", service.getReportList(cri, emNo, status));
@@ -157,23 +223,27 @@ public class ApprovalController {
   @GetMapping({ "/process/{apNo}", "/done/{apNo}", "/takeback/{apNo}", "/all/{apNo}" })
   public String getReport(@PathVariable("apNo") int apNo, Model model) {
     
-    logger.info("get Report");
+    log.info("get Report");
     
     ApprovalVO approval = service.readApproval(apNo);
     
     model.addAttribute("ap", approval);
     
-    logger.info("read approval: " + approval);
+    log.info("read approval: " + approval);
     
     return "/approval/approval-detail";
   }
   
   @GetMapping("/wait")
-  public String waitList(Criteria cri, Model model) { // ºˆΩ≈-¥Î±‚
+  public String waitList(HttpSession session, Criteria cri, Model model) { // ÏàòÏã†-ÎåÄÍ∏∞
     
-    logger.info("get wait list");
+    log.info("get wait list");
     
-    int emNo = 45424411;
+    if(session.getAttribute("employee") == null) {
+      return "redirect:/login";
+    };
+    
+    int emNo = ((EmployeeVO) session.getAttribute("employee")).getEmNo();
     int status = 0;
     
     model.addAttribute("list", service.getReceiveList(cri, emNo, status));
@@ -187,11 +257,15 @@ public class ApprovalController {
   }
   
   @GetMapping("/sign")
-  public String signList(Criteria cri, Model model) { // ºˆΩ≈-øœ∑·
+  public String signList(HttpSession session, Criteria cri, Model model) { // ÏàòÏã†-ÏôÑÎ£å
     
-    logger.info("get wait list");
+    log.info("get wait list");
     
-    int emNo = 45424411;
+    if(session.getAttribute("employee") == null) {
+      return "redirect:/login";
+    };
+    
+    int emNo = ((EmployeeVO) session.getAttribute("employee")).getEmNo();
     int status = 1;
     
     model.addAttribute("list", service.getReceiveList(cri, emNo, status));
@@ -207,7 +281,7 @@ public class ApprovalController {
   @GetMapping({"/wait/{apNo}", "/sign/{apNo}"})
   public String getReceive(@PathVariable("apNo") int apNo, Model model) {
     
-    logger.info("get Receive");
+    log.info("get Receive");
     
     ApprovalVO approval = service.readApproval(apNo);
     
@@ -218,9 +292,9 @@ public class ApprovalController {
   
   
   @GetMapping("/all")
-  public String allList(Criteria cri, Model model) { // ¿¸√º πÆº≠
+  public String allList(Criteria cri, Model model) { // Ï†ÑÏ≤¥ Î¨∏ÏÑú
     
-    logger.info("get all list");
+    log.info("get all list");
     
     model.addAttribute("list", service.getAllList(cri));
     
@@ -234,7 +308,7 @@ public class ApprovalController {
   @PostMapping("/process/{apNo}")
   public String postProcess(int apNo, int foNo) {
     
-    logger.info("takeback: " +apNo);
+    log.info("takeback: " +apNo);
     
     List<ApprovalAttachVO> attachList = service.getAttachList(apNo);
     
@@ -248,7 +322,7 @@ public class ApprovalController {
   @PostMapping("/wait/{apNo}")
   public String postWait(ApprovalLineVO apLine, int foNo) {
     
-    logger.info("sign: " +apLine.getApNo());
+    log.info("sign: " +apLine.getApNo());
     
     List<ApprovalAttachVO> attachList = service.getAttachList(apLine.getApNo());
     
@@ -262,7 +336,7 @@ public class ApprovalController {
   @GetMapping("/re/{apNo}")
   public String getRe(@PathVariable("apNo") int apNo, Model model) {
   
-    logger.info("rereport: " + apNo);
+    log.info("rereport: " + apNo);
     
     ApprovalVO approval = service.readApproval(apNo);
     
@@ -273,46 +347,48 @@ public class ApprovalController {
   
   
   @GetMapping("/line")
-  public void getEmployeeList(Model model) { // ∞·¿Á¿⁄ ∏Ò∑œ √¢
-    List<EmpVO> list = service.getEmpList();
+  public String getEmployeeList(Model model) { // Í≤∞Ïû¨Ïûê Î™©Î°ù Ï∞Ω
+    Map<String, List<EmpVO>> map = service.getEmpList();
     
-    model.addAttribute("list", list);
+    model.addAttribute("map", map);
+    
+    return "/approval/line";
   }
   
   
-  // √∑∫Œ∆ƒ¿œ √≥∏Æ
+  // Ï≤®Î∂ÄÌååÏùº Ï≤òÎ¶¨
   // upload
   @PostMapping(value = "/file", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @ResponseBody
   public ResponseEntity<List<ApprovalAttachVO>> uploadFile(MultipartFile[] uploadFile) {
     
-    logger.info("upload file ajax..............");
+    log.info("upload file ajax..............");
     
     List<ApprovalAttachVO> list = new ArrayList<>();
     
     String uploadFolderPath = getFolder();
     
-    // ∆˙¥ı ª˝º∫
+    // Ìè¥Îçî ÏÉùÏÑ±
     File uploadPath = new File(uploadFolder, uploadFolderPath);
-    logger.info("upload path: " + uploadPath);
+    log.info("upload path: " + uploadPath);
     
-    if(uploadPath.exists() == false) { // ≥‚/ø˘/¿œ ∆˙¥ı ∞Ê∑Œ∞° ¡∏¿Á«œ¡ˆ æ ¿ª ∂ß
-      uploadPath.mkdirs(); // yyyy/MM/dd ∆˙¥ı ª˝º∫
+    if(uploadPath.exists() == false) { // ÎÖÑ/Ïõî/Ïùº Ìè¥Îçî Í≤ΩÎ°úÍ∞Ä Ï°¥Ïû¨ÌïòÏßÄ ÏïäÏùÑ Îïå
+      uploadPath.mkdirs(); // yyyy/MM/dd Ìè¥Îçî ÏÉùÏÑ±
     }
     
     for(MultipartFile multipartFile : uploadFile) {
       
       ApprovalAttachVO attach = new ApprovalAttachVO();
       
-      logger.info("----------------------------------------");
-      logger.info("upload File name: " + multipartFile.getOriginalFilename());
-      logger.info("upload File size: " + multipartFile.getSize());
+      log.info("----------------------------------------");
+      log.info("upload File name: " + multipartFile.getOriginalFilename());
+      log.info("upload File size: " + multipartFile.getSize());
       
       String uploadFileName = multipartFile.getOriginalFilename();
       
       attach.setFname(uploadFileName);
       
-      UUID uuid = UUID.randomUUID(); // uuid ª˝º∫
+      UUID uuid = UUID.randomUUID(); // uuid ÏÉùÏÑ±
       
       uploadFileName = uuid.toString() + "_" + uploadFileName; // uuid_fileName
       
@@ -326,7 +402,7 @@ public class ApprovalController {
         list.add(attach);
         
       } catch (Exception e) {
-        logger.error(e.getMessage());
+        log.error(e.getMessage());
       }
     }// end for
     
@@ -338,11 +414,11 @@ public class ApprovalController {
   @ResponseBody
   public ResponseEntity<Resource> downloadFile(String fname) {
     
-    logger.info("download file: " + fname);
+    log.info("download file: " + fname);
     
     FileSystemResource resource = new FileSystemResource(uploadFolder + "/" + fname);
     
-    logger.info("resource" + resource);
+    log.info("resource" + resource);
     
     if(resource.exists() == false) {
       return new ResponseEntity<Resource>(HttpStatus.NOT_FOUND);
@@ -360,7 +436,7 @@ public class ApprovalController {
       
       String downloadName = new String(resourceOriginalName.getBytes("UTF-8"), "ISO-8859-1");
       
-      logger.info("downloadName: " + downloadName);
+      log.info("downloadName: " + downloadName);
       
       headers.add("Content-Disposition", "attachment; filename=" + downloadName);
       
@@ -377,7 +453,7 @@ public class ApprovalController {
   @ResponseBody
   public ResponseEntity<String> deleteFile(String fname) {
     
-    logger.info("delete file: " + fname);
+    log.info("delete file: " + fname);
     
     File file;
     
@@ -394,7 +470,7 @@ public class ApprovalController {
     return new ResponseEntity<String>("deleted", HttpStatus.OK);
   }
   
-  private String getFolder() { // ≥‚/ø˘/¿œ ∆˙¥ı ∞Ê∑Œ πÆ¿⁄ø≠ ∏∏µÈ±‚
+  private String getFolder() { // ÎÖÑ/Ïõî/Ïùº Ìè¥Îçî Í≤ΩÎ°ú Î¨∏ÏûêÏó¥ ÎßåÎì§Í∏∞
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     
     Date date = new Date();
@@ -410,8 +486,8 @@ public class ApprovalController {
       return;
     }
     
-    logger.info("delete attach files");
-    logger.info("delete: "+attachList);
+    log.info("delete attach files");
+    log.info("delete: "+attachList);
     
     attachList.forEach(attach -> {
       try {

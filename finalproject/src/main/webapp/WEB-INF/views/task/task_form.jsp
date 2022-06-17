@@ -25,8 +25,8 @@
             crossorigin="anonymous"></script>
 
     <!--kakao map -->
-    <script type="text/javascript"
-            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b89e623fa5a7450da9e317c87329cb31&libraries=services"></script>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b89e623fa5a7450da9e317c87329cb31&libraries=services"></script>
+
     <link rel="stylesheet" href="/resources/css/kakao-map.css"/>
 
     <style>
@@ -123,7 +123,7 @@
             </svg>
             <p>캘린더</p></a>
         </li>
-        <li class="nav-item"><a class="nav-link link-dark text-center" href="/haroo/board/listAction.do">
+        <li class="nav-item"><a class="nav-link link-dark text-center" href="/board/list">
             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor"
                  class="bi bi-layout-text-window-reverse" viewBox="0 0 16 16">
                 <path d="M13 6.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 .5-.5zm0 3a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 .5-.5zm-.5 2.5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1h5z"/>
@@ -136,7 +136,7 @@
                 <path d="M4 11H2v3h2v-3zm5-4H7v7h2V7zm5-5v12h-2V2h2zm-2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1h-2zM6 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7zm-5 4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-3z"/>
             </svg>
             <p>설문조사</p></a></li>
-        <li class="nav-item"><a class="nav-link link-dark text-center" href="/haroo/ap/main">
+        <li class="nav-item"><a class="nav-link link-dark text-center" href="/approval">
             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor"
                  class="bi bi-file-earmark-text" viewBox="0 0 16 16">
                 <path d="M5.5 7a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5z"/>

@@ -1,10 +1,10 @@
-/* body ìŠ¤íƒ€ì¼ */
+/* body ½ºÅ¸ÀÏ */
 html, body {
     overflow: hidden;
     font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
     font-size: 14px;
 }
-/* ìº˜ë¦°ë” ìœ„ì˜ í•´ë” ìŠ¤íƒ€ì¼(ë‚ ì§œê°€ ìˆëŠ” ë¶€ë¶„) */
+/* Ä¶¸°´õ À§ÀÇ ÇØ´õ ½ºÅ¸ÀÏ(³¯Â¥°¡ ÀÖ´Â ºÎºĞ) */
 .fc-header-toolbar {
     padding-top: 1em;
     padding-left: 1em;
