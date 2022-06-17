@@ -42,7 +42,7 @@ span {
 .side {
   padding: 0;
   margin: 0;
-  height: 100%;
+  height: 800px;
 }
 .side-one {
   padding: 0;
@@ -320,6 +320,7 @@ span {
   overflow-y: auto;
   border: 1px solid #f7f7f7;
   height: calc(100% - 120px);
+  display:inline;
 }
 .message-previous {
   margin : 0 !important;
@@ -342,19 +343,19 @@ span {
 .message-body {
   margin: 0 !important;
   padding: 0 !important;
-  width: auto;
+  width: 100%;
   height: auto;
 }
 
 .message-main-receiver {
   /*padding: 10px 20px;*/
-  max-width: 60%;
+  max-width: 40%;
 }
 
 .message-main-sender {
   padding: 3px 20px !important;
   margin-left: 40% !important;
-  max-width: 60%;
+  max-width: 40%;
 }
 
 .message-text {
@@ -376,26 +377,28 @@ span {
 }
 
 .receiver {
-  width: auto !important;
+  width: 51%;
   padding: 4px 10px 7px !important;
   border-radius: 10px 10px 10px 0;
   background: #ffffff;
   font-size: 12px;
   text-shadow: 0 1px 1px rgba(0, 0, 0, .2);
   word-wrap: break-word;
-  display: inline-block;
+/*   display: inline-block; */
 }
 
 .sender {
   float: right;
-  width: auto !important;
+  /* width: auto !important; */
+  width: 51%;
   background: #dcf8c6;
   border-radius: 10px 10px 0 10px;
   padding: 4px 10px 7px !important;
   font-size: 12px;
   text-shadow: 0 1px 1px rgba(0, 0, 0, .2);
-  display: inline-block;
+/*   display: inline-block; */
   word-wrap: break-word;
+
 }
 
 

@@ -28,6 +28,9 @@
 			</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
+		<!-- 재성 -->
+		<async-supported>true</async-supported>
+		<!-- 재성 -->
 		<!-- 자은 -->
 		<!-- 추가, 제 경로는 공통으로 쓰기가 어려워서 공통파일은 다른 경로로 하셔도 될 거 같습니다. -->
 		<!-- 파일 업로드 때문에 상단 xml 버전 수정 -->

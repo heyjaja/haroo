@@ -80,5 +80,10 @@
     <context:component-scan base-package="com.haroo.attendance, com.haroo.dayoff"/>
 	<mybatis-spring:scan base-package="com.haroo.attendance.mapper, com.haroo.dayoff.mapper"/>
     <!-- 주영 -->
-
+    
+    <!-- 재성 -->
+    <context:component-scan base-package="com.haroo.chat.service"/>
+	<mybatis-spring:scan base-package="com.haroo.chat.mapper"/>
+	<!-- 재성 -->
+	
 </beans>
