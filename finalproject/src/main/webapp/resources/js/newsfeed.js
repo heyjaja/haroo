@@ -1,14 +1,18 @@
 const feedBody = $('#newsfeedBody');
 
-function showList(page) { // showList
+let page = 1;
+
+function showList(targetPage) { // showList
 
   console.log("show list");
   
-  if (page == 1) {
+  if (targetPage == 1) {
     feedBody.find('div.list-group-item').remove();
     getList(appendList);
+    
+    page = 1;
   } else {
-    getListPlus(page, appendList);
+    getListPlus(targetPage, appendList);
   }
 
 
@@ -41,8 +45,6 @@ function appendList(data) { // 추가 callback 함수
   io.observe(targetDiv);
   
 }// end appendList()
-
-let page = 1;
 
 // scroll
 const io = new IntersectionObserver((entry, observer) => {

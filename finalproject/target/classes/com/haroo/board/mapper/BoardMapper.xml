@@ -66,7 +66,7 @@
 		bd_hitcount as hitcount, em_no as emNo
 		from board
 		where bd_no
-		=#{bdno}
+		=#{bdNo}
 	</select>
 
 	<delete id="delete">
@@ -85,12 +85,12 @@
 		<![CDATA[ 
 			select 
 				 bdNo, title, contents,
-					 writer, regdate
+					 writer, regdate, hitcount
 			from 
 				( 
 					select /*+INDEX_DESC(board pk_board_no) */
 					 rownum rn, bd_no as bdNo, bd_title as title, bd_contents as contents,
-					 bd_writer as writer, bd_regdate as regdate
+					 bd_writer as writer, bd_regdate as regdate, bd_hitcount as hitcount
 				 	from board 
 				 	where 
 		]]>
@@ -110,4 +110,10 @@
 		<include refid="criteria"></include>
 		 bd_no > 0
 	</select>
+	
+	<update id="hitCount" parameterType="Long">
+		update board
+		set bd_hitcount = bd_hitcount + 1
+		where bd_no = #{bdNo}
+	</update>
 </mapper>

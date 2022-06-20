@@ -36,10 +36,10 @@
     <div class="col-5 d-flex flex-column">
       <div class="fw-bold">
         <c:choose>
-          <c:when test="${ap.apStatus == 0 }">
+          <c:when test="${ap.alStatus == 0 }">
             <a class="ap-list-title stretched-link text-dark" href="/approval/wait/${ap.apNo }">${ap.apTitle }</a>
           </c:when>
-          <c:when test="${ap.apStatus > 0 }">
+          <c:when test="${ap.alStatus > 0 }">
             <a class="ap-list-title stretched-link text-dark" href="/approval/sign/${ap.apNo }">${ap.apTitle }</a>
           </c:when>
         </c:choose>
@@ -52,13 +52,13 @@
     </div>
     <div class="col-1">
       <c:choose>
-        <c:when test="${ap.apStatus == 0 }">
+        <c:when test="${ap.alStatus == 0 }">
           <button type="button" class="btn btn-outline-primary btn-sm">진행중</button>
         </c:when>
-        <c:when test="${ap.apStatus == 1 }">
+        <c:when test="${ap.alStatus == 1 }">
           <button type="button" class="btn btn-success btn-sm">승인</button>
         </c:when>
-        <c:when test="${ap.apStatus == 2 }">
+        <c:when test="${ap.alStatus == 2 }">
           <button type="button" class="btn btn-secondary btn-sm">반려</button>
         </c:when>
       </c:choose>

@@ -68,23 +68,20 @@
   </div>
   </div>
   <script type="text/javascript">
-  $slim(document).ready(function() {
     $slim('#summernote').summernote({
         height: 300,                 // 에디터 높이
         minHeight: null,             // 최소 높이
         maxHeight: null,             // 최대 높이
         lang: "ko-KR",          // 한글 설정
         toolbar: [
-          // [groupName, [list of button]]
-          ['fontsize', ['fontsize']],
-          ['style', ['bold', 'italic', 'underline','strikethrough', 'clear']],
-          ['color', ['forecolor','color']],
-          ['table', ['table']],
+          ['style', ['style']],
+          ['font', ['bold', 'underline', 'clear']],
+          ['color', ['color']],
           ['para', ['ul', 'ol', 'paragraph']],
-          ['height', ['height']]
+          ['table', ['table']],
+          ['view', ['fullscreen', 'codeview', 'help']]
         ]
     });
-  });
   </script>
   
   <%@include file="./includes/footer.jsp" %>

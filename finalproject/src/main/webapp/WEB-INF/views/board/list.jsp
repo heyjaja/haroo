@@ -9,7 +9,7 @@
 		<!-- sidebar -->
 		<!-- 사이드메뉴 -->
 		<div class="p-3 bg-white" style="width: 280px;">
-			<a href="/haroo/board/listAction.do"
+			<a href="/haroo/board/list"
 				class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
 				<svg class="bi me-2" width="30" height="24">
 					<use xlink:href="#bootstrap"></use></svg> <span class="fs-5 fw-semibold">게시판</span>
@@ -71,7 +71,7 @@
 								value='<c:out value="${pageMaker.cri.pageNum}"/>' /> <input
 								type='hidden' name='amount'
 								value='<c:out value="${pageMaker.cri.amount}"/>' />
-							<button class='btn btn-default'>Search</button>
+							<button class='w-btn-outline w-btn-gray-outline'>검색</button>
 						</form>
 					</div>
 				</div>

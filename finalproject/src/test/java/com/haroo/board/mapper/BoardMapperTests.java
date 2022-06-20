@@ -109,5 +109,10 @@ public class BoardMapperTests {
 		list.forEach(board -> log.info(board));
 	}
 	
+	@Test
+	public void testHitCount() {
+		
+		log.info(mapper.hitCount(109L));
+	}
 	
 }

@@ -187,7 +187,7 @@
       ON e.po_no = p.po_no
       JOIN department d
       ON d.de_no = e.de_no
-      WHERE al_no=#{emNo} AND ap.ap_no != -1
+      WHERE al_no=#{emNo} AND ap.ap_status != -1
       <choose>
         <when test="status == 0">
           AND al_status = 0
@@ -221,7 +221,7 @@
       ON e.po_no = p.po_no
       JOIN department d
       ON d.de_no = e.de_no
-      WHERE al_no=#{emNo} AND ap.ap_no != -1
+      WHERE al_no=#{emNo} AND ap.ap_status != -1
       <choose>
         <when test="status == 0">
           AND al_status = 0
@@ -240,6 +240,7 @@
         AND rownum <![CDATA[<=]]> #{cri.page} * #{cri.amount}
       )
       WHERE rn <![CDATA[>]]> (#{cri.page} -1) * #{cri.amount}
+      ORDER BY ap_no desc
 	</select>
   
   <!-- 수신문서 데이터 개수 -->
@@ -251,7 +252,7 @@
       ON ap.em_no = e.em_no
       JOIN approval_line al
       ON ap.ap_no = al.ap_no 
-      WHERE al_no=#{emNo} AND ap.ap_no != -1
+      WHERE al_no=#{emNo} AND ap.ap_status != -1
       <choose>
         <when test="status == 0">
           AND al_status = 0
