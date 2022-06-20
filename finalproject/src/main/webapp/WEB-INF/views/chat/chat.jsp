@@ -111,13 +111,14 @@
 		        <div class="row sideBar-body">
 	            <div class="col-sm-3 col-xs-3 sideBar-avatar">
 		              <div class="avatar-icon">
-		                <img src="https://bootdey.com/img/Content/avatar/avatar1.png">
+		                <img src="https://bootdey.com/img/Content/avatar/avatar${chat.de_no+1 }.png">
 		              </div>
 		          </div>
 		            <div class="col-sm-9 col-xs-9 sideBar-main">
 		              <div class="row">
 		                <div class="col-sm-8 col-xs-8 sideBar-name">
-		                  <span class="name-meta"><c:out value="${chat.em_name}"/>
+<%-- 		               <span class="name-meta"><c:out value="${chat.em_no}"/> --%>
+		               <a class='name-meta' href='<c:out value="${chat.em_no}"/>'>${chat.em_name}</a>
 		                </span>
 		                </div>
 		                <div class="col-sm-4 col-xs-4 pull-right sideBar-time">
@@ -129,6 +130,8 @@
 		          </div>
 	          
 	        </c:forEach>
+	        
+	        
 	        
 	        
 	
@@ -367,9 +370,16 @@
 	        </div>
 	        <div class="col-sm-1 col-xs-1  heading-dot pull-right">
 	          <i class="fa fa-ellipsis-v fa-2x  pull-right" aria-hidden="true"></i>
+	         
 	        </div>
+	        
+	 
 	      </div>
+
+
 	
+		
+		
 	      <div class="row message" id="conversation">
 	        <div class="row message-previous">
 	          <div class="col-sm-12 previous">
@@ -378,36 +388,29 @@
 	            </a>
 	          </div>
 	        </div>
-	
+
+
+		
+<%-- 		<div class="sender">
+				 <input class="form-control" name='bno'
+						value='<c:out value="${chatlist.em_name }"/>' readonly="readonly">
+				</div> --%>
 	        <div class="row message-body">
+	        
 	          <div class="col-sm-12 message-main-receiver">
-	            <div class="receiver">
-	              <div class="message-text">
-	               Hi, what are you doing?!
-	              </div>
-	              <span class="message-time pull-right">
-	                Sun
-	              </span>
-	            </div>
+					
 	          </div>
 	        </div>
 	
 	        <div class="row message-body">
 	          <div class="col-sm-12 message-main-sender">
-	            <div class="sender">
-	              <div class="message-text">
-	                I am doing nothing man!
-	              </div>
-	              <span class="message-time pull-right">
-	                Sun
-	              </span>
-	            </div>
+
 	          </div>
 	          
 	        </div>
 	       
 	      </div>
-	       <form action="fileUploadAction.do" method="post" enctype="multipart/form-data">	
+	<!--        <form action="fileUploadAction.do" method="post" enctype="multipart/form-data">	
 	        	<input type="file"	name="contentsName"><br>
 	        	<input type="submit" value="업로드"><br>
 	        	</form>
@@ -415,7 +418,7 @@
 	       	 <a href="/haroo/chat_video1.html" class="chat_video">
 	       	 	<button>영상통화</button>
 	       	 </a>
-	      </div>
+	      </div> -->
 	 
 	      <div class="row reply">
 	        <div class="col-sm-1 col-xs-1 reply-emojis">
@@ -440,6 +443,10 @@
 	</div>
 
  </div>
+ 	    	      	                 	     <!-- session ID hidden -->
+		<div class = "yourName" id="yourName">
+			<input type="hidden" id="sessionId" value="">
+		</div>
 </div>
 
 
@@ -453,7 +460,9 @@
 
     </footer>
 </div>
+<form id='actionForm' action="/chat/chat" method='get'>
 
+</form>
 <%@include file="../includes/footer.jsp"%>
 	<script src="/resources/js/chat.js"></script>
 	<script type="text/javascript">
@@ -470,4 +479,88 @@
 	      });
 	    });
 	})
+	
+	var ws;
+
+	function wsOpen(){
+		ws = new WebSocket("ws://" + location.host + "/chatting");
+		wsEvt();
+	}
+		
+	function wsEvt() {
+		ws.onopen = function(data){
+			//소켓이 열리면 동작
+		}
+		
+		ws.onmessage = function(data) {
+			//메시지를 받으면 동작
+			var msg = data.data;
+			if(msg != null && msg.trim() != ''){
+				var d = JSON.parse(msg);
+				if(d.type == "getId"){
+					var si = d.sessionId != null ? d.sessionId : "";
+					if(si != ''){
+						$("#sessionId").val(si); 
+					}
+				}else if(d.type == "message"){
+					if(d.sessionId == $("#sessionId").val()){
+						$("#conversation").append("<div class='sender'>" + d.msg + "</div>");	
+					}else{
+						$("#conversation").append("<div class='receiver'>" + d.userName + "" + d.msg + "</div>");
+					}
+						
+				}else{
+					console.warn("unknown type!")
+				}
+			}
+		}
+
+		document.addEventListener("keypress", function(e){
+			if(e.keyCode == 13){ //enter press
+				send();
+			}
+		});
+		
+		document.querySelector(".reply-send").addEventListener("click", function(e){
+			send();
+		})
+
+	}
+
+	function chatName(){
+		var userName = $("#userName").val();
+		if(userName == null || userName.trim() == ""){
+			alert("사용자 이름을 입력해주세요.");
+			$("#userName").focus();
+		}else{
+			wsOpen();
+			$("#yourName").hide();
+		}
+	}
+
+	function send() {
+		var option ={
+			type: "message",
+			sessionId : $("#sessionId").val(),
+			userName : $("#userName").val(),
+			msg : $(".reply-main").val()
+		}
+		ws.send(JSON.stringify(option))
+		$('.reply-main').val("");
+	}
+	
+	var actionForm = $("#actionForm");
+	
+	$(".name-meta").on("click", function(e) {
+
+				e.preventDefault();
+				actionForm.append("<input type='hidden' name='em_no' value='"
+								+ $(this).attr("href")+ "'>");
+				actionForm.attr("action","/chat/get");
+				actionForm.submit();
+});
+	
+	$(document).ready(function(){
+		wsOpen()
+	});
 	</script>

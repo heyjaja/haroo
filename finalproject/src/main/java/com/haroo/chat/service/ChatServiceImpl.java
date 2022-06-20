@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.haroo.chat.domain.ChatVO;
 import com.haroo.chat.domain.EmpVO;
 import com.haroo.chat.mapper.ChatMapper;
 
@@ -25,5 +26,21 @@ public class ChatServiceImpl implements ChatService{
 		log.info("getList.............");
 		
 		return mapper.getList();
+	}
+	
+	@Override
+	public EmpVO get(Long em_no) {
+		
+		log.info("get........." + em_no);
+		
+		return mapper.read(em_no);
+	}
+	
+	@Override
+	public ChatVO getChatList(Long em_no) {
+		
+		log.info("getChatList..........");
+		
+		return mapper.getChatList(em_no);
 	}
 }

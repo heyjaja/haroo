@@ -12,4 +12,5 @@ public class ChatVO {
 	private Date ch_time;//시간
 	private String ch_from;//보낸 사람
 	private String ch_to;//받는 사람
+	private Long em_no;//사원 번호
 }

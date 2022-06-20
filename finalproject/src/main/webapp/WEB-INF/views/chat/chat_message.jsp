@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@include file="../includes/header.jsp"%>
 
@@ -117,8 +117,9 @@
 		            <div class="col-sm-9 col-xs-9 sideBar-main">
 		              <div class="row">
 		                <div class="col-sm-8 col-xs-8 sideBar-name">
-		                  <span class="name-meta"><c:out value="${chat.em_name}"/>
-		                </span>
+		                <%--   <span class="name-meta"><c:out value="${chat.em_name}"/>
+		                </span> --%>
+		                <a href='/chat/get?bno=<c:out value="${chat.em_no}"/>'><c:out value="${chat.em_no}"/></a>
 		                </div>
 		                <div class="col-sm-4 col-xs-4 pull-right sideBar-time">
 		                  <span class="time-meta pull-right">18:18
@@ -129,6 +130,8 @@
 		          </div>
 	          
 	        </c:forEach>
+	        
+	        
 	        
 	        
 	
@@ -385,10 +388,20 @@
 	            </a>
 	          </div>
 	        </div>
-	
+		<div class = "sender">안녕?</div>
+		<div class="sender">
+					 <input class="form-control" name='title'
+						value='<c:out value="${chat.ch_no }"/>' readonly="readonly">
+		</div>
+		
+<%-- 		<div class="sender">
+				 <input class="form-control" name='bno'
+						value='<c:out value="${chatlist.em_name }"/>' readonly="readonly">
+				</div> --%>
 	        <div class="row message-body">
+	        
 	          <div class="col-sm-12 message-main-receiver">
-
+					
 	          </div>
 	        </div>
 	
@@ -437,7 +450,7 @@
 		<div class = "yourName" id="yourName">
 			<input type="hidden" id="sessionId" value="">
 			<input type="text" name="userName" id="userName">
-			<th><button onclick="chatName()" id="startBtn">이름 등록</button></th>
+			<th><button onclick="wsOpen()" id="startBtn">이름 등록</button></th>
 		</div>
 </div>
 
@@ -452,7 +465,9 @@
 
     </footer>
 </div>
+<form id='actionForm' action="/chat/get" method='get'>
 
+</form>
 <%@include file="../includes/footer.jsp"%>
 	<script src="/resources/js/chat.js"></script>
 	<script type="text/javascript">
@@ -496,7 +511,7 @@
 					if(d.sessionId == $("#sessionId").val()){
 						$("#conversation").append("<div class='sender'>" + d.msg + "</div>");	
 					}else{
-						$("#conversation").append("<div class='receiver'>" + d.userName + " :" + d.msg + "</div>");
+						$("#conversation").append("<div class='receiver'>" + d.userName + "" + d.msg + "</div>");
 					}
 						
 				}else{
@@ -538,4 +553,18 @@
 		ws.send(JSON.stringify(option))
 		$('.reply-main').val("");
 	}
+	
+	var actionForm = $("#actionForm");
+	
+	$(".name-meta").on("click",function(e) {
+			e.preventDefault();
+			actionForm.append("<input type='Long' name='em_no' value='"
+			+ $(this).attr("href")+ "'>");
+				actionForm.attr("action", "/chat/get");
+				actionForm.submit();
+
+		
+
+
+});
 	</script>
