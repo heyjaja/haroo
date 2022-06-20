@@ -66,6 +66,8 @@
 			                                            le_end
 			                                        FROM
 			                                            leave
+                                                    WHERE
+                                                        le_status = 1 AND em_no = #{emNo}
 			                                    )
 			                                CONNECT BY
 			                                    level <= le_end - le_start + 1
@@ -110,12 +112,14 @@
 			                                            le_end
 			                                        FROM
 			                                            leave
+                                                    WHERE
+                                                        le_status = 1 AND em_no = #{emNo}    
 			                                    )
 			                                CONNECT BY
 			                                    level <= le_end - le_start + 1
 			                            ) a
 			                        WHERE
-			                            a.d NOT IN ( '1', '7' )
+			                            a.d NOT IN ( '1', '7' ) 
 			                    )
 			                ELSE
 			                    da_cnt

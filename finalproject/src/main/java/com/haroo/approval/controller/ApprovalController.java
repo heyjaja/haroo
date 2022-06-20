@@ -259,7 +259,7 @@ public class ApprovalController {
   @GetMapping("/sign")
   public String signList(HttpSession session, Criteria cri, Model model) { // 수신-완료
     
-    log.info("get wait list");
+    log.info("get sign list");
     
     if(session.getAttribute("employee") == null) {
       return "redirect:/login";

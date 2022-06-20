@@ -120,6 +120,7 @@ $(document).on('click', '.ap-form-reset', function(){
   $('#summernote').summernote('reset');
 });
 
+// 상신 취소 확인
 const takebackForm = $("#takebackForm");
 
 $("#takebackBtn").on("click", function(e){

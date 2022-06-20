@@ -24,7 +24,7 @@
   </insert>
   
   <select id="getList" resultType="com.haroo.approval.domain.FormVO" resultMap="FormMap">
-    SELECT * FROM approval_form
+    SELECT * FROM approval_form ORDER BY fo_no
   </select>
   
   <select id="read" resultType="com.haroo.approval.domain.FormVO" resultMap="FormMap">

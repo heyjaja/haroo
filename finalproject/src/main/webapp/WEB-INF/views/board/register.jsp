@@ -28,14 +28,14 @@
 
 					<tr>
 						<td>
-						<input type="hidden" class="form-control" name="emNo" value="${employee.em_no}">
+						<input type="hidden" class="form-control" name="emNo" value="${employee.emNo}">
 						제목 :<input type="text" class="form-control" name="title" placeholder="글 제목" maxlength="50">
 						</td>
 					</tr>
 					<tr>
 						<td>작성자 :
-							<div class="form-control">${employee.em_name}</div>
-							<input type="hidden" name="writer" value="${employee.em_name}">
+							<div class="form-control">${employee.emName}</div>
+							<input type="hidden" name="writer" value="${employee.emName}">
 						</td>
 					</tr>
 					<tr>

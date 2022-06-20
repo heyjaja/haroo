@@ -120,23 +120,19 @@
   </div>
   </div>
   <script type="text/javascript">
-  $slim(document).ready(function() {
-    $slim('#summernote').summernote({
-        height: 300,                 // 에디터 높이
-        minHeight: null,             // 최소 높이
-        maxHeight: null,             // 최대 높이
-        lang: "ko-KR",          // 한글 설정
-        toolbar: [
-          // [groupName, [list of button]]
-          ['style', ['bold', 'italic', 'underline', 'clear']],
-          ['font', ['strikethrough', 'superscript', 'subscript']],
-          ['fontsize', ['fontsize']],
-          ['color', ['color']],
-          ['para', ['ul', 'ol', 'paragraph']],
-          ['height', ['height']],
-          ['table', ['table']]
-        ]
-    });
+  $slim('#summernote').summernote({
+    height: 300,                 // 에디터 높이
+    minHeight: null,             // 최소 높이
+    maxHeight: null,             // 최대 높이
+    lang: "ko-KR",          // 한글 설정
+    toolbar: [
+      ['style', ['style']],
+      ['font', ['bold', 'underline', 'clear']],
+      ['color', ['color']],
+      ['para', ['ul', 'ol', 'paragraph']],
+      ['table', ['table']],
+      ['view', ['fullscreen', 'codeview', 'help']]
+    ]
   });
   </script>
   
