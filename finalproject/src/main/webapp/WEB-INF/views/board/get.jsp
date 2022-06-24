@@ -84,11 +84,11 @@
 					</table>
 				</div>
 			</div>
-			<form action="/replies/register" method="post">
+			<form action="/replies/register" method="post" style="text-align: left">
 				<input type="hidden" name="bdNo" value="${board.bdNo }">
 				댓글작성자:${employee.emName}
 				<input type="hidden" name="reWriter" value="${employee.emName}"><br> 
-				댓글 내용 : <input type="text" name="reContents"><br> 
+				댓글 내용 : <textarea  name="reContents"  class="form-control" maxlength="500" placeholder="댓글 내용 입력창"></textarea><br> 
 				<input type="submit" value="댓글쓰기">
 			</form>
 <!-- 			<div class="panel-heading"> -->

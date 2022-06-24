@@ -94,6 +94,7 @@ public class BoardController {
 	public void get(@RequestParam("bdNo") Long bdNo, @ModelAttribute("cri") Criteria cri, Model model) {
 		
 		log.info("/get or modify");
+		service.hitCount(bdNo);
 		model.addAttribute("board", service.get(bdNo));
 		model.addAttribute("replys", service2.getList(cri, bdNo));
 	}
@@ -208,4 +209,5 @@ public class BoardController {
 //			} // end catch
 //		});// end foreachd
 //	}
+	
 }

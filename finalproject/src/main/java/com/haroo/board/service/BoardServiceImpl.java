@@ -70,5 +70,11 @@ public class BoardServiceImpl implements BoardService {
 		log.info("get total count");
 		return mapper.getTotalCount(cri);
 	}
+	@Override
+	public int hitCount(Long bdNo) {
+		
+		log.info("hitcount");
+		return mapper.hitCount(bdNo);
+	}
 	
 }
