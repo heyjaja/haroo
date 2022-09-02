@@ -33,6 +33,7 @@
   - JIRA
 
 ## 뉴스피드 구현
+- REST API
 - 최대한 간단하게 구현하려고 했다.
 - 로그인 회원이 닉네임을 설정하여 익명으로 올릴 수 있다.
 - 트위터 컨셉으로 수정은 불가하고 쓰기/삭제만 가능
@@ -48,7 +49,9 @@
   
 ## 전자결재 구현
 - 많은 그룹웨어를 참고하여 최대한 많은 기능을 넣고자 했다.
-- 먼저 URL을 정리하였다. restful 하게 하고자 노력했다. <a href="https://docs.google.com/spreadsheets/d/1X3yuLrnNn8D2n9_usuCDFkAMnFWxT7KY1CsH5UMs3-Q/edit?usp=sharing" target="_blank">link</a>
+- 메뉴: 결재 작성, 수신 - 결재/미결재, 상신 - 진행/완료/취소, 전체문서
+- 기능: 양식 등록/수정/삭제, 휴가신청서/품의서/기안서 작성, 결재선 선택(검색), 상신/상신취소, 재상신, 결재-승인,반려, 결재의견, 첨부파일, 페이징, 검색
+- URL은 restful 하게 하고자 노력했다. <a href="https://docs.google.com/spreadsheets/d/1X3yuLrnNn8D2n9_usuCDFkAMnFWxT7KY1CsH5UMs3-Q/edit?usp=sharing" target="_blank">link</a>
 - view에 대한 고민
   - 게시판 + 내용 형식으로 겹치는 부분이 많아서 하나하나 view를 만들어야할지, 아니면 하나의 view를 재사용해서 jsp 태그를 이용하여 해도 되는지에 많은 고민을 했다.
   - view가 너무 많아지면 수정할 때 힘들 것 같아 일단 하나의 view로 넣을 수 있는 것을 다 넣었다.
@@ -61,4 +64,5 @@
 - 아쉬운 점
   - 너무 보여줄 기능에만 치중했었다는 것
   - 기능보다는 좀 더 기술적으로 깊이 고민하여 구현했으면 할말이 많았을텐데 기능 구현에만 급급했다.
-  - 인증을 적용하지 못한 것
+  - 배운 것에서만 최대한 활용하고 새로운 기술을 적용하지 못한 점이 아쉽다.
+  
